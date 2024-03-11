@@ -1,11 +1,7 @@
-create table sys_user
+create table p_package
 (
     id          int auto_increment,
-    name        int              not null comment '姓名',
-    phone       varchar(20)      null comment '联系方式',
-    user_id     varchar(100)     not null comment '用户名',
-    password    varchar(255)     null comment '密码',
-    status       bit default 1    not null comment '状态',
+    package     varchar(255)     null comment '套餐名称',
     delete_flag bit default b'0' not null comment '逻辑删除',
     create_by   varchar(50)      null comment '创建人',
     create_on   datetime         not null comment '创建时间',
@@ -14,4 +10,4 @@ create table sys_user
     constraint `PRIMARY`
         primary key (id)
 )
-    comment '用户信息表';
+    comment '检查套餐表';
