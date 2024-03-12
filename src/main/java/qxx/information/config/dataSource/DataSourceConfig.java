@@ -29,7 +29,7 @@ import javax.sql.DataSource;
  * @since 2023/11/9 18:32
  */
 @Configuration
-@MapperScan(value = "qxx.information.mapper", sqlSessionFactoryRef = "sqlSessionFactory")
+@MapperScan(value = "qxx.information.mapper")
 @EnableTransactionManagement
 public class DataSourceConfig {
 
