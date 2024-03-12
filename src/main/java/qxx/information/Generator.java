@@ -33,7 +33,7 @@ public class Generator {
     }
 
     private static final DataSourceConfig.Builder DATA_SOURCE_CONFIG = new DataSourceConfig.Builder(
-            "jdbc:mysql://" + URL + ":3306/life",
+            "jdbc:mysql://" + URL + ":3306/information",
             "root",
             PASSWORD);
 
@@ -45,16 +45,16 @@ public class Generator {
                         .outputDir(projectPath + "/src/main/java")
                         .disableOpenDir())
                 // 包配置
-                .packageConfig((scanner, builder) -> builder.parent("qxx.information")
-                        .moduleName("admin")
+                .packageConfig((scanner, builder) -> builder.parent("qxx")
+                        .moduleName("information")
                         .entity("entity")
                         .service("service")
                         .serviceImpl("service.impl")
-                        .mapper("mapper.life")
+                        .mapper("mapper")
                         .xml("mapper")
                         .controller("controller")
                         .pathInfo(Collections.singletonMap(OutputFile.xml, projectPath +
-                                "/src/main/resources/mapper/life")))
+                                "/src/main/resources/mapper")))
                 // 策略配置
                 .strategyConfig((scanner, builder) -> builder.addInclude(getTables(scanner.apply(
                                 "请输入表名，多个英文逗号分隔？所有输入 all")))
