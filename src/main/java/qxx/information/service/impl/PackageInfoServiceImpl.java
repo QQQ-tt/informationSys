@@ -62,11 +62,10 @@ public class PackageInfoServiceImpl extends ServiceImpl<PackageInfoMapper, Packa
                 .orElse(new PackageInfo())
                 .getStatus();
         if (status != null && !status) {
-            removeById(id);
+            return removeById(id);
         } else {
             throw new DataException(DataEnums.PROJECT_DELETE);
         }
-        return false;
     }
 
     @Override

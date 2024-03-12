@@ -4,6 +4,6 @@
 
     <select id="selectPageNew" resultType="qxx.information.pojo.vo.PackageVO">
         select id, package_name as name, create_by, create_on
-        from info_package ${ew.customSqlSegment}
+        from package_info ${ew.customSqlSegment}
     </select>
 </mapper>

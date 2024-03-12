@@ -1,6 +1,7 @@
 package qxx.information.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,7 +47,7 @@ public class PackageInfoController {
         return Result.success(packageInfoService.updateStatusById(id));
     }
 
-    @GetMapping("/deletePackageById")
+    @DeleteMapping("/deletePackageById")
     public Result<Boolean> deletePackageById(@RequestParam Long id) {
         return Result.success(packageInfoService.deletePackageById(id));
     }
