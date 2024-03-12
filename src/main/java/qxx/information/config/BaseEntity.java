@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class BaseEntity {
 
     @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     @TableField(fill = FieldFill.INSERT)
     private String createBy;
