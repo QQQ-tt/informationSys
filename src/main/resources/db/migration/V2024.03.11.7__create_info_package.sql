@@ -1,4 +1,4 @@
-create table p_package
+create table info_package
 (
     id          int auto_increment,
     package     varchar(255)     null comment '套餐名称',
