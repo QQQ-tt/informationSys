@@ -23,5 +23,5 @@ public class InfoPackage extends BaseEntity {
      * 套餐名称
      */
     @TableField("package")
-    private String package;
+    private String packages;
 }
