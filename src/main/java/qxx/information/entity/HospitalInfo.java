@@ -8,7 +8,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 角色管理
+ * 医院信息管理表
  * </p>
  *
  * @author qtx
@@ -16,26 +16,20 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@TableName("sys_role")
-public class SysRole extends BaseEntity {
+@TableName("hospital_info")
+public class HospitalInfo extends BaseEntity {
 
     /**
-     * 角色名称
+     * 地区
      */
-    @TableField("role_name")
-    private String roleName;
+    @TableField("district_name")
+    private String districtName;
 
     /**
-     * 角色编号
+     * 医院名称
      */
-    @TableField("role_code")
-    private String roleCode;
-
-    /**
-     * 备注
-     */
-    @TableField("remark")
-    private String remark;
+    @TableField("hospital_name")
+    private String hospitalName;
 
     /**
      * 引用状态

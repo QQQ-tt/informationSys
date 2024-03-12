@@ -8,7 +8,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 检查套餐表
+ * 医院信息与套餐信息中间表
  * </p>
  *
  * @author qtx
@@ -16,18 +16,18 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@TableName("package_info")
-public class PackageInfo extends BaseEntity {
+@TableName("hospital_package_info")
+public class HospitalPackageInfo extends BaseEntity {
 
     /**
-     * 套餐名称
+     * 医院信息id
      */
-    @TableField("package_name")
-    private String packageName;
+    @TableField("hospital_info_id")
+    private Long hospitalInfoId;
 
     /**
-     * 引用状态
+     * 套餐信息id
      */
-    @TableField("status")
-    private Boolean status;
+    @TableField("info_package_id")
+    private Long infoPackageId;
 }
