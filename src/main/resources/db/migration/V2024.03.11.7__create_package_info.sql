@@ -1,7 +1,8 @@
-create table info_package
+create table package_info
 (
     id           int auto_increment,
     package_name varchar(255)     null comment '套餐名称',
+    status       bit default b'0' not null comment '状态',
     delete_flag  bit default b'0' not null comment '逻辑删除',
     create_by    varchar(50)      null comment '创建人',
     create_on    datetime         not null comment '创建时间',

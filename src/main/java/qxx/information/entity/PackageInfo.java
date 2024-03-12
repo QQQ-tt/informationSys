@@ -16,8 +16,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@TableName("info_package")
-public class InfoPackage extends BaseEntity {
+@TableName("package_info")
+public class PackageInfo extends BaseEntity {
 
     /**
      * 套餐名称

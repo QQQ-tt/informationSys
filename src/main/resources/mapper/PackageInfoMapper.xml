@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="qxx.information.mapper.PackageInfoMapper">
+
+    <select id="selectPageNew" resultType="qxx.information.pojo.vo.PackageVO">
+        select id, package_name as name, create_by, create_on
+        from info_package ${ew.customSqlSegment}
+    </select>
+</mapper>
