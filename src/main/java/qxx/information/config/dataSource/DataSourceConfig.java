@@ -63,7 +63,7 @@ public class DataSourceConfig {
         bean.setGlobalConfig(globalConfig);
         bean.setPlugins(mybatisPlusInterceptor);
         bean.setMapperLocations(// 设置mybatis的xml所在位置
-                new PathMatchingResourcePatternResolver().getResources("classpath*:mapper/life/*.xml"));
+                new PathMatchingResourcePatternResolver().getResources("classpath*:mapper/*.xml"));
         return bean.getObject();
     }
 
