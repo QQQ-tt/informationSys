@@ -3,6 +3,7 @@ create table sys_role
     id          int auto_increment,
     role_name   varchar(50)      not null comment '角色名称',
     role_code   varchar(50)      not null comment '角色编号',
+    status      bit default b'0' not null comment '引用状态',
     remark      varchar(200)     null comment '备注',
     delete_flag bit default b'0' not null comment '逻辑删除',
     create_by   varchar(50)      null comment '创建人',

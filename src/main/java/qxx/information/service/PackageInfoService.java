@@ -31,6 +31,13 @@ public interface PackageInfoService extends IService<PackageInfo> {
     boolean saveOrUpdatePackage(PackageInfo entity);
 
     /**
+     * 更新引用状态
+     * @param id 套餐id
+     * @return 是否成功
+     */
+    boolean updateStatusById(Long id);
+
+    /**
      * 删除
      * @param id 主键
      * @return 是否成功

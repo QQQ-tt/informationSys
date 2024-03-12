@@ -46,6 +46,11 @@ public class PackageInfoServiceImpl extends ServiceImpl<PackageInfoMapper, Packa
     }
 
     @Override
+    public boolean updateStatusById(Long id) {
+        return false;
+    }
+
+    @Override
     public boolean deletePackageById(Long id) {
         return false;
     }
