@@ -32,8 +32,8 @@ public class HospitalInfo extends BaseEntity {
     private String hospitalName;
 
     /**
-     * 引用状态
+     * 引用次数
      */
     @TableField("status")
-    private Boolean status;
+    private Integer status;
 }

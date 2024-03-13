@@ -65,8 +65,8 @@ public class CollectInfo extends BaseEntity {
     /**
      * 套餐ID
      */
-    @TableField("package_name")
-    private Integer packageName;
+    @TableField("package_id")
+    private Integer packageId;
 
     /**
      * 试管条码号

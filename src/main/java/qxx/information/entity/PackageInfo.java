@@ -26,8 +26,8 @@ public class PackageInfo extends BaseEntity {
     private String packageName;
 
     /**
-     * 引用状态
+     * 引用次数
      */
     @TableField("status")
-    private Boolean status;
+    private Integer status;
 }

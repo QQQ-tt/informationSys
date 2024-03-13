@@ -30,4 +30,10 @@ public class HospitalPackageInfo extends BaseEntity {
      */
     @TableField("info_package_id")
     private Long infoPackageId;
+
+    /**
+     * 排序号
+     */
+    @TableField("order_num")
+    private Long orderNum;
 }

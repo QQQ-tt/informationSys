@@ -50,18 +50,19 @@ public class PackageInfoServiceImpl extends ServiceImpl<PackageInfoMapper, Packa
     }
 
     @Override
-    public boolean updateStatusById(Long id) {
+    public boolean updateStatusById(Long id, boolean flag) {
         return update(Wrappers.lambdaUpdate(PackageInfo.class)
-                .set(PackageInfo::getStatus, Boolean.TRUE)
-                .eq(BaseEntity::getId, id));
+                .eq(PackageInfo::getId, id)
+                .setSql(flag, "status = status + 1")
+                .setSql(!flag, "status = status - 1"));
     }
 
     @Override
     public boolean deletePackageById(Long id) {
-        Boolean status = Optional.ofNullable(getById(id))
+        Integer status = Optional.ofNullable(getById(id))
                 .orElse(new PackageInfo())
                 .getStatus();
-        if (status != null && !status) {
+        if (status != null && status == 0) {
             return removeById(id);
         } else {
             throw new DataException(DataEnums.PROJECT_DELETE);

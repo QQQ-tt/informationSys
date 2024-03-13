@@ -43,8 +43,8 @@ public class PackageInfoController {
     }
 
     @GetMapping("/updatePackageStatusById")
-    public Result<Boolean> updatePackageStatusById(@RequestParam Long id) {
-        return Result.success(packageInfoService.updateStatusById(id));
+    public Result<Boolean> updatePackageStatusById(@RequestParam Long id, @RequestParam boolean flag) {
+        return Result.success(packageInfoService.updateStatusById(id, flag));
     }
 
     @DeleteMapping("/deletePackageById")
