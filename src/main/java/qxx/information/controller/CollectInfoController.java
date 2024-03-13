@@ -1,7 +1,16 @@
 package qxx.information.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import qxx.information.config.DataEnums;
+import qxx.information.config.Result;
+import qxx.information.entity.CollectInfo;
+import qxx.information.pojo.dto.CollectInfoRecordQueryDTO;
+import qxx.information.pojo.vo.CollectInfoRecordVO;
+import qxx.information.pojo.vo.CollectInfoVO;
+import qxx.information.service.CollectInfoService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,5 +23,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/information/collectInfo")
 public class CollectInfoController {
+
+    @Autowired
+    private CollectInfoService collectInfoService;
+
+    @PostMapping("/insertCollectInfo")
+    public Result insertCollectInfo(@RequestBody CollectInfo entity){
+        Boolean insert = collectInfoService.insertCollectInfo(entity);
+        return insert ? Result.success() : Result.failed(DataEnums.FAILED);
+    }
+
+    @PostMapping("/queryCollectInfoRecordList")
+    public Result queryCollectInfoRecordList(@RequestBody CollectInfoRecordQueryDTO dto){
+        List<CollectInfoRecordVO> collectInfoRecordVOS = collectInfoService.queryCollectInfoRecordList(dto);
+        return Result.success(collectInfoRecordVOS);
+    }
+
+    @GetMapping("/getByIdQueryCollectInfo")
+    public Result getByIdQueryCollectInfo(Long id){
+        CollectInfoVO byIdQueryCollectInfo = collectInfoService.getByIdQueryCollectInfo(id);
+        return Result.success(byIdQueryCollectInfo);
+    }
+
+
 
 }

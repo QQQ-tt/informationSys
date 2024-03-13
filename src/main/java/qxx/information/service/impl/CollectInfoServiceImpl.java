@@ -1,10 +1,18 @@
 package qxx.information.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.springframework.beans.factory.annotation.Autowired;
 import qxx.information.entity.CollectInfo;
 import qxx.information.mapper.CollectInfoMapper;
+import qxx.information.pojo.dto.CollectInfoQueryDTO;
+import qxx.information.pojo.dto.CollectInfoRecordQueryDTO;
+import qxx.information.pojo.vo.CollectInfoRecordVO;
+import qxx.information.pojo.vo.CollectInfoVO;
 import qxx.information.service.CollectInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -17,4 +25,29 @@ import org.springframework.stereotype.Service;
 @Service
 public class CollectInfoServiceImpl extends ServiceImpl<CollectInfoMapper, CollectInfo> implements CollectInfoService {
 
+
+    @Autowired
+    private CollectInfoMapper collectInfoMapper;
+
+    @Override
+    public Boolean insertCollectInfo(CollectInfo collectInfo) {
+        return saveOrUpdate(collectInfo);
+    }
+
+
+    @Override
+    public List<CollectInfoRecordVO> queryCollectInfoRecordList(CollectInfoRecordQueryDTO dto) {
+        return collectInfoMapper.queryCollectInfoRecordList(dto);
+    }
+
+    @Override
+    public CollectInfoVO getByIdQueryCollectInfo(Long id) {
+        return collectInfoMapper.getByIdQueryCollectInfo(id);
+    }
+
+    @Override
+    public IPage<CollectInfoVO> listByCollectInfoPage(CollectInfoQueryDTO dto) {
+
+        return null;
+    }
 }

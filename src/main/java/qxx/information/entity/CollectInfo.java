@@ -2,9 +2,7 @@ package qxx.information.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-
 import java.time.LocalDate;
-
 import qxx.information.config.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
