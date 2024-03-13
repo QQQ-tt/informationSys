@@ -2,7 +2,9 @@ package qxx.information.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.time.LocalDate;
+
 import qxx.information.config.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -79,4 +81,10 @@ public class CollectInfo extends BaseEntity {
      */
     @TableField("sampling_point")
     private String samplingPoint;
+
+    /**
+     * 作废状态：false是未作废，true是已作废
+     */
+    @TableField("status")
+    private Boolean status;
 }

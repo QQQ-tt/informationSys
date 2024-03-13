@@ -11,7 +11,7 @@ create table collect_info
     package_id         INT              NOT NULL COMMENT '套餐ID',
     tube_card          varchar(255)     NOT NULL COMMENT '试管条码号',
     sampling_point     varchar(255)     NOT NULL COMMENT '采样点',
-    status             bit default b'0' not null comment '状态：0是未作废，1是已作废',
+    status             bit default b'0' not null comment '作废状态：0是未作废，1是已作废',
     delete_flag        bit default b'0' not null comment '逻辑删除',
     create_by          varchar(50)      null comment '创建人',
     create_on          datetime         not null comment '创建时间',
