@@ -1,6 +1,7 @@
 package qxx.information.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import qxx.information.entity.CollectInfo;
 import qxx.information.mapper.CollectInfoMapper;
@@ -47,7 +48,7 @@ public class CollectInfoServiceImpl extends ServiceImpl<CollectInfoMapper, Colle
 
     @Override
     public IPage<CollectInfoVO> listByCollectInfoPage(CollectInfoQueryDTO dto) {
-
-        return null;
+        Page<CollectInfoVO> page = new Page<>(dto.getPageNum(), dto.getPageSize());
+        return collectInfoMapper.listByCollectInfoPage(page,dto);
     }
 }

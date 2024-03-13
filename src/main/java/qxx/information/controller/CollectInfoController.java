@@ -1,10 +1,12 @@
 package qxx.information.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import qxx.information.config.DataEnums;
 import qxx.information.config.Result;
 import qxx.information.entity.CollectInfo;
+import qxx.information.pojo.dto.CollectInfoQueryDTO;
 import qxx.information.pojo.dto.CollectInfoRecordQueryDTO;
 import qxx.information.pojo.vo.CollectInfoRecordVO;
 import qxx.information.pojo.vo.CollectInfoVO;
@@ -46,5 +48,10 @@ public class CollectInfoController {
     }
 
 
+    @PostMapping("/listByCollectInfoPage")
+    public Result listByCollectInfoPage(@RequestBody CollectInfoQueryDTO dto){
+        IPage<CollectInfoVO> collectInfoVOIPage = collectInfoService.listByCollectInfoPage(dto);
+        return Result.success(collectInfoVOIPage);
+    }
 
 }

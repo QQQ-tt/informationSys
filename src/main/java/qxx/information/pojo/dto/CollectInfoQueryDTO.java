@@ -2,6 +2,9 @@ package qxx.information.pojo.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import qxx.information.config.PageDTO;
+import qxx.information.entity.PackageInfo;
+import qxx.information.pojo.vo.CollectInfoVO;
 
 import java.time.LocalDate;
 
@@ -10,7 +13,7 @@ import java.time.LocalDate;
  * @Date: 2024/3/13 20:19
  */
 @Data
-public class CollectInfoQueryDTO {
+public class CollectInfoQueryDTO extends PageDTO<CollectInfoVO> {
 
 
     private String district;
