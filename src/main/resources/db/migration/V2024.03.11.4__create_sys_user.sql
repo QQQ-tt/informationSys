@@ -1,7 +1,7 @@
 create table sys_user
 (
     id          int auto_increment,
-    name        int              not null comment '姓名',
+    name        varchar(100)     not null comment '姓名',
     phone       varchar(20)      null comment '联系方式',
     user_id     varchar(100)     not null comment '用户名',
     password    varchar(255)     null comment '密码',

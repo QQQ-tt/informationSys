@@ -6,6 +6,8 @@ import qxx.information.config.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 /**
  * <p>
  * 用户信息表
@@ -23,7 +25,7 @@ public class SysUser extends BaseEntity {
      * 姓名
      */
     @TableField("name")
-    private Integer name;
+    private String name;
 
     /**
      * 联系方式
@@ -48,4 +50,10 @@ public class SysUser extends BaseEntity {
      */
     @TableField("stats")
     private Boolean stats;
+
+    @TableField(exist = false)
+    private List<String> roles;
+
+    @TableField(exist = false)
+    private List<String> hospital;
 }

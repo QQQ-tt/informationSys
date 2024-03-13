@@ -23,11 +23,11 @@ public class SysUserHospital extends BaseEntity {
      * 用户id
      */
     @TableField("user_id")
-    private Integer userId;
+    private Long userId;
 
     /**
      * 医院id
      */
     @TableField("hospital_id")
-    private Integer hospitalId;
+    private Long hospitalId;
 }

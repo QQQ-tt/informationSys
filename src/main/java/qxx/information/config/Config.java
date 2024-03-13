@@ -2,6 +2,8 @@ package qxx.information.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -14,7 +16,7 @@ import java.util.Collections;
  * @since 2024/3/8
  */
 @Configuration
-public class CorsConfig {
+public class Config {
 
     @Bean
     public CorsFilter corsConfigurationSource() {
@@ -29,5 +31,15 @@ public class CorsConfig {
         source.registerCorsConfiguration("/**", configuration);
 
         return new CorsFilter(source);
+    }
+
+    /**
+     * 密码解密方式
+     *
+     * @return
+     */
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

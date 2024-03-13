@@ -23,11 +23,11 @@ public class SysUserRole extends BaseEntity {
      * 用户id
      */
     @TableField("user_id")
-    private Integer userId;
+    private Long userId;
 
     /**
      * 角色id
      */
     @TableField("role_id")
-    private Integer roleId;
+    private Long roleId;
 }
