@@ -1,4 +1,4 @@
-package qxx.information.config;
+package qxx.information.config.enums;
 
 import lombok.Getter;
 

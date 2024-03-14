@@ -2,4 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="qxx.information.mapper.SysUserHospitalMapper">
 
+    <select id="selectListNew" resultType="qxx.information.entity.SysUserHospital">
+        select s.id, user_id, hospital_id, h.hospital_name
+        from sys_user_hospital s
+                 left join hospital_info h on s.hospital_id = h.id
+        where user_id = #{sysUserId}
+    </select>
 </mapper>

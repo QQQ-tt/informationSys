@@ -1,9 +1,12 @@
 package qxx.information.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import qxx.information.config.BaseEntity;
+import qxx.information.config.enums.DataEnums;
+import qxx.information.config.exception.DataException;
 import qxx.information.entity.SysUser;
 import qxx.information.entity.SysUserHospital;
 import qxx.information.entity.SysUserRole;
@@ -16,8 +19,10 @@ import qxx.information.pojo.vo.SysUserVO;
 import qxx.information.service.SysUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import qxx.information.utils.JwtUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -118,11 +123,59 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public LoginVO login(LoginDTO dto) {
-        return null;
+        SysUser user = getOne(Wrappers.lambdaQuery(SysUser.class)
+                .eq(SysUser::getStats, Boolean.TRUE)
+                .eq(SysUser::getUserId, dto.getUserId()));
+        if (Objects.nonNull(user)) {
+            if (passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
+                List<SysUserHospital> sysUserHospitals = sysUserHospitalService.listSysUserHospital(user.getId());
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("userId", user.getUserId());
+                map.put("name", user.getName());
+                map.put("hospital", sysUserHospitals);
+                map.put("phone", user.getPhone());
+                return LoginVO.builder()
+                        .userId(user.getUserId())
+                        .name(user.getName())
+                        .hospital(sysUserHospitals)
+                        .token(JwtUtils.generateToken(String.valueOf(user.getId()), map))
+                        .build();
+            }
+        }
+        throw new DataException(DataEnums.USER_IS_NULL);
+    }
+
+    @Override
+    public String flushedToken(String token) {
+        String bodyFromToken = JwtUtils.getBodyFromToken(token);
+        SysUser user = getOne(Wrappers.lambdaQuery(SysUser.class)
+                .eq(SysUser::getStats, Boolean.TRUE)
+                .eq(SysUser::getUserId, bodyFromToken));
+        if (Objects.nonNull(user)) {
+            return JwtUtils.generateToken(bodyFromToken, null);
+        }
+        throw new DataException(DataEnums.USER_IS_NULL);
     }
 
     @Override
     public boolean loginUpdatePassword(SysUserPasswordDTO dto) {
-        return false;
+        SysUser user = getOne(Wrappers.lambdaQuery(SysUser.class)
+                .eq(SysUser::getStats, Boolean.TRUE)
+                .eq(SysUser::getId, dto.getId()));
+        if (Objects.nonNull(user)) {
+            if (passwordEncoder.matches(dto.getOldPassword(), user.getPassword())) {
+                String password = dto.getPassword();
+                String encode = passwordEncoder.encode(password);
+                return update(Wrappers.lambdaUpdate(SysUser.class)
+                        .eq(BaseEntity::getId, dto.getId())
+                        .set(SysUser::getPassword, encode));
+            }
+        }
+        throw new DataException(DataEnums.USER_IS_NULL);
+    }
+
+    @Override
+    public boolean createSysUser(SysUser dto) {
+        return saveOrUpdateSysUser(dto);
     }
 }

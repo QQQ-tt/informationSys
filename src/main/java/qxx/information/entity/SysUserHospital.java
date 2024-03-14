@@ -30,4 +30,10 @@ public class SysUserHospital extends BaseEntity {
      */
     @TableField("hospital_id")
     private Long hospitalId;
+
+    /**
+     * 医院名称
+     */
+    @TableField(exist = false)
+    private String hospitalName;
 }

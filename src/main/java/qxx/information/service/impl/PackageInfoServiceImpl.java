@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import qxx.information.config.BaseEntity;
-import qxx.information.config.DataEnums;
+import qxx.information.config.enums.DataEnums;
 import qxx.information.config.exception.DataException;
 import qxx.information.entity.PackageInfo;
 import qxx.information.mapper.PackageInfoMapper;

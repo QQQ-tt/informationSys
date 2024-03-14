@@ -3,7 +3,10 @@
 <mapper namespace="qxx.information.mapper.PackageInfoMapper">
 
     <select id="selectPageNew" resultType="qxx.information.pojo.vo.PackageVO">
-        select id, package_name as name, create_by, create_on
-        from package_info ${ew.customSqlSegment}
+        with info as (select p.id, package_name as name, s.name as create_by, p.create_on
+                      from package_info p
+                               left join sys_user s on p.create_by = s.id)
+        select *
+        from info ${ew.customSqlSegment}
     </select>
 </mapper>

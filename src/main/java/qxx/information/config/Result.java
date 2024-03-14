@@ -2,6 +2,7 @@ package qxx.information.config;
 
 
 import lombok.Data;
+import qxx.information.config.enums.DataEnums;
 
 
 /**

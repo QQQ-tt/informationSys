@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import qxx.information.config.DataEnums;
+import qxx.information.config.enums.DataEnums;
 import qxx.information.config.exception.DataException;
 
 import java.io.IOException;

@@ -63,9 +63,23 @@ public interface SysUserService extends IService<SysUser> {
     LoginVO login(LoginDTO dto);
 
     /**
+     * 刷新token
+     * @param token 密钥
+     * @return 新密钥
+     */
+    String flushedToken(String token);
+
+    /**
      * 修改用户密码
      * @param dto 用户信息
      * @return 是否修改成功
      */
     boolean loginUpdatePassword(SysUserPasswordDTO dto);
+
+    /**
+     * 创建用户
+     * @param dto 用户信息
+     * @return 是否保存成功
+     */
+    boolean createSysUser(SysUser dto);
 }

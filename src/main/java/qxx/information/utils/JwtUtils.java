@@ -5,7 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.Data;
-import qxx.information.config.DataEnums;
+import qxx.information.config.enums.DataEnums;
 import qxx.information.config.exception.DataException;
 
 import java.util.Date;

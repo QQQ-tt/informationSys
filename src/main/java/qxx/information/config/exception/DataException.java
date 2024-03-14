@@ -2,7 +2,7 @@ package qxx.information.config.exception;
 
 
 import lombok.Getter;
-import qxx.information.config.DataEnums;
+import qxx.information.config.enums.DataEnums;
 
 /**
  * @author qtx
