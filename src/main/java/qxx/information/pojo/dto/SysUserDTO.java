@@ -20,4 +20,9 @@ public class SysUserDTO extends PageDTO<SysUser> {
      * 用户名
      */
     private String userId;
+
+    /**
+     * 医院
+     */
+    private String hospital;
 }

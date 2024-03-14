@@ -30,4 +30,10 @@ public class SysUserRole extends BaseEntity {
      */
     @TableField("role_id")
     private Long roleId;
+
+    /**
+     * 角色名称
+     */
+    @TableField(exist = false)
+    private String roleName;
 }

@@ -13,15 +13,15 @@ public enum AuthEnums {
     /**
      * 网关限制，放行地址:注册
      */
-    REGISTER("/auth/sysUser/createUser"),
+    REGISTER("/information/sysUser/createSysUser"),
     /**
      * 网关限制，放行地址:登录
      */
-    LOGIN("/auth/sysUser/login"),
+    LOGIN("/information/sysUser/login"),
     /**
      * 网关限制，放行地址:刷新token
      */
-    REFRESH_TOKEN("/auth/sysUser/token");
+    REFRESH_TOKEN("/information/sysUser/flushedToken");
 
 
     private final String context;

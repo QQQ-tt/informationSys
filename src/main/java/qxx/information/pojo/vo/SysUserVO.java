@@ -1,6 +1,10 @@
 package qxx.information.pojo.vo;
 
 import lombok.Data;
+import qxx.information.entity.SysUserHospital;
+import qxx.information.entity.SysUserRole;
+
+import java.util.List;
 
 /**
  * @author qtx
@@ -8,4 +12,20 @@ import lombok.Data;
  */
 @Data
 public class SysUserVO {
+
+    private Long id;
+
+    private String name;
+
+    private String phone;
+
+    private String userId;
+
+    private Boolean status;
+
+    private List<SysUserHospital> listHospital;
+
+    private List<SysUserRole> listRole;
+
+
 }

@@ -52,7 +52,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public Page<SysUserVO> listSysUserPage(SysUserDTO dto) {
-        return null;
+        return baseMapper.selectPageNew(dto.getPage(), dto);
     }
 
     @Override
@@ -72,9 +72,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             boolean savedOrUpdate = saveOrUpdate(dto);
             if (flag) {
                 sysUserRoleService.remove(Wrappers.lambdaQuery(SysUserRole.class)
-                        .eq(SysUserRole::getUserId, dto.getUserId()));
+                        .eq(SysUserRole::getUserId, dto.getId()));
                 sysUserHospitalService.remove(Wrappers.lambdaQuery(SysUserHospital.class)
-                        .eq(SysUserHospital::getUserId, dto.getUserId()));
+                        .eq(SysUserHospital::getUserId, dto.getId()));
             }
             List<String> roles = Optional.ofNullable(dto.getRoles())
                     .orElse(new ArrayList<>());
@@ -113,7 +113,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public boolean updateStatusById(Long id, Boolean flag) {
         return update(Wrappers.lambdaUpdate(SysUser.class)
                 .eq(BaseEntity::getId, id)
-                .set(SysUser::getStats, flag));
+                .set(SysUser::getStatus, flag));
     }
 
     @Override
@@ -124,7 +124,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public LoginVO login(LoginDTO dto) {
         SysUser user = getOne(Wrappers.lambdaQuery(SysUser.class)
-                .eq(SysUser::getStats, Boolean.TRUE)
+                .eq(SysUser::getStatus, Boolean.TRUE)
                 .eq(SysUser::getUserId, dto.getUserId()));
         if (Objects.nonNull(user)) {
             if (passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
@@ -149,7 +149,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public String flushedToken(String token) {
         String bodyFromToken = JwtUtils.getBodyFromToken(token);
         SysUser user = getOne(Wrappers.lambdaQuery(SysUser.class)
-                .eq(SysUser::getStats, Boolean.TRUE)
+                .eq(SysUser::getStatus, Boolean.TRUE)
                 .eq(SysUser::getUserId, bodyFromToken));
         if (Objects.nonNull(user)) {
             return JwtUtils.generateToken(bodyFromToken, null);
@@ -160,7 +160,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public boolean loginUpdatePassword(SysUserPasswordDTO dto) {
         SysUser user = getOne(Wrappers.lambdaQuery(SysUser.class)
-                .eq(SysUser::getStats, Boolean.TRUE)
+                .eq(SysUser::getStatus, Boolean.TRUE)
                 .eq(SysUser::getId, dto.getId()));
         if (Objects.nonNull(user)) {
             if (passwordEncoder.matches(dto.getOldPassword(), user.getPassword())) {
@@ -176,6 +176,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public boolean createSysUser(SysUser dto) {
+        dto.setId(null);
         return saveOrUpdateSysUser(dto);
     }
 }

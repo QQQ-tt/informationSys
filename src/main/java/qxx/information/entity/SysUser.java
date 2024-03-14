@@ -48,8 +48,8 @@ public class SysUser extends BaseEntity {
     /**
      * 状态
      */
-    @TableField("stats")
-    private Boolean stats;
+    @TableField("status")
+    private Boolean status;
 
     @TableField(exist = false)
     private List<String> roles;
