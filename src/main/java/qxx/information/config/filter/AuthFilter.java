@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -31,7 +32,8 @@ public class AuthFilter extends OncePerRequestFilter {
     private CommonMethod commonMethod;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
+                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
         String uri = request.getRequestURI();
         String userId = request.getHeader("id");
         String token = request.getHeader("token");
@@ -46,7 +48,7 @@ public class AuthFilter extends OncePerRequestFilter {
         }
         boolean equals = Objects.equals(JwtUtils.getBodyFromToken(token), userId);
         if (!equals) {
-            commonMethod.failed(response, DataEnums.USER_CODE_FAIL);
+            commonMethod.failed(response, DataEnums.USER_NOT_LOGIN);
             return;
         }
         boolean tokenExpired = JwtUtils.isTokenExpired(token);
