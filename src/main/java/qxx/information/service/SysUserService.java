@@ -64,10 +64,9 @@ public interface SysUserService extends IService<SysUser> {
 
     /**
      * 刷新token
-     * @param token 密钥
      * @return 新密钥
      */
-    String flushedToken(String token);
+    String flushedToken();
 
     /**
      * 修改用户密码

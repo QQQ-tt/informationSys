@@ -17,8 +17,6 @@ import qxx.information.pojo.vo.LoginVO;
 import qxx.information.pojo.vo.SysUserVO;
 import qxx.information.service.SysUserService;
 
-import java.util.Objects;
-
 /**
  * <p>
  * 用户信息表 前端控制器
@@ -69,8 +67,8 @@ public class SysUserController {
     }
 
     @GetMapping("/flushedToken")
-    public Result<String> flushedToken(@RequestParam String token) {
-        return Result.success(sysUserService.flushedToken(token));
+    public Result<String> flushedToken() {
+        return Result.success(sysUserService.flushedToken());
     }
 
     @PostMapping("/loginUpdatePassword")

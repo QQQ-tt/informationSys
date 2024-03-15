@@ -35,7 +35,7 @@ public class AuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         String uri = request.getRequestURI();
-        String userId = request.getHeader("id");
+        String userId = request.getHeader("user");
         String token = request.getHeader("token");
 
         if (AuthEnums.authPath(uri)) {
@@ -57,6 +57,7 @@ public class AuthFilter extends OncePerRequestFilter {
             return;
         }
         commonMethod.setSysUserId(userId);
+        commonMethod.setToken(token);
         filterChain.doFilter(request, response);
         commonMethod.clear();
     }

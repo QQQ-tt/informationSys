@@ -19,6 +19,7 @@ public class CommonMethod {
     private final ThreadLocal<String> sysUserId = new ThreadLocal<>();
 
     private final ThreadLocal<String> ip = new ThreadLocal<>();
+    private final ThreadLocal<String> token = new ThreadLocal<>();
 
 
 
@@ -50,6 +51,18 @@ public class CommonMethod {
         return ip.get();
     }
 
+    public void setIp(String ip) {
+        this.ip.set(ip);
+    }
+
+    public String getToken() {
+        return token.get();
+    }
+
+    public void setToken(String token) {
+        this.token.set(token);
+    }
+
     public String getSysUserId() {
         return sysUserId.get();
     }
@@ -58,12 +71,9 @@ public class CommonMethod {
         this.sysUserId.set(sysUserId);
     }
 
-    public void setIp(String ip) {
-        this.ip.set(ip);
-    }
-
     public void clear(){
         sysUserId.remove();
         ip.remove();
+        token.remove();
     }
 }

@@ -10,6 +10,8 @@ import lombok.Data;
 public class SysUserPasswordDTO {
     private Long id;
 
+    private String userId;
+
     private String oldPassword;
 
     private String password;
