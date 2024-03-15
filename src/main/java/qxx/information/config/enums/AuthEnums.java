@@ -17,11 +17,7 @@ public enum AuthEnums {
     /**
      * 网关限制，放行地址:登录
      */
-    LOGIN("/information/sysUser/login"),
-    /**
-     * 网关限制，放行地址:刷新token
-     */
-    REFRESH_TOKEN("/information/sysUser/flushedToken");
+    LOGIN("/information/sysUser/login");
 
 
     private final String context;

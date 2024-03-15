@@ -1,10 +1,13 @@
 package qxx.information.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.val;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import qxx.information.config.BaseEntity;
+import qxx.information.config.CommonMethod;
 import qxx.information.config.enums.DataEnums;
 import qxx.information.config.exception.DataException;
 import qxx.information.entity.SysUser;
@@ -17,8 +20,6 @@ import qxx.information.pojo.dto.SysUserPasswordDTO;
 import qxx.information.pojo.vo.LoginVO;
 import qxx.information.pojo.vo.SysUserVO;
 import qxx.information.service.SysUserService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.stereotype.Service;
 import qxx.information.utils.JwtUtils;
 
 import java.util.ArrayList;
@@ -44,10 +45,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     private final PasswordEncoder passwordEncoder;
 
-    public SysUserServiceImpl(SysUserRoleServiceImpl sysUserRoleService, SysUserHospitalServiceImpl sysUserHospitalService, PasswordEncoder passwordEncoder) {
+    private final CommonMethod commonMethod;
+
+    public SysUserServiceImpl(SysUserRoleServiceImpl sysUserRoleService, SysUserHospitalServiceImpl sysUserHospitalService, PasswordEncoder passwordEncoder, CommonMethod commonMethod) {
         this.sysUserRoleService = sysUserRoleService;
         this.sysUserHospitalService = sysUserHospitalService;
         this.passwordEncoder = passwordEncoder;
+        this.commonMethod = commonMethod;
     }
 
     @Override
@@ -98,7 +102,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             sysUserHospitalService.saveBatch(sysUserHospitals);
             return savedOrUpdate;
         }
-        return false;
+        throw new DataException(DataEnums.DATA_REPEAT);
     }
 
     @Override
@@ -130,6 +134,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             if (passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
                 List<SysUserHospital> sysUserHospitals = sysUserHospitalService.listSysUserHospital(user.getId());
                 HashMap<String, Object> map = new HashMap<>();
+                map.put("id", user.getId());
                 map.put("userId", user.getUserId());
                 map.put("name", user.getName());
                 map.put("hospital", sysUserHospitals);
@@ -138,7 +143,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                         .userId(user.getUserId())
                         .name(user.getName())
                         .hospital(sysUserHospitals)
-                        .token(JwtUtils.generateToken(String.valueOf(user.getId()), map))
+                        .token(JwtUtils.generateToken(user.getUserId(), map))
                         .build();
             }
         }
@@ -146,13 +151,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public String flushedToken(String token) {
-        String bodyFromToken = JwtUtils.getBodyFromToken(token);
+    public String flushedToken() {
+        val claims = JwtUtils.getClaimsFromToken(commonMethod.getToken());
+        assert claims != null;
+        val subject = claims.getSubject();
         SysUser user = getOne(Wrappers.lambdaQuery(SysUser.class)
                 .eq(SysUser::getStatus, Boolean.TRUE)
-                .eq(SysUser::getUserId, bodyFromToken));
+                .eq(SysUser::getUserId, subject));
         if (Objects.nonNull(user)) {
-            return JwtUtils.generateToken(bodyFromToken, null);
+            return JwtUtils.generateToken(subject, claims);
         }
         throw new DataException(DataEnums.USER_IS_NULL);
     }
@@ -161,7 +168,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public boolean loginUpdatePassword(SysUserPasswordDTO dto) {
         SysUser user = getOne(Wrappers.lambdaQuery(SysUser.class)
                 .eq(SysUser::getStatus, Boolean.TRUE)
-                .eq(SysUser::getId, dto.getId()));
+                .eq(SysUser::getUserId, dto.getUserId()));
         if (Objects.nonNull(user)) {
             if (passwordEncoder.matches(dto.getOldPassword(), user.getPassword())) {
                 String password = dto.getPassword();
@@ -170,6 +177,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                         .eq(BaseEntity::getId, dto.getId())
                         .set(SysUser::getPassword, encode));
             }
+            throw new DataException(DataEnums.WRONG_PASSWORD);
         }
         throw new DataException(DataEnums.USER_IS_NULL);
     }

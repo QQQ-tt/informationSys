@@ -27,7 +27,7 @@
         h.id as hospitalId,
         i.hospital_name,
         r.id as roleId,
-        m.name as roleName
+        m.role_name
         from sys_user s
         left join sys_user_hospital h on s.id = h.user_id left join hospital_info i on
         h.hospital_id = i.id
