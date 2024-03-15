@@ -97,7 +97,7 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
     @Override
     public int deleteHospitalInfo(Long id) {
         LambdaQueryWrapper<HospitalInfo> hospitalInfoLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        hospitalInfoLambdaQueryWrapper.eq(HospitalInfo::getId,id).ge(HospitalInfo::getStatus,0);
+        hospitalInfoLambdaQueryWrapper.eq(HospitalInfo::getId,id).gt(HospitalInfo::getStatus,0);
         Long aLong = hospitalInfoMapper.selectCount(hospitalInfoLambdaQueryWrapper);
         if (aLong > 0){
             return 0;
