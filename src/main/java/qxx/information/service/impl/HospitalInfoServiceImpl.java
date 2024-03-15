@@ -4,14 +4,18 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import qxx.information.entity.HospitalInfo;
 import qxx.information.entity.HospitalPackageInfo;
+import qxx.information.entity.SysRoleMenu;
 import qxx.information.mapper.HospitalInfoMapper;
 import qxx.information.mapper.HospitalPackageInfoMapper;
+import qxx.information.mapper.SysRoleMenuMapper;
 import qxx.information.pojo.dto.HospitalInfoInsertDTO;
 import qxx.information.pojo.dto.HospitalInfoQueryDTO;
+import qxx.information.pojo.dto.RoleMenuDTO;
 import qxx.information.pojo.vo.CollectInfoVO;
 import qxx.information.pojo.vo.HospitalInfoVO;
 import qxx.information.service.HospitalInfoService;
@@ -20,6 +24,7 @@ import org.springframework.stereotype.Service;
 import qxx.information.service.HospitalPackageInfoService;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -41,6 +46,8 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
 
     @Autowired
     private HospitalPackageInfoMapper hospitalPackageInfoMapper;
+
+
 
     @Override
     public int insertHospitalInfo(HospitalInfoInsertDTO dto) {
@@ -110,7 +117,7 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
             hospitalPackageInfoMapper.update(hospitalPackageInfoUpdateWrapper);
             return update;
         }
-
-
     }
+
+
 }

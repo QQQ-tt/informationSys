@@ -3,6 +3,7 @@ package qxx.information.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import qxx.information.entity.SysRole;
 import com.baomidou.mybatisplus.extension.service.IService;
+import qxx.information.pojo.dto.RoleMenuDTO;
 import qxx.information.pojo.dto.SysRoleQueryDTO;
 import qxx.information.pojo.vo.SysRoleVO;
 
@@ -23,7 +24,7 @@ public interface SysRoleService extends IService<SysRole> {
      * @date 2024/3/16 0:26
      * @version 3.0
      */
-    Boolean insertRole(SysRole entity);
+    Boolean insertOrUpdateRole(SysRole entity);
 
     /**
      * 查询角色信息
@@ -42,5 +43,7 @@ public interface SysRoleService extends IService<SysRole> {
      * @version 3.0
      */
     int deleteRole(Long id);
+
+    Boolean updateRoleMenu(RoleMenuDTO roleMenuDTO);
 
 }

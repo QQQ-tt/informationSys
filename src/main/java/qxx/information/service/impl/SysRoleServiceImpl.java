@@ -6,12 +6,18 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import qxx.information.entity.SysRole;
+import qxx.information.entity.SysRoleMenu;
 import qxx.information.mapper.SysRoleMapper;
+import qxx.information.mapper.SysRoleMenuMapper;
+import qxx.information.pojo.dto.RoleMenuDTO;
 import qxx.information.pojo.dto.SysRoleQueryDTO;
 import qxx.information.pojo.vo.SysRoleVO;
 import qxx.information.service.SysRoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -27,8 +33,14 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Autowired
     private SysRoleMapper sysRoleMapper;
 
+    @Autowired
+    private SysRoleMenuMapper sysRoleMenuMapper;
+
+    @Autowired
+    private SysRoleMenuServiceImpl service;
+
     @Override
-    public Boolean insertRole(SysRole entity) {
+    public Boolean insertOrUpdateRole(SysRole entity) {
         entity.setStatus(0);
         return saveOrUpdate(entity);
     }
@@ -56,4 +68,33 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             return update;
         }
     }
+
+
+    @Override
+    public Boolean updateRoleMenu(RoleMenuDTO roleMenuDTO) {
+        //拿到角色id
+        Integer roleId = roleMenuDTO.getRoleId();
+        //删除角色具有的权限  使用MP的删除
+        LambdaUpdateWrapper<SysRoleMenu> queryWrapper = new LambdaUpdateWrapper<>();
+        queryWrapper.eq(SysRoleMenu::getRoleId, roleId).set(SysRoleMenu::getDeleteFlag,1);
+        sysRoleMenuMapper.update(queryWrapper);
+
+        List<SysRoleMenu> sysRoleMenuList = new ArrayList<>();
+
+        //拿到菜单权限集合   页面传入的菜单
+        List<Integer> menuIdList = roleMenuDTO.getMenuIdList();
+        //传入的菜单权限结集合为空，抛异常
+        if (menuIdList.isEmpty()){
+            return false;
+        }
+        for (Integer menuId : menuIdList){
+            SysRoleMenu sysRoleMenu = new SysRoleMenu();
+            sysRoleMenu.setMenuId(menuId);
+            sysRoleMenu.setRoleId(roleId);
+            sysRoleMenuList.add(sysRoleMenu);
+        }
+        boolean b = service.saveBatch(sysRoleMenuList);
+        return b;
+    }
+
 }

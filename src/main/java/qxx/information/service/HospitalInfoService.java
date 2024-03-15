@@ -5,6 +5,7 @@ import qxx.information.entity.HospitalInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import qxx.information.pojo.dto.HospitalInfoInsertDTO;
 import qxx.information.pojo.dto.HospitalInfoQueryDTO;
+import qxx.information.pojo.dto.RoleMenuDTO;
 import qxx.information.pojo.vo.HospitalInfoVO;
 
 /**
@@ -53,6 +54,7 @@ public interface HospitalInfoService extends IService<HospitalInfo> {
      * @version 3.0
      */
     int deleteHospitalInfo(Long id);
+
 
 
 }

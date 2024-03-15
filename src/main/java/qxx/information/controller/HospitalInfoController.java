@@ -6,6 +6,7 @@ import qxx.information.config.Result;
 import qxx.information.config.enums.DataEnums;
 import qxx.information.pojo.dto.HospitalInfoInsertDTO;
 import qxx.information.pojo.dto.HospitalInfoQueryDTO;
+import qxx.information.pojo.dto.RoleMenuDTO;
 import qxx.information.service.impl.HospitalInfoServiceImpl;
 
 /**
@@ -45,5 +46,7 @@ public class HospitalInfoController {
         int delete = hospitalInfoService.deleteHospitalInfo(id);
         return delete > 0 ? Result.success() : Result.failed("数据被引用无法删除",316);
     }
+
+
 
 }
