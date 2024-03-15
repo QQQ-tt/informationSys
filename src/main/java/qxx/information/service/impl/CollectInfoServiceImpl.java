@@ -1,9 +1,13 @@
 package qxx.information.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import qxx.information.entity.CollectInfo;
+import qxx.information.entity.HospitalInfo;
+import qxx.information.entity.PackageInfo;
 import qxx.information.mapper.CollectInfoMapper;
 import qxx.information.pojo.dto.CollectInfoQueryDTO;
 import qxx.information.pojo.dto.CollectInfoRecordQueryDTO;
@@ -12,6 +16,7 @@ import qxx.information.pojo.vo.CollectInfoVO;
 import qxx.information.service.CollectInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import qxx.information.service.HospitalInfoService;
 
 import java.util.List;
 
@@ -30,8 +35,16 @@ public class CollectInfoServiceImpl extends ServiceImpl<CollectInfoMapper, Colle
     @Autowired
     private CollectInfoMapper collectInfoMapper;
 
+    @Autowired
+    private HospitalInfoService hospitalInfoService;
+
     @Override
     public Boolean insertCollectInfo(CollectInfo collectInfo) {
+        //添加医院引用次数
+        hospitalInfoService.update(Wrappers.lambdaUpdate(HospitalInfo.class)
+                .eq(HospitalInfo::getId, collectInfo.getHospitalId())
+                .setSql("status = status + 1")
+                );
         return saveOrUpdate(collectInfo);
     }
 

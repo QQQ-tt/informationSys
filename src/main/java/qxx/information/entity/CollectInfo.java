@@ -33,6 +33,13 @@ public class CollectInfo extends BaseEntity {
     private String hospitalName;
 
     /**
+     * 医院id
+     */
+    @TableField("hospital_id")
+    private String hospitalId;
+
+
+    /**
      * 采集人姓名
      */
     @TableField("collect_name")

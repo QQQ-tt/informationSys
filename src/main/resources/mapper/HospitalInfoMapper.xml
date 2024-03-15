@@ -2,4 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="qxx.information.mapper.HospitalInfoMapper">
 
+    <select id="listByPage" resultType="qxx.information.pojo.vo.HospitalInfoVO">
+        SELECT
+            h.id,
+            h.district_name,
+            h.hospital_name,
+            GROUP_CONCAT(p.package_name) AS packageName
+        FROM hospital_info h
+                 LEFT JOIN hospital_package_info hp ON hp.hospital_info_id=h.id
+                 LEFT JOIN package_info p ON p.id = hp.info_package_id
+        WHERE h.delete_flag = 0
+        <if test="dto.districtName != null and dto.districtName != ''">
+            and h.district_name = #{dto.districtName}
+        </if>
+        <if test="dto.hospitalName != null and dto.hospitalName != ''">
+            and h.hospital_name like '${dto.hospitalName}'
+        </if>
+        GROUP BY h.id
+    </select>
 </mapper>

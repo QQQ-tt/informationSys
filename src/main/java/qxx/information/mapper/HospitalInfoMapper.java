@@ -1,8 +1,14 @@
 package qxx.information.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.ibatis.annotations.Param;
 import qxx.information.entity.HospitalInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import qxx.information.pojo.dto.HospitalInfoQueryDTO;
+import qxx.information.pojo.vo.CollectInfoVO;
+import qxx.information.pojo.vo.HospitalInfoVO;
 
 /**
  * <p>
@@ -14,5 +20,8 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface HospitalInfoMapper extends BaseMapper<HospitalInfo> {
+
+    IPage<HospitalInfoVO> listByPage(@Param("page") Page<HospitalInfoVO> page, @Param("dto") HospitalInfoQueryDTO dto);
+
 
 }
