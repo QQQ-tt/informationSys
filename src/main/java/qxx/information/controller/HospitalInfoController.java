@@ -1,13 +1,19 @@
 package qxx.information.controller;
 
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import qxx.information.config.Result;
 import qxx.information.config.enums.DataEnums;
 import qxx.information.pojo.dto.HospitalInfoInsertDTO;
 import qxx.information.pojo.dto.HospitalInfoQueryDTO;
+import qxx.information.pojo.dto.PackageDTO;
 import qxx.information.pojo.dto.RoleMenuDTO;
+import qxx.information.pojo.vo.HospitalInfoVO;
+import qxx.information.pojo.vo.PackageVO;
 import qxx.information.service.impl.HospitalInfoServiceImpl;
+
+import java.util.List;
 
 /**
  * <p>
@@ -47,6 +53,12 @@ public class HospitalInfoController {
         return delete > 0 ? Result.success() : Result.failed("数据被引用无法删除",316);
     }
 
-
+    @GetMapping("/listAll")
+    public Result<List<HospitalInfoVO>> listAll() {
+        val dto = new HospitalInfoQueryDTO();
+        dto.setPageNum(-1);
+        dto.setPageSize(-1);
+        return Result.success(hospitalInfoService.listByPage(dto).getRecords());
+    }
 
 }
