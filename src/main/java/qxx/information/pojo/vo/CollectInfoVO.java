@@ -1,10 +1,17 @@
 package qxx.information.pojo.vo;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import qxx.information.config.excel.CollectInfoStatusConverter;
+import qxx.information.config.excel.LocalDateConverter;
+import qxx.information.config.excel.LocalDateTimeConverter;
+import qxx.information.config.excel.SexConverter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * @Author: 何现成
@@ -16,22 +23,22 @@ public class CollectInfoVO {
     @ExcelProperty(value = "地区")
     private String district;
 
+    @ExcelProperty(value = "医院名称")
+    private String hospitalName;
+
+    @ExcelProperty(value = "姓名")
+    private String collectName;
+
+    @ExcelProperty(value = "性别" ,converter = SexConverter.class)
+    private Integer collectSex;
+
     @ExcelProperty(value = "民族")
     private String collectNation;
 
-    @ExcelProperty(value = "医院名字")
-    private String hospitalName;
-
-    @ExcelProperty(value = "采集人名字")
-    private String collectName;
-
-    @ExcelProperty(value = "采集人性别")
-    private Boolean collectSex;
-
-    @ExcelProperty(value = "采集人出生日期")
+    @ExcelProperty(value = "出生日期")
     private LocalDate collectBirthData;
 
-    @ExcelProperty(value = "采集人省份证号")
+    @ExcelProperty(value = "身份证号码")
     private String collectCard;
 
     @ExcelProperty(value = "检查套餐")
@@ -43,13 +50,14 @@ public class CollectInfoVO {
     @ExcelProperty(value = "采样点")
     private String samplingPoint;
 
-    @ExcelProperty(value = "是否作废 0是否 1是是")
+    @ExcelProperty(value = "作废状态" ,converter = CollectInfoStatusConverter.class)
     private Integer status;
 
     @ExcelProperty(value = "录入人")
     private String createName;
 
-    @ExcelProperty(value = "录入时间")
-    private LocalDate createOn;
+    @ExcelProperty(value = "录入时间" ,converter = LocalDateTimeConverter.class)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm",timezone = "GMT+8")
+    private LocalDateTime createOn;
 
 }

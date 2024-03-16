@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import qxx.information.config.excel.ExcelTransfer;
 import qxx.information.entity.CollectInfo;
 import qxx.information.entity.HospitalInfo;
 import qxx.information.entity.PackageInfo;
@@ -35,6 +37,8 @@ public class CollectInfoServiceImpl extends ServiceImpl<CollectInfoMapper, Colle
     @Autowired
     private CollectInfoMapper collectInfoMapper;
 
+    @Autowired
+    private ExcelTransfer<CollectInfoVO> excelTransferByClass;
 
     @Override
     public Boolean insertCollectInfo(CollectInfo collectInfo) {
@@ -57,4 +61,11 @@ public class CollectInfoServiceImpl extends ServiceImpl<CollectInfoMapper, Colle
         Page<CollectInfoVO> page = new Page<>(dto.getPageNum(), dto.getPageSize());
         return collectInfoMapper.listByCollectInfoPage(page,dto);
     }
+
+    @Override
+    public void exportCollectInfo(HttpServletResponse response,CollectInfoQueryDTO dto) throws ClassNotFoundException {
+        List<CollectInfoVO> collectInfoVOS = collectInfoMapper.exportCollectInfo(dto);
+        excelTransferByClass.exportExcel(response,collectInfoVOS,"医院信息管理","sheet",CollectInfoVO.class);
+    }
+
 }

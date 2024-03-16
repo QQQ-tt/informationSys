@@ -30,4 +30,6 @@ public interface CollectInfoMapper extends BaseMapper<CollectInfo> {
 
     IPage<CollectInfoVO> listByCollectInfoPage(@Param("page") Page<CollectInfoVO> page, @Param("dto") CollectInfoQueryDTO dto);
 
+    List<CollectInfoVO> exportCollectInfo(@Param("dto") CollectInfoQueryDTO dto);
+
 }

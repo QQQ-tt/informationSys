@@ -1,6 +1,7 @@
 package qxx.information.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import qxx.information.config.enums.DataEnums;
@@ -52,6 +53,11 @@ public class CollectInfoController {
     public Result listByCollectInfoPage(@RequestBody CollectInfoQueryDTO dto){
         IPage<CollectInfoVO> collectInfoVOIPage = collectInfoService.listByCollectInfoPage(dto);
         return Result.success(collectInfoVOIPage);
+    }
+
+    @PostMapping("/exportCollectInfo")
+    public void exportCollectInfo(HttpServletResponse response,@RequestBody CollectInfoQueryDTO dto) throws ClassNotFoundException {
+        collectInfoService.exportCollectInfo(response,dto);
     }
 
 }

@@ -1,6 +1,7 @@
 package qxx.information.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import jakarta.servlet.http.HttpServletResponse;
 import qxx.information.entity.CollectInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import qxx.information.pojo.dto.CollectInfoQueryDTO;
@@ -57,5 +58,6 @@ public interface CollectInfoService extends IService<CollectInfo> {
      */
     IPage<CollectInfoVO> listByCollectInfoPage(CollectInfoQueryDTO dto);
 
+    void exportCollectInfo(HttpServletResponse response,CollectInfoQueryDTO dto) throws ClassNotFoundException;
 
 }

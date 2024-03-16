@@ -81,4 +81,44 @@
         </if>
     </select>
 
+    <select id="exportCollectInfo" resultType="qxx.information.pojo.vo.CollectInfoVO">
+        SELECT
+        h.district_name AS district,
+        h.hospital_name,
+        c.collect_name,
+        c.collect_sex,
+        c.collect_nation,
+        c.collect_birth_data,
+        c.collect_card,
+        p.package_name,
+        c.tube_card,
+        sampling_point,
+        c.`status`,
+        u.`name` as createName,
+        c.create_on
+        FROM collect_info c
+        LEFT JOIN package_info p ON c.package_id=p.id AND p.delete_flag = 0
+        LEFT JOIN sys_user u ON c.create_by=u.id AND u.delete_flag = 0
+        LEFT JOIN hospital_info h ON h.id=c.hospital_id and h.delete_flag=0
+        WHERE c.delete_flag = 0
+        <if test="dto.district != null and dto.district != ''">
+            and h.district_name = #{dto.district}
+        </if>
+        <if test="dto.hospitalName != null and dto.hospitalName != ''">
+            and h.hospital_name = #{dto.hospitalName}
+        </if>
+        <if test="dto.collectName != null and dto.collectName != ''">
+            and c.collect_name like '${dto.collectName}'
+        </if>
+        <if test="dto.collectCard != null and dto.collectCard != ''">
+            and c.collect_card = #{dto.collectCard}
+        </if>
+        <if test="dto.status != null">
+            and c.`status` = #{dto.status}
+        </if>
+        <if test="dto.BeginCreateON != null and dto.endCreateON != null">
+            and c.create_on BETWEEN #{dto.BeginCreateON} and #{dto.endCreateON}
+        </if>
+    </select>
+
 </mapper>
