@@ -56,5 +56,14 @@ public interface HospitalInfoService extends IService<HospitalInfo> {
     int deleteHospitalInfo(Long id);
 
 
+    /**
+     * 更新引用状态
+     *
+     * @param id   套餐id
+     * @param flag true 引用数据； false 取消引用
+     * @return 是否成功
+     */
+    boolean updateStatusById(Long id,boolean flag);
+
 
 }

@@ -5,10 +5,12 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import qxx.information.entity.HospitalInfo;
 import qxx.information.entity.HospitalPackageInfo;
+import qxx.information.entity.PackageInfo;
 import qxx.information.entity.SysRoleMenu;
 import qxx.information.mapper.HospitalInfoMapper;
 import qxx.information.mapper.HospitalPackageInfoMapper;
@@ -119,5 +121,11 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
         }
     }
 
-
+    @Override
+    public boolean updateStatusById(Long id, boolean flag) {
+        return update(Wrappers.lambdaUpdate(HospitalInfo.class)
+                .eq(HospitalInfo::getId, id)
+                .setSql(flag, "status = status + 1")
+                .setSql(!flag, "status = status - 1"));
+    }
 }
