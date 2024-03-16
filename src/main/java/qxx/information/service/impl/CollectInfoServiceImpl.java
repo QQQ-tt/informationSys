@@ -35,16 +35,9 @@ public class CollectInfoServiceImpl extends ServiceImpl<CollectInfoMapper, Colle
     @Autowired
     private CollectInfoMapper collectInfoMapper;
 
-    @Autowired
-    private HospitalInfoService hospitalInfoService;
 
     @Override
     public Boolean insertCollectInfo(CollectInfo collectInfo) {
-        //添加医院引用次数
-        hospitalInfoService.update(Wrappers.lambdaUpdate(HospitalInfo.class)
-                .eq(HospitalInfo::getId, collectInfo.getHospitalId())
-                .setSql("status = status + 1")
-                );
         return saveOrUpdate(collectInfo);
     }
 
