@@ -1,8 +1,7 @@
 create table collect_info
 (
     id                 bigint(0)        NOT NULL AUTO_INCREMENT,
-    district           varchar(255)     NOT NULL COMMENT '地区名字',
-    hospital_name      varchar(255)     NOT NULL COMMENT '医院名字',
+    hospital_id        INT              NOT NULL COMMENT '医院id',
     collect_name       varchar(255)     NOT NULL COMMENT '采集人姓名',
     collect_sex        bit              NOT NULL COMMENT '采集人性别：0是女，1是男',
     collect_nation     varchar(255)     NOT NULL COMMENT '采集人民族',
