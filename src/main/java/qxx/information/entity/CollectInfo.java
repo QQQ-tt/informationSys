@@ -20,23 +20,13 @@ import lombok.Setter;
 @TableName("collect_info")
 public class CollectInfo extends BaseEntity {
 
-    /**
-     * 地区名字
-     */
-    @TableField("district")
-    private String district;
 
-    /**
-     * 医院名字
-     */
-    @TableField("hospital_name")
-    private String hospitalName;
 
     /**
      * 医院id
      */
     @TableField("hospital_id")
-    private String hospitalId;
+    private Long hospitalId;
 
 
     /**
