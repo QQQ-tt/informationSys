@@ -8,25 +8,27 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
-import qxx.information.entity.HospitalInfo;
-import qxx.information.entity.HospitalPackageInfo;
-import qxx.information.entity.PackageInfo;
-import qxx.information.entity.SysRoleMenu;
+import qxx.information.entity.*;
+import qxx.information.mapper.CollectInfoMapper;
 import qxx.information.mapper.HospitalInfoMapper;
 import qxx.information.mapper.HospitalPackageInfoMapper;
 import qxx.information.mapper.SysRoleMenuMapper;
 import qxx.information.pojo.dto.HospitalInfoInsertDTO;
 import qxx.information.pojo.dto.HospitalInfoQueryDTO;
+import qxx.information.pojo.dto.HospitalPackageInsertDTO;
 import qxx.information.pojo.dto.RoleMenuDTO;
 import qxx.information.pojo.vo.CollectInfoVO;
 import qxx.information.pojo.vo.HospitalInfoVO;
+import qxx.information.pojo.vo.HospitalPackageInfoVO;
 import qxx.information.service.HospitalInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import qxx.information.service.HospitalPackageInfoService;
+import qxx.information.service.PackageInfoService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -48,6 +50,12 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
 
     @Autowired
     private HospitalPackageInfoMapper hospitalPackageInfoMapper;
+
+    @Autowired
+    private PackageInfoService packageInfoService;
+
+    @Autowired
+    private CollectInfoMapper collectInfoMapper;
 
 
 
@@ -73,8 +81,37 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
 
     }
 
+    public List<HospitalPackageInfoVO> filtrationDelete(List<HospitalPackageInfoVO> all,List<HospitalPackageInsertDTO> updatePackageIdList){
+        List<HospitalPackageInfoVO> collect = all.stream().filter(item -> updatePackageIdList.stream().noneMatch(item2 -> item2.getId() .equals(item.getInfoPackageId()) ))
+                .collect(Collectors.toList());
+        return collect;
+    }
+
+    public List<HospitalPackageInsertDTO> filtrationInsert(List<HospitalPackageInsertDTO> updatePackageIdList,List<HospitalPackageInfoVO> all){
+        List<HospitalPackageInsertDTO> collect = updatePackageIdList.stream().filter(h1 -> all.stream().noneMatch(h2 -> h2.getInfoPackageId().equals(h1.getId())))
+                .collect(Collectors.toList());
+        return collect;
+    }
+
+
     @Override
     public int updateHospitalInfo(HospitalInfoInsertDTO dto) {
+
+        //查询本次原来的医院套餐信息
+        List<HospitalPackageInfoVO> longs = hospitalPackageInfoMapper.listByHospitalInfoId(dto.getId());
+
+        List<HospitalPackageInfoVO> hospitalPackageInfoVOS = filtrationDelete(longs, dto.getPackageIdList());
+        //减少原来的菜单引用次数
+        hospitalPackageInfoVOS.forEach(item->{
+            packageInfoService.updateStatusById(item.getHospitalInfoId(), false);
+        });
+
+        List<HospitalPackageInsertDTO> hospitalPackageInsertDTOS = filtrationInsert(dto.getPackageIdList(), longs);
+        hospitalPackageInsertDTOS.forEach(item2->{
+            packageInfoService.updateStatusById(item2.getId(), true);
+        });
+
+
         HospitalInfo hospitalInfo = new HospitalInfo();
         hospitalInfo.setHospitalName(dto.getHospitalName());
         hospitalInfo.setDistrictName(dto.getDistrictName());

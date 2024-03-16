@@ -14,6 +14,10 @@ import java.util.List;
 @Data
 public class HospitalInfoInsertDTO  {
 
+    private Long hospitalId;
+
+
+    //医院id
     private Long id;
 
     /**
