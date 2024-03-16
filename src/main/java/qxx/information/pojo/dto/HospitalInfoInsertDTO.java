@@ -2,8 +2,7 @@ package qxx.information.pojo.dto;
 
 
 import lombok.Data;
-import qxx.information.config.PageDTO;
-import qxx.information.entity.HospitalInfo;
+
 
 import java.util.List;
 
@@ -14,10 +13,10 @@ import java.util.List;
 @Data
 public class HospitalInfoInsertDTO  {
 
-    private Long hospitalId;
 
 
-    //医院id
+
+
     private Long id;
 
     /**

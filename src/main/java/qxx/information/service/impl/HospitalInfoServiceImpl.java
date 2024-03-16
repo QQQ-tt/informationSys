@@ -125,13 +125,13 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
         ArrayList<HospitalPackageInfo> hospitalPackageInfos = new ArrayList<>();
         dto.getPackageIdList().forEach(item->{
             HospitalPackageInfo hospitalPackageInfo = new HospitalPackageInfo();
-            hospitalPackageInfo.setHospitalInfoId(hospitalInfo.getId());
+            hospitalPackageInfo.setHospitalInfoId(dto.getId());
             hospitalPackageInfo.setInfoPackageId(item.getId());
             hospitalPackageInfo.setOrderNum(item.getOrderNum());
             hospitalPackageInfos.add(hospitalPackageInfo);
         });
         hospitalPackageInfoService.saveBatch(hospitalPackageInfos);
-        return update;
+        return delete;
     }
 
     @Override
