@@ -3,6 +3,9 @@ package qxx.information.mapper;
 import qxx.information.entity.SysMenu;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import qxx.information.pojo.vo.SysMenuVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,5 +17,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface SysMenuMapper extends BaseMapper<SysMenu> {
+
+    List<SysMenuVO> queryMenuInfo();
 
 }
