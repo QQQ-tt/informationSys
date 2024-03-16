@@ -10,8 +10,8 @@
             GROUP_CONCAT(p.package_name) AS packageName,
             h.create_on
         FROM hospital_info h
-                 LEFT JOIN hospital_package_info hp ON hp.hospital_info_id=h.id
-                 LEFT JOIN package_info p ON p.id = hp.info_package_id
+                 LEFT JOIN hospital_package_info hp ON hp.hospital_info_id=h.id and hp.delete_flag = 0
+                 LEFT JOIN package_info p ON p.id = hp.info_package_id and p.delete_flag = 0
         WHERE h.delete_flag = 0
         <if test="dto.districtName != null and dto.districtName != ''">
             and h.district_name = #{dto.districtName}
