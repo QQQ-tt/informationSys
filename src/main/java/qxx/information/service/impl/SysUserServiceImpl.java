@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.val;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import qxx.information.config.BaseEntity;
 import qxx.information.config.CommonMethod;
 import qxx.information.config.enums.DataEnums;
@@ -19,6 +20,7 @@ import qxx.information.pojo.dto.SysUserDTO;
 import qxx.information.pojo.dto.SysUserPasswordDTO;
 import qxx.information.pojo.vo.LoginVO;
 import qxx.information.pojo.vo.SysUserVO;
+import qxx.information.service.SysRoleService;
 import qxx.information.service.SysUserService;
 import qxx.information.utils.JwtUtils;
 
@@ -47,11 +49,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     private final CommonMethod commonMethod;
 
-    public SysUserServiceImpl(SysUserRoleServiceImpl sysUserRoleService, SysUserHospitalServiceImpl sysUserHospitalService, PasswordEncoder passwordEncoder, CommonMethod commonMethod) {
+    private final SysRoleService sysRoleService;
+
+    private final HospitalInfoServiceImpl hospitalInfoService;
+
+    public SysUserServiceImpl(SysUserRoleServiceImpl sysUserRoleService, SysUserHospitalServiceImpl sysUserHospitalService, PasswordEncoder passwordEncoder, CommonMethod commonMethod, SysRoleService sysRoleService, HospitalInfoServiceImpl hospitalInfoService) {
         this.sysUserRoleService = sysUserRoleService;
         this.sysUserHospitalService = sysUserHospitalService;
         this.passwordEncoder = passwordEncoder;
         this.commonMethod = commonMethod;
+        this.sysRoleService = sysRoleService;
+        this.hospitalInfoService = hospitalInfoService;
     }
 
     @Override
@@ -60,13 +68,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean saveOrUpdateSysUser(SysUser dto) {
         Long id = dto.getId();
         boolean flag = id != null;
         SysUser user = getOne(Wrappers.lambdaQuery(SysUser.class)
                 .eq(SysUser::getUserId, dto.getUserId())
-                .ne(flag,
-                        BaseEntity::getId, id));
+                .ne(flag, BaseEntity::getId, id));
         if (Objects.isNull(user)) {
             if (!flag) {
                 String password = dto.getPassword();
@@ -75,8 +83,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             }
             boolean savedOrUpdate = saveOrUpdate(dto);
             if (flag) {
+                val list = sysUserRoleService.list(Wrappers.lambdaQuery(SysUserRole.class)
+                        .eq(SysUserRole::getUserId,
+                                dto.getId()));
+                list.forEach(s -> sysRoleService.updateStatusById(s.getRoleId(), false));
                 sysUserRoleService.remove(Wrappers.lambdaQuery(SysUserRole.class)
                         .eq(SysUserRole::getUserId, dto.getId()));
+                val hospitalList = sysUserHospitalService.list(Wrappers.lambdaQuery(SysUserHospital.class)
+                        .eq(SysUserHospital::getUserId
+                                , dto.getId()));
+                hospitalList.forEach(hospital -> hospitalInfoService.updateStatusById(hospital.getHospitalId(), false));
                 sysUserHospitalService.remove(Wrappers.lambdaQuery(SysUserHospital.class)
                         .eq(SysUserHospital::getUserId, dto.getId()));
             }
@@ -86,17 +102,22 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                     .orElse(new ArrayList<>());
             ArrayList<SysUserHospital> sysUserHospitals = new ArrayList<>();
             ArrayList<SysUserRole> sysUserRoles = new ArrayList<>();
+            id = dto.getId() == null ? id : dto.getId();
+            Long finalId = id;
             roles.forEach(role -> {
                 SysUserRole sysUserRole = new SysUserRole();
-                sysUserRole.setUserId(id);
+                sysUserRole.setUserId(finalId);
                 sysUserRole.setRoleId(Long.parseLong(role));
                 sysUserRoles.add(sysUserRole);
+                sysRoleService.updateStatusById(Long.parseLong(role), true);
             });
+            Long finalId1 = id;
             hospital.forEach(hospitalId -> {
                 SysUserHospital userHospital = new SysUserHospital();
-                userHospital.setUserId(id);
+                userHospital.setUserId(finalId1);
                 userHospital.setHospitalId(Long.parseLong(hospitalId));
                 sysUserHospitals.add(userHospital);
+                hospitalInfoService.updateStatusById(Long.parseLong(hospitalId), true);
             });
             sysUserRoleService.saveBatch(sysUserRoles);
             sysUserHospitalService.saveBatch(sysUserHospitals);

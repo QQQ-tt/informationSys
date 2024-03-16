@@ -2,9 +2,9 @@ package qxx.information.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import qxx.information.config.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
+import qxx.information.config.BaseEntity;
 
 /**
  * <p>
@@ -36,4 +36,10 @@ public class SysUserHospital extends BaseEntity {
      */
     @TableField(exist = false)
     private String hospitalName;
+
+    /**
+     * 地区
+     */
+    @TableField(exist = false)
+    private String districtName;
 }
