@@ -56,14 +56,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Override
     public int deleteRole(Long id) {
-
         LambdaQueryWrapper<SysRole> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(SysRole::getId, id).gt(SysRole::getStatus, 1);
+        queryWrapper.eq(SysRole::getId, id).gt(SysRole::getStatus, 0);
         Long aLong = sysRoleMapper.selectCount(queryWrapper);
         if (aLong>0){
             return 0;
         }else {
-
             LambdaUpdateWrapper<SysRole> updateWrapper = new LambdaUpdateWrapper<>();
             updateWrapper.eq(SysRole::getId, id).set(SysRole::getDeleteFlag, 1);
             int update = sysRoleMapper.update(updateWrapper);
