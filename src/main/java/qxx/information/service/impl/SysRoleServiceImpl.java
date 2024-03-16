@@ -3,8 +3,10 @@ package qxx.information.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import qxx.information.entity.PackageInfo;
 import qxx.information.entity.SysRole;
 import qxx.information.entity.SysRoleMenu;
 import qxx.information.mapper.SysRoleMapper;
@@ -95,6 +97,14 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         }
         boolean b = service.saveBatch(sysRoleMenuList);
         return b;
+    }
+
+    @Override
+    public boolean updateStatusById(Long id, boolean flag) {
+        return update(Wrappers.lambdaUpdate(SysRole.class)
+                .eq(SysRole::getId, id)
+                .setSql(flag, "status = status + 1")
+                .setSql(!flag, "status = status - 1"));
     }
 
 }

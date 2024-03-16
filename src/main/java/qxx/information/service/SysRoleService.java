@@ -44,6 +44,22 @@ public interface SysRoleService extends IService<SysRole> {
      */
     int deleteRole(Long id);
 
+    /**
+     * 编辑菜单信息
+     * @param roleMenuDTO 菜单信息id
+     * @return 是否成功
+     * @date 2024/3/16 10:08
+     * @version 3.0
+     */
     Boolean updateRoleMenu(RoleMenuDTO roleMenuDTO);
+
+    /**
+     * 更新引用状态
+     *
+     * @param id   套餐id
+     * @param flag true 引用数据； false 取消引用
+     * @return 是否成功
+     */
+    boolean updateStatusById(Long id,boolean flag);
 
 }
