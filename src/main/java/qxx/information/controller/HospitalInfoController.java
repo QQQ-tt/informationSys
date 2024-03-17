@@ -8,10 +8,7 @@ import qxx.information.config.enums.DataEnums;
 import qxx.information.entity.HospitalInfo;
 import qxx.information.pojo.dto.HospitalInfoInsertDTO;
 import qxx.information.pojo.dto.HospitalInfoQueryDTO;
-import qxx.information.pojo.dto.PackageDTO;
-import qxx.information.pojo.dto.RoleMenuDTO;
 import qxx.information.pojo.vo.HospitalInfoVO;
-import qxx.information.pojo.vo.PackageVO;
 import qxx.information.service.impl.HospitalInfoServiceImpl;
 
 import java.util.List;
