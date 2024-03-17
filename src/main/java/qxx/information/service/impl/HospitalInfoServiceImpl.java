@@ -165,4 +165,12 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
                 .setSql(flag, "status = status + 1")
                 .setSql(!flag, "status = status - 1"));
     }
+
+    @Override
+    public List<HospitalInfo> queryDistrictGetHospitalInfo(String districtName) {
+        LambdaQueryWrapper<HospitalInfo> hospitalInfoLambdaQueryWrapper = new LambdaQueryWrapper<>();
+         hospitalInfoLambdaQueryWrapper.eq(HospitalInfo::getDistrictName, districtName).eq(HospitalInfo::getDeleteFlag, 0);
+        List<HospitalInfo> hospitalInfos = hospitalInfoMapper.selectList(hospitalInfoLambdaQueryWrapper);
+        return hospitalInfos;
+    }
 }

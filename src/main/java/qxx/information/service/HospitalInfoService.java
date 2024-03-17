@@ -8,6 +8,8 @@ import qxx.information.pojo.dto.HospitalInfoQueryDTO;
 import qxx.information.pojo.dto.RoleMenuDTO;
 import qxx.information.pojo.vo.HospitalInfoVO;
 
+import java.util.List;
+
 /**
  * <p>
  * 医院信息管理表 服务类
@@ -64,6 +66,15 @@ public interface HospitalInfoService extends IService<HospitalInfo> {
      * @return 是否成功
      */
     boolean updateStatusById(Long id,boolean flag);
+
+    /**
+     * 根据地区名字获取医院信息
+     * @param districtName 地区名字
+     * @return 医院信息
+     * @date 2024/3/17 21:37
+     * @version 3.0
+     */
+    List<HospitalInfo> queryDistrictGetHospitalInfo(String districtName);
 
 
 }
