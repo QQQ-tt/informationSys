@@ -36,7 +36,7 @@ public class CommonMethod {
         response.setCharacterEncoding("utf-8");
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         //设置响应状态码
-        response.setStatus(HttpServletResponse.SC_OK);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         //输入响应内容
         PrintWriter writer = response.getWriter();
         String s = JSONArray.toJSON(Result.failed(dataEnums)).toString();
