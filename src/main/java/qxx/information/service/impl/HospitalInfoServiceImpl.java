@@ -74,7 +74,6 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
         });
         hospitalPackageInfoService.saveBatch(hospitalPackageInfos);
         return insert;
-
     }
 
     public List<HospitalPackageInfoVO> filtrationDelete(List<HospitalPackageInfoVO> all,List<HospitalPackageInsertDTO> updatePackageIdList){

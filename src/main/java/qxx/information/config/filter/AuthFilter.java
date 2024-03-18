@@ -24,7 +24,7 @@ import java.util.Objects;
  */
 
 @Slf4j
-//@WebFilter("/*")
+@WebFilter("/*")
 public class AuthFilter extends OncePerRequestFilter {
 
     @Resource
