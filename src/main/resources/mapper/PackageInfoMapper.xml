@@ -3,7 +3,7 @@
 <mapper namespace="qxx.information.mapper.PackageInfoMapper">
 
     <select id="selectPageNew" resultType="qxx.information.pojo.vo.PackageVO">
-        with info as (select p.id, package_name as name, s.name as create_by, p.create_on
+        with info as (select p.id, package_name, s.name as create_by, p.create_on, p.delete_flag
                       from package_info p
                                left join sys_user s on p.create_by = s.user_id)
         select *

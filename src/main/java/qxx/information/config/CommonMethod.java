@@ -2,6 +2,7 @@ package qxx.information.config;
 
 import com.alibaba.fastjson.JSONArray;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import qxx.information.config.enums.DataEnums;
@@ -13,6 +14,7 @@ import java.io.PrintWriter;
  * @author qtx
  * @since 2022/11/2
  */
+@Slf4j
 @Component
 public class CommonMethod {
 
@@ -72,6 +74,7 @@ public class CommonMethod {
     }
 
     public void clear(){
+        log.info("清除线程变量");
         sysUserId.remove();
         ip.remove();
         token.remove();

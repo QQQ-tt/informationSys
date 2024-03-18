@@ -24,8 +24,7 @@ import java.util.Objects;
  */
 
 @Slf4j
-@Order(1)
-@WebFilter("/*")
+//@WebFilter("/*")
 public class AuthFilter extends OncePerRequestFilter {
 
     @Resource
@@ -34,6 +33,7 @@ public class AuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
+        log.info("请求路径：" + request.getRequestURI());
         String uri = request.getRequestURI();
         String userId = request.getHeader("user");
         String token = request.getHeader("token");

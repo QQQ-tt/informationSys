@@ -5,7 +5,6 @@ import qxx.information.entity.HospitalInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import qxx.information.pojo.dto.HospitalInfoInsertDTO;
 import qxx.information.pojo.dto.HospitalInfoQueryDTO;
-import qxx.information.pojo.dto.RoleMenuDTO;
 import qxx.information.pojo.vo.HospitalInfoVO;
 
 import java.util.List;
@@ -74,7 +73,7 @@ public interface HospitalInfoService extends IService<HospitalInfo> {
      * @date 2024/3/17 21:37
      * @version 3.0
      */
-    List<HospitalInfo> queryDistrictGetHospitalInfo(String districtName);
+    List<HospitalInfo> queryDistrictGetHospitalInfo(HospitalInfoQueryDTO districtName);
 
 
 }

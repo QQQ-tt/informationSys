@@ -3,6 +3,8 @@ package qxx.information.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.stereotype.Service;
 import qxx.information.config.BaseEntity;
 import qxx.information.config.enums.DataEnums;
 import qxx.information.config.exception.DataException;
@@ -11,8 +13,6 @@ import qxx.information.mapper.PackageInfoMapper;
 import qxx.information.pojo.dto.PackageDTO;
 import qxx.information.pojo.vo.PackageVO;
 import qxx.information.service.PackageInfoService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -32,8 +32,9 @@ public class PackageInfoServiceImpl extends ServiceImpl<PackageInfoMapper, Packa
     public Page<PackageVO> listPackagePage(PackageDTO dto) {
         return baseMapper.selectPageNew(dto.getPage(),
                 Wrappers.lambdaQuery(PackageInfo.class)
-                        .eq(StringUtils.isNotBlank(dto.getName()),
-                                PackageInfo::getPackageName, dto.getName()));
+                        .eq(BaseEntity::getDeleteFlag, false)
+                        .like(StringUtils.isNotBlank(dto.getPackageName()),
+                                PackageInfo::getPackageName, dto.getPackageName()));
     }
 
     @Override
