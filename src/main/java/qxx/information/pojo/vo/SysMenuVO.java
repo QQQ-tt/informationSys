@@ -17,6 +17,8 @@ public class SysMenuVO {
 
     private String path;
 
+    private String icon;
+
     private Integer parentId;
 
 }
