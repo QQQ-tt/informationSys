@@ -24,7 +24,6 @@ import java.util.Objects;
  */
 
 @Slf4j
-@Order(1)
 @WebFilter("/*")
 public class AuthFilter extends OncePerRequestFilter {
 
@@ -34,6 +33,7 @@ public class AuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
+        log.info("请求路径：" + request.getRequestURI());
         String uri = request.getRequestURI();
         String userId = request.getHeader("user");
         String token = request.getHeader("token");
@@ -43,17 +43,20 @@ public class AuthFilter extends OncePerRequestFilter {
             return;
         }
         if (userId == null || token == null) {
-            commonMethod.failed(response, DataEnums.USER_NOT_LOGIN);
+            commonMethod.failed(request, response, DataEnums.USER_NOT_LOGIN);
+            filterChain.doFilter(request, response);
             return;
         }
         boolean equals = Objects.equals(JwtUtils.getBodyFromToken(token), userId);
         if (!equals) {
-            commonMethod.failed(response, DataEnums.USER_NOT_LOGIN);
+            commonMethod.failed(request, response, DataEnums.USER_NOT_LOGIN);
+            filterChain.doFilter(request, response);
             return;
         }
         boolean tokenExpired = JwtUtils.isTokenExpired(token);
         if (tokenExpired) {
-            commonMethod.failed(response, DataEnums.TOKEN_LOGIN_EXPIRED);
+            commonMethod.failed(request, response, DataEnums.TOKEN_LOGIN_EXPIRED);
+            filterChain.doFilter(request, response);
             return;
         }
         commonMethod.setSysUserId(userId);

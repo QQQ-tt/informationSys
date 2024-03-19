@@ -14,7 +14,7 @@ public class PackageVO {
 
     private Long id;
 
-    private String name;
+    private String packageName;
 
     private String createBy;
 

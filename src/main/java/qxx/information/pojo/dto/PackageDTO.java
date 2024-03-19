@@ -11,5 +11,5 @@ import qxx.information.entity.PackageInfo;
 @Data
 public class PackageDTO extends PageDTO<PackageInfo> {
 
-    private String name;
+    private String packageName;
 }

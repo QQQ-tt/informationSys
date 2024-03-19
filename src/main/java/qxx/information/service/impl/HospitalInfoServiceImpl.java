@@ -2,27 +2,23 @@ package qxx.information.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import qxx.information.entity.*;
+import org.springframework.stereotype.Service;
+import qxx.information.entity.HospitalInfo;
+import qxx.information.entity.HospitalPackageInfo;
 import qxx.information.mapper.CollectInfoMapper;
 import qxx.information.mapper.HospitalInfoMapper;
 import qxx.information.mapper.HospitalPackageInfoMapper;
-import qxx.information.mapper.SysRoleMenuMapper;
 import qxx.information.pojo.dto.HospitalInfoInsertDTO;
 import qxx.information.pojo.dto.HospitalInfoQueryDTO;
 import qxx.information.pojo.dto.HospitalPackageInsertDTO;
-import qxx.information.pojo.dto.RoleMenuDTO;
-import qxx.information.pojo.vo.CollectInfoVO;
 import qxx.information.pojo.vo.HospitalInfoVO;
 import qxx.information.pojo.vo.HospitalPackageInfoVO;
 import qxx.information.service.HospitalInfoService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.stereotype.Service;
 import qxx.information.service.HospitalPackageInfoService;
 import qxx.information.service.PackageInfoService;
 
@@ -78,7 +74,6 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
         });
         hospitalPackageInfoService.saveBatch(hospitalPackageInfos);
         return insert;
-
     }
 
     public List<HospitalPackageInfoVO> filtrationDelete(List<HospitalPackageInfoVO> all,List<HospitalPackageInsertDTO> updatePackageIdList){
@@ -167,9 +162,12 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
     }
 
     @Override
-    public List<HospitalInfo> queryDistrictGetHospitalInfo(String districtName) {
+    public List<HospitalInfo> queryDistrictGetHospitalInfo(HospitalInfoQueryDTO districtName) {
         LambdaQueryWrapper<HospitalInfo> hospitalInfoLambdaQueryWrapper = new LambdaQueryWrapper<>();
-         hospitalInfoLambdaQueryWrapper.eq(HospitalInfo::getDistrictName, districtName).eq(HospitalInfo::getDeleteFlag, 0);
+        hospitalInfoLambdaQueryWrapper.in(districtName.getDistrictNames() != null && !districtName.getDistrictNames()
+                                .isEmpty(), HospitalInfo::getDistrictName,
+                        districtName.getDistrictNames())
+                .eq(HospitalInfo::getDeleteFlag, 0);
         List<HospitalInfo> hospitalInfos = hospitalInfoMapper.selectList(hospitalInfoLambdaQueryWrapper);
         return hospitalInfos;
     }
