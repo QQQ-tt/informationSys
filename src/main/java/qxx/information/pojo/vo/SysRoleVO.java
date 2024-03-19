@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @Author: 何现成
@@ -27,5 +28,7 @@ public class SysRoleVO {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm",timezone = "GMT+8")
     private LocalDateTime createOn;
+
+    List<SysMenuVO> sysMenuVOS;
 
 }
