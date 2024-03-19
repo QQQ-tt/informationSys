@@ -42,4 +42,10 @@ public class SysMenu extends BaseEntity {
      */
     @TableField("parent_id")
     private Integer parentId;
+
+    /**
+     * 图标
+     */
+    @TableField("icon")
+    private String icon;
 }

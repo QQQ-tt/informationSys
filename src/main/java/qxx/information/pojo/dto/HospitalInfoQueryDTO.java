@@ -1,6 +1,5 @@
 package qxx.information.pojo.dto;
 
-import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.Data;
 import qxx.information.config.PageDTO;
 import qxx.information.entity.HospitalInfo;
