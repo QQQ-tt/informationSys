@@ -5,7 +5,7 @@
     <select id="getByRoleIdMenuInfo" resultType="qxx.information.pojo.vo.SysMenuVO">
         select
             m.id,
-            m.enu_name,
+            m.menu_name,
             m.menu_code,
             m.`path`,
             m.parent_id

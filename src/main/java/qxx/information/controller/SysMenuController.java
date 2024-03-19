@@ -31,4 +31,10 @@ public class SysMenuController {
         return Result.success(sysMenuVOS);
     }
 
+    @GetMapping("/getByRoleIdMenuInfo")
+    public Result getByRoleIdMenuInfo(Long roleId){
+        List<SysMenuVO> byRoleIdMenuInfo = sysMenuService.getByRoleIdMenuInfo(roleId);
+        return Result.success(byRoleIdMenuInfo);
+    }
+
 }
