@@ -43,17 +43,20 @@ public class AuthFilter extends OncePerRequestFilter {
             return;
         }
         if (userId == null || token == null) {
-            commonMethod.failed(response, DataEnums.USER_NOT_LOGIN);
+            commonMethod.failed(request, response, DataEnums.USER_NOT_LOGIN);
+            filterChain.doFilter(request, response);
             return;
         }
         boolean equals = Objects.equals(JwtUtils.getBodyFromToken(token), userId);
         if (!equals) {
-            commonMethod.failed(response, DataEnums.USER_NOT_LOGIN);
+            commonMethod.failed(request, response, DataEnums.USER_NOT_LOGIN);
+            filterChain.doFilter(request, response);
             return;
         }
         boolean tokenExpired = JwtUtils.isTokenExpired(token);
         if (tokenExpired) {
-            commonMethod.failed(response, DataEnums.TOKEN_LOGIN_EXPIRED);
+            commonMethod.failed(request, response, DataEnums.TOKEN_LOGIN_EXPIRED);
+            filterChain.doFilter(request, response);
             return;
         }
         commonMethod.setSysUserId(userId);
