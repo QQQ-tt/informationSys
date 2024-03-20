@@ -13,6 +13,7 @@
         from sys_role_menu s
         left join sys_menu m on s.menu_id=m.id
         where s.role_id=#{id}
+        and s.delete_flag = 0
     </select>
 
 </mapper>
