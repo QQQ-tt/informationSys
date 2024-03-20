@@ -35,4 +35,11 @@ public interface SysMenuService extends IService<SysMenu> {
      */
     List<SysMenuVO> getByRoleIdMenuInfo(Long id);
 
+    /**
+     * 根据用户id查询菜单
+     * @param id
+     * @return
+     */
+    List<SysMenuVO> listByUserId(String id);
+
 }

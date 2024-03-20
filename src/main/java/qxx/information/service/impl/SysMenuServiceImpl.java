@@ -37,4 +37,9 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     public List<SysMenuVO> getByRoleIdMenuInfo(Long id) {
         return sysRoleMenuMapper.getByRoleIdMenuInfo(id);
     }
+
+    @Override
+    public List<SysMenuVO> listByUserId(String id) {
+        return baseMapper.selectByUserId(id);
+    }
 }

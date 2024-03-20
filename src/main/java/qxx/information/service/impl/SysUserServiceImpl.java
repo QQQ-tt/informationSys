@@ -20,6 +20,7 @@ import qxx.information.pojo.dto.SysUserDTO;
 import qxx.information.pojo.dto.SysUserPasswordDTO;
 import qxx.information.pojo.vo.LoginVO;
 import qxx.information.pojo.vo.SysUserVO;
+import qxx.information.service.SysMenuService;
 import qxx.information.service.SysRoleService;
 import qxx.information.service.SysUserService;
 import qxx.information.utils.JwtUtils;
@@ -53,13 +54,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     private final HospitalInfoServiceImpl hospitalInfoService;
 
-    public SysUserServiceImpl(SysUserRoleServiceImpl sysUserRoleService, SysUserHospitalServiceImpl sysUserHospitalService, PasswordEncoder passwordEncoder, CommonMethod commonMethod, SysRoleService sysRoleService, HospitalInfoServiceImpl hospitalInfoService) {
+    private final SysMenuService sysMenuService;
+
+    public SysUserServiceImpl(SysUserRoleServiceImpl sysUserRoleService, SysUserHospitalServiceImpl sysUserHospitalService, PasswordEncoder passwordEncoder, CommonMethod commonMethod, SysRoleService sysRoleService, HospitalInfoServiceImpl hospitalInfoService, SysMenuService sysMenuService) {
         this.sysUserRoleService = sysUserRoleService;
         this.sysUserHospitalService = sysUserHospitalService;
         this.passwordEncoder = passwordEncoder;
         this.commonMethod = commonMethod;
         this.sysRoleService = sysRoleService;
         this.hospitalInfoService = hospitalInfoService;
+        this.sysMenuService = sysMenuService;
     }
 
     @Override
@@ -153,7 +157,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 .eq(SysUser::getUserId, dto.getUserId()));
         if (Objects.nonNull(user)) {
             if (passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
-                List<SysUserHospital> sysUserHospitals = sysUserHospitalService.listSysUserHospital(user.getId());
+                val sysUserHospitals = sysUserHospitalService.listSysUserHospital(user.getId());
+                val menus = sysMenuService.listByUserId(user.getUserId());
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("id", user.getId());
                 map.put("userId", user.getUserId());
@@ -164,6 +169,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                         .userId(user.getUserId())
                         .name(user.getName())
                         .hospital(sysUserHospitals)
+                        .menus(menus)
                         .token(JwtUtils.generateToken(user.getUserId(), map))
                         .build();
             }

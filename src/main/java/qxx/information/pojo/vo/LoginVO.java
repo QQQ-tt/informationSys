@@ -21,4 +21,6 @@ public class LoginVO {
     private String token;
 
     private List<SysUserHospital> hospital;
+
+    private List<SysMenuVO> menus;
 }
