@@ -32,30 +32,31 @@ public class SysRegionServiceImpl extends ServiceImpl<SysRegionMapper, SysRegion
 
     @Override
     public List<SysRegion> queryByIdRegion(Long id) {
-        List<SysRegion> sysRegions = sysRegionMapper.queryByIdRegion(1);
-        List<SysRegion> two = sysRegionMapper.queryByIdRegion(2);
-        List<SysRegion> three = sysRegionMapper.queryByIdRegion(3);
-        for (SysRegion t:two){
-            ArrayList<SysRegion> sysRegions2 = new ArrayList<>();
-            for (SysRegion sysRegion:three){
-                if (t.getId().equals(sysRegion.getParentId().longValue())){
-                    sysRegions2.add(sysRegion);
-                }
-            }
-            t.setChildren(sysRegions2);
-        }
-        for (SysRegion one:sysRegions){
-            ArrayList<SysRegion> sysRegions1 = new ArrayList<>();
-            for (SysRegion t:two){
-                if (one.getId().equals(t.getParentId().longValue())){
-                    sysRegions1.add(t);
-                }
-            }
-            one.setChildren(sysRegions1);
-        }
-        return sysRegions;
+        return buildTree(sysRegionMapper.queryByIdRegion());
     }
 
 
+    public static List<SysRegion> buildTree(List<SysRegion> menus) {
+        List<SysRegion> trees = new ArrayList<>();
+        for (SysRegion menu : menus) {
+            if (menu.getParentId() == 1) {
+                menu.setChildren(getChildren(menu.getId(), menus));
+                trees.add(menu);
+            }
+        }
+        return trees;
+    }
+
+
+    public static List<SysRegion> getChildren(Long id, List<SysRegion> menus) {
+        List<SysRegion> children = new ArrayList<>();
+        for (SysRegion menu : menus) {
+            if (menu.getParentId().equals(id.intValue())) {
+                menu.setChildren(getChildren(menu.getId(), menus));
+                children.add(menu);
+            }
+        }
+        return children;
+    }
 
 }

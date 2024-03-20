@@ -9,7 +9,7 @@
             name,
             parent_id
         from sys_region
-        where ctype = #{id}
     </select>
+
 
 </mapper>
