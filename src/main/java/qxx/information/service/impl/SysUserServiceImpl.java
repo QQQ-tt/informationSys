@@ -201,7 +201,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 String password = dto.getPassword();
                 String encode = passwordEncoder.encode(password);
                 return update(Wrappers.lambdaUpdate(SysUser.class)
-                        .eq(BaseEntity::getId, dto.getId())
+                        .eq(BaseEntity::getId, dto.getUserId())
                         .set(SysUser::getPassword, encode));
             }
             throw new DataException(DataEnums.WRONG_PASSWORD);
