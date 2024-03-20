@@ -13,10 +13,15 @@
         where delete_flag = 0
     </select>
     <select id="selectByUserId" resultType="qxx.information.pojo.vo.SysMenuVO">
-        select sys_menu.menu_name,sys_menu.icon,sys_menu.`path`,sys_menu.parent_id
-        from sys_user left join sys_user_role on sys_user.user_id=sys_user_role.user_id
-        left join sys_role_menu on sys_user_role.role_id=sys_role_menu.role_id
-        left join sys_menu on sys_role_menu.menu_id=sys_menu.id
-        where sys_user.id=#{id}
+        select sys_menu.menu_name, sys_menu.icon, sys_menu.`path`, sys_menu.parent_id
+        from sys_user
+                 left join sys_user_role on sys_user.id = sys_user_role.user_id and
+                                            sys_user.delete_flag = sys_user_role.delete_flag
+                 left join sys_role_menu on sys_user_role.role_id = sys_role_menu.role_id and
+                                            sys_user_role.delete_flag = sys_role_menu.delete_flag
+                 left join sys_menu
+                           on sys_role_menu.menu_id = sys_menu.id and sys_role_menu.delete_flag = sys_menu.delete_flag
+        where sys_user.delete_flag = '0'
+          and sys_user.id = #{id}
     </select>
 </mapper>

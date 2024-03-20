@@ -20,6 +20,6 @@ public interface SysMenuMapper extends BaseMapper<SysMenu> {
 
     List<SysMenuVO> queryMenuInfo();
 
-    List<SysMenuVO> selectByUserId(String id);
+    List<SysMenuVO> selectByUserId(Long id);
 
 }

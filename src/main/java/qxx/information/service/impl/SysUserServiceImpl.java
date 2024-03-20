@@ -158,7 +158,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (Objects.nonNull(user)) {
             if (passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
                 val sysUserHospitals = sysUserHospitalService.listSysUserHospital(user.getId());
-                val menus = sysMenuService.listByUserId(user.getUserId());
+                val menus = sysMenuService.listByUserId(user.getId());
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("id", user.getId());
                 map.put("userId", user.getUserId());

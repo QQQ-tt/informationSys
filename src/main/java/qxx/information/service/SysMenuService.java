@@ -40,6 +40,6 @@ public interface SysMenuService extends IService<SysMenu> {
      * @param id
      * @return
      */
-    List<SysMenuVO> listByUserId(String id);
+    List<SysMenuVO> listByUserId(Long id);
 
 }
