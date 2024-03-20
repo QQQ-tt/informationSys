@@ -24,6 +24,6 @@ import java.util.List;
 public interface SysRegionMapper extends BaseMapper<SysRegion> {
 
 
-    List<SysRegion> queryByIdRegion(Long id);
+    List<SysRegion> queryByIdRegion(int id);
 
 }

@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @Author: 何现成
  * @Date: 2024/3/16 22:24
@@ -18,5 +20,8 @@ public class SysRegion {
     private String name;
 
     @TableField("parent_id")
-    private String parentId;
+    private Integer parentId;
+
+    private List<SysRegion> children;
+
 }
