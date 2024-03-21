@@ -3,6 +3,7 @@ package qxx.information.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -63,16 +64,18 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
         hospitalInfo.setDistrictName(dto.getDistrictName());
         hospitalInfo.setStatus(0);
         int insert = hospitalInfoMapper.insert(hospitalInfo);
-        ArrayList<HospitalPackageInfo> hospitalPackageInfos = new ArrayList<>();
-        //添加套餐中间表
-        dto.getPackageIdList().forEach(item->{
-            HospitalPackageInfo hospitalPackageInfo = new HospitalPackageInfo();
-            hospitalPackageInfo.setHospitalInfoId(hospitalInfo.getId());
-            hospitalPackageInfo.setInfoPackageId(item.getId());
-            hospitalPackageInfo.setOrderNum(item.getOrderNum());
-            hospitalPackageInfos.add(hospitalPackageInfo);
-        });
-        hospitalPackageInfoService.saveBatch(hospitalPackageInfos);
+        if(CollectionUtils.isNotEmpty(dto.getPackageIdList())) {
+            ArrayList<HospitalPackageInfo> hospitalPackageInfos = new ArrayList<>();
+            //添加套餐中间表
+            dto.getPackageIdList().forEach(item -> {
+                HospitalPackageInfo hospitalPackageInfo = new HospitalPackageInfo();
+                hospitalPackageInfo.setHospitalInfoId(hospitalInfo.getId());
+                hospitalPackageInfo.setInfoPackageId(item.getId());
+                hospitalPackageInfo.setOrderNum(item.getOrderNum());
+                hospitalPackageInfos.add(hospitalPackageInfo);
+            });
+            hospitalPackageInfoService.saveBatch(hospitalPackageInfos);
+        }
         return insert;
     }
 
