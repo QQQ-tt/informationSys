@@ -9,6 +9,7 @@ import qxx.information.entity.HospitalInfo;
 import qxx.information.pojo.dto.HospitalInfoInsertDTO;
 import qxx.information.pojo.dto.HospitalInfoQueryDTO;
 import qxx.information.pojo.vo.HospitalInfoVO;
+import qxx.information.service.HospitalInfoService;
 import qxx.information.service.impl.HospitalInfoServiceImpl;
 
 import java.util.List;
@@ -26,7 +27,7 @@ import java.util.List;
 public class HospitalInfoController {
 
     @Autowired
-    private HospitalInfoServiceImpl hospitalInfoService;
+    private HospitalInfoService hospitalInfoService;
 
     @PostMapping("/insertHospitalInfo")
     public Result insertHospitalInfo(@RequestBody HospitalInfoInsertDTO dto){

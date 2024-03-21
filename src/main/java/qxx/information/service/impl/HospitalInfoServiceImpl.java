@@ -62,6 +62,7 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
         HospitalInfo hospitalInfo = new HospitalInfo();
         hospitalInfo.setHospitalName(dto.getHospitalName());
         hospitalInfo.setDistrictName(dto.getDistrictName());
+        hospitalInfo.setRegionId(dto.getRegionId());
         hospitalInfo.setStatus(0);
         int insert = hospitalInfoMapper.insert(hospitalInfo);
         if(CollectionUtils.isNotEmpty(dto.getPackageIdList())) {
@@ -113,6 +114,7 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
         HospitalInfo hospitalInfo = new HospitalInfo();
         hospitalInfo.setHospitalName(dto.getHospitalName());
         hospitalInfo.setDistrictName(dto.getDistrictName());
+        hospitalInfo.setRegionId(dto.getRegionId());
         int update = hospitalInfoMapper.updateById(hospitalInfo);
         //删除原来的套餐关联表，根据医院信息id删除
         LambdaUpdateWrapper<HospitalPackageInfo> hospitalPackageInfoUpdateWrapper = new LambdaUpdateWrapper<>();

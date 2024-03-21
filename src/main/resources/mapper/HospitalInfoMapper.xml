@@ -8,6 +8,7 @@
             h.district_name,
             h.hospital_name,
             GROUP_CONCAT(p.package_name) AS packageName,
+            h.region_id,
             h.create_on
         FROM hospital_info h
                  LEFT JOIN hospital_package_info hp ON hp.hospital_info_id=h.id and hp.delete_flag = 0

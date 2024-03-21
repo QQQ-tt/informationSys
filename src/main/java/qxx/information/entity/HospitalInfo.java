@@ -20,6 +20,11 @@ import lombok.Setter;
 public class HospitalInfo extends BaseEntity {
 
     /**
+     * 地区id
+     */
+    private String regionId;
+
+    /**
      * 地区
      */
     @TableField("district_name")

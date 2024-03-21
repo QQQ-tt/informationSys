@@ -17,6 +17,11 @@ public class HospitalInfoVO {
     @ExcelProperty(value = "医院信息id")
     private Long id;
 
+    /**
+     * 地区id
+     */
+    private String regionId;
+
     @ExcelProperty(value = "地区")
     private String districtName;
 

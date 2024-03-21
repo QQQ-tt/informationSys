@@ -20,6 +20,12 @@ public class HospitalInfoInsertDTO  {
     private Long id;
 
     /**
+     * 地区id
+     */
+    private String regionId;
+
+
+    /**
      * 地区
      */
     private String districtName;
