@@ -59,7 +59,7 @@ public class HospitalInfoController {
         dto.setPageSize(-1);
         return Result.success(hospitalInfoService.listByPage(dto).getRecords());
     }
-    @GetMapping("/queryDistrictGetHospitalInfo")
+    @PostMapping("/queryDistrictGetHospitalInfo")
     public Result queryDistrictGetHospitalInfo(HospitalInfoQueryDTO districtName){
         List<HospitalInfo> hospitalInfos = hospitalInfoService.queryDistrictGetHospitalInfo(districtName);
         return Result.success(hospitalInfos);
