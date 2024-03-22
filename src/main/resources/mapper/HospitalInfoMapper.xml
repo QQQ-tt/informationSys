@@ -23,4 +23,15 @@
         </if>
         GROUP BY h.id
     </select>
+
+    <select id="queryByIdHospitalInfo" resultType="qxx.information.pojo.vo.HospitalInfoVO">
+        SELECT
+            id,
+            district_name,
+            hospital_name,
+            create_by,
+            create_on
+        FROM hospital_info WHERE id = #{id}
+    </select>
+
 </mapper>

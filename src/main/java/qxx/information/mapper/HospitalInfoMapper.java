@@ -23,5 +23,6 @@ public interface HospitalInfoMapper extends BaseMapper<HospitalInfo> {
 
     IPage<HospitalInfoVO> listByPage(@Param("page") Page<HospitalInfoVO> page, @Param("dto") HospitalInfoQueryDTO dto);
 
+    HospitalInfoVO queryByIdHospitalInfo(Long id);
 
 }

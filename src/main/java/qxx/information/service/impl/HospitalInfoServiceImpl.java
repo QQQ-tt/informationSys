@@ -17,6 +17,7 @@ import qxx.information.mapper.HospitalPackageInfoMapper;
 import qxx.information.pojo.dto.HospitalInfoInsertDTO;
 import qxx.information.pojo.dto.HospitalInfoQueryDTO;
 import qxx.information.pojo.dto.HospitalPackageInsertDTO;
+import qxx.information.pojo.vo.HospitalInfoPackageVO;
 import qxx.information.pojo.vo.HospitalInfoVO;
 import qxx.information.pojo.vo.HospitalPackageInfoVO;
 import qxx.information.service.HospitalInfoService;
@@ -50,10 +51,6 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
 
     @Autowired
     private PackageInfoService packageInfoService;
-
-    @Autowired
-    private CollectInfoMapper collectInfoMapper;
-
 
 
     @Override
@@ -175,5 +172,13 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
                 .eq(HospitalInfo::getDeleteFlag, 0);
         List<HospitalInfo> hospitalInfos = hospitalInfoMapper.selectList(hospitalInfoLambdaQueryWrapper);
         return hospitalInfos;
+    }
+
+    @Override
+    public HospitalInfoVO queryByIdHospitalInfoPackage(Long id) {
+        List<HospitalInfoPackageVO> hospitalInfoPackageVOS = hospitalPackageInfoMapper.queryByIdPackage(id);
+        HospitalInfoVO hospitalInfoVO = hospitalInfoMapper.queryByIdHospitalInfo(id);
+        hospitalInfoVO.setPackageInfoList(hospitalInfoPackageVOS);
+        return hospitalInfoVO;
     }
 }

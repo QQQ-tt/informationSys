@@ -10,4 +10,19 @@
         where delete_flag = 0
           and hospital_info_id =#{id}
     </select>
+
+    <select id="queryByIdPackage" resultType="qxx.information.pojo.vo.HospitalInfoPackageVO">
+        SELECT
+            pi.id,
+            pi.package_name,
+            pi.create_by,
+            pi.create_on,
+            hpi.order_num
+        FROM hospital_package_info hpi
+                 LEFT JOIN package_info pi ON pi.id = hpi.info_package_id
+        WHERE hpi.delete_flag = 0
+          AND hpi.hospital_info_id = #{id}
+    </select>
+
+
 </mapper>

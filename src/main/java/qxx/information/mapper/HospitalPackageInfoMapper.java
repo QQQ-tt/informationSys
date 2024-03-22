@@ -4,6 +4,8 @@ import qxx.information.entity.CollectInfo;
 import qxx.information.entity.HospitalPackageInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import qxx.information.pojo.vo.HospitalInfoPackageVO;
+import qxx.information.pojo.vo.HospitalInfoVO;
 import qxx.information.pojo.vo.HospitalPackageInfoVO;
 
 import java.util.List;
@@ -21,5 +23,7 @@ public interface HospitalPackageInfoMapper extends BaseMapper<HospitalPackageInf
 
 
     List<HospitalPackageInfoVO> listByHospitalInfoId(Long id);
+
+    List<HospitalInfoPackageVO> queryByIdPackage(Long id);
 
 }

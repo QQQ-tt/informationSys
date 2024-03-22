@@ -76,4 +76,13 @@ public interface HospitalInfoService extends IService<HospitalInfo> {
     List<HospitalInfo> queryDistrictGetHospitalInfo(HospitalInfoQueryDTO districtName);
 
 
+    /**
+     * 根据医院主键id查询医院套餐信息
+     * @param id 医院主键id
+     * @return 医院套餐信息
+     * @date 2024/3/22 21:49
+     * @version 3.0
+     */
+    HospitalInfoVO queryByIdHospitalInfoPackage(Long id);
+
 }

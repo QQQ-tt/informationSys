@@ -65,4 +65,10 @@ public class HospitalInfoController {
         return Result.success(hospitalInfos);
     }
 
+    @GetMapping("/queryByIdHospitalInfoPackage")
+    public Result queryByIdHospitalInfoPackage(Long id){
+        HospitalInfoVO hospitalInfoVO = hospitalInfoService.queryByIdHospitalInfoPackage(id);
+        return Result.success(hospitalInfoVO);
+    }
+
 }
