@@ -24,6 +24,7 @@
         s.user_id,
         s.password,
         s.status,
+        s.region,
         s.delete_flag,
         s.create_by,
         s.create_on,

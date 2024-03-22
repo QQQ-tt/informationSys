@@ -26,6 +26,7 @@ import qxx.information.service.SysUserService;
 import qxx.information.utils.JwtUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -68,7 +69,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public Page<SysUserVO> listSysUserPage(SysUserDTO dto) {
-        return baseMapper.selectPageNew(dto.getPage(), dto);
+        val voPage = baseMapper.selectPageNew(dto.getPage(), dto);
+        voPage.getRecords()
+                .forEach(e -> {
+                    val s = e.getRegion();
+                    val collect = Arrays.stream(s.split(","))
+                            .toList();
+                    e.setRegions(collect);
+                });
+        return voPage;
     }
 
     @Override
@@ -84,6 +93,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 String password = dto.getPassword();
                 String encode = passwordEncoder.encode(password);
                 dto.setPassword(encode);
+            }
+            if (dto.getRegions() != null && !dto.getRegions()
+                    .isEmpty()) {
+                val collect = String.join(",", dto.getRegions());
+                dto.setRegion(collect);
             }
             boolean savedOrUpdate = saveOrUpdate(dto);
             if (flag) {

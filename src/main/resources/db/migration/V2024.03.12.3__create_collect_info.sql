@@ -1,6 +1,6 @@
 create table collect_info
 (
-    id                 bigint(0)        NOT NULL AUTO_INCREMENT,
+    id int NOT NULL AUTO_INCREMENT,
     hospital_id        INT              NOT NULL COMMENT '医院id',
     collect_name       varchar(255)     NOT NULL COMMENT '采集人姓名',
     collect_sex        bit              NOT NULL COMMENT '采集人性别：0是女，1是男',

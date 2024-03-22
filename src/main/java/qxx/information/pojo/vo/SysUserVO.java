@@ -1,5 +1,6 @@
 package qxx.information.pojo.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import qxx.information.entity.SysUserHospital;
 import qxx.information.entity.SysUserRole;
@@ -22,6 +23,11 @@ public class SysUserVO {
     private String userId;
 
     private Boolean status;
+
+    @JsonIgnore
+    private String region;
+
+    private List<String> regions;
 
     private List<SysUserHospital> listHospital;
 

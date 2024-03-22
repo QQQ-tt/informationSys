@@ -1,6 +1,6 @@
 create table hospital_info
 (
-    id            bigint(0)        NOT NULL AUTO_INCREMENT,
+    id int NOT NULL AUTO_INCREMENT,
     district_name varchar(255)     NOT NULL COMMENT '地区',
     hospital_name varchar(255)     NOT NULL COMMENT '医院名称',
     status        int default 0    NOT NULL COMMENT '引用次数',

@@ -1,8 +1,8 @@
 create table hospital_package_info
 (
-    id               bigint(0)        NOT NULL AUTO_INCREMENT,
-    hospital_info_id bigint(0)        NOT NULL COMMENT '医院信息id',
-    info_package_id  bigint(0)        NOT NULL COMMENT '套餐信息id',
+    id               int NOT NULL AUTO_INCREMENT,
+    hospital_info_id int NOT NULL COMMENT '医院信息id',
+    info_package_id  int NOT NULL COMMENT '套餐信息id',
     order_num        int              NOT NULL COMMENT '排序号',
     delete_flag      bit default b'0' not null comment '逻辑删除',
     create_by        varchar(50)      null comment '创建人',
