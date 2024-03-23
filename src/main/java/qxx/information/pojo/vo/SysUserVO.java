@@ -27,7 +27,7 @@ public class SysUserVO {
     @JsonIgnore
     private String region;
 
-    private List<String> regions;
+    private List<List<Integer>> regions;
 
     private List<SysUserHospital> listHospital;
 

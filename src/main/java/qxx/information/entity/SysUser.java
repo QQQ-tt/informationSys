@@ -64,5 +64,5 @@ public class SysUser extends BaseEntity {
     private List<String> hospital;
 
     @TableField(exist = false)
-    private List<String> regions;
+    private List<List<Integer>> regions;
 }
