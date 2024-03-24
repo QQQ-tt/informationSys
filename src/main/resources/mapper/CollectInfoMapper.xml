@@ -17,7 +17,7 @@
             AND status = #{dto.status}
         </if>
         <if test="dto.collectName != null and dto.collectName != ''">
-            AND collect_name like '${dto.collectName}'
+            AND collect_name like '%${dto.collectName}%'
         </if>
         ORDER BY create_on DESC
     </select>
@@ -68,7 +68,7 @@
             and h.hospital_name = #{dto.hospitalName}
         </if>
         <if test="dto.collectName != null and dto.collectName != ''">
-            and c.collect_name like '${dto.collectName}'
+            and c.collect_name like '%${dto.collectName}%'
         </if>
         <if test="dto.collectCard != null and dto.collectCard != ''">
             and c.collect_card = #{dto.collectCard}

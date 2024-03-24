@@ -19,7 +19,7 @@
             and h.district_name = #{dto.districtName}
         </if>
         <if test="dto.hospitalName != null and dto.hospitalName != ''">
-            and h.hospital_name like '${dto.hospitalName}'
+            and h.hospital_name like '%${dto.hospitalName}%'
         </if>
         GROUP BY h.id
     </select>
