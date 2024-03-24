@@ -45,7 +45,7 @@
 
     <select id="listByCollectInfoPage" resultType="qxx.information.pojo.vo.CollectInfoVO">
         SELECT
-        h.id,
+        c.id,
         h.district_name AS district,
         h.hospital_name,
         c.collect_name,
