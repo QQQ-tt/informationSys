@@ -1,8 +1,12 @@
 package qxx.information.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.val;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -68,7 +72,22 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public Page<SysUserVO> listSysUserPage(SysUserDTO dto) {
-        return baseMapper.selectPageNew(dto.getPage(), dto);
+        val voPage = baseMapper.selectPageNew(dto.getPage(), dto);
+        voPage.getRecords()
+                .forEach(e -> {
+                    val s = e.getRegion();
+                    val objectMapper = new ObjectMapper();
+                    List<List<Integer>> stringListList;
+                    try {
+                        stringListList = objectMapper.readValue(s,
+                                new TypeReference<>() {
+                                });
+                    } catch (JsonProcessingException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    e.setRegions(stringListList);
+                });
+        return voPage;
     }
 
     @Override
@@ -84,6 +103,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 String password = dto.getPassword();
                 String encode = passwordEncoder.encode(password);
                 dto.setPassword(encode);
+            }
+            if (dto.getRegions() != null && !dto.getRegions()
+                    .isEmpty()) {
+                val jsonString = JSONObject.toJSONString(dto.getRegions());
+//                val collect = String.join(",", dto.getRegions());
+                dto.setRegion(jsonString);
             }
             boolean savedOrUpdate = saveOrUpdate(dto);
             if (flag) {

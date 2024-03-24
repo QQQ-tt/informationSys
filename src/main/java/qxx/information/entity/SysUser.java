@@ -2,9 +2,9 @@ package qxx.information.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import qxx.information.config.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
+import qxx.information.config.BaseEntity;
 
 import java.util.List;
 
@@ -51,9 +51,18 @@ public class SysUser extends BaseEntity {
     @TableField("status")
     private Boolean status;
 
+    /**
+     * 地区
+     */
+    @TableField("region")
+    private String region;
+
     @TableField(exist = false)
     private List<String> roles;
 
     @TableField(exist = false)
     private List<String> hospital;
+
+    @TableField(exist = false)
+    private List<List<Integer>> regions;
 }
