@@ -12,7 +12,7 @@ import qxx.information.pojo.dto.TestDTO;
  * @since 2024/3/19
  */
 @RestController
-@RequestMapping("/bdSysUser")
+@RequestMapping("/test")
 public class TestController {
 
     @PostMapping("/pcLogin")

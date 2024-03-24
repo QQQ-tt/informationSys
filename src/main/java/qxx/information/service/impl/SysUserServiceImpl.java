@@ -255,10 +255,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         val map = new HashMap<String, String>();
         map.put("access_token", accessToken);
         val builder = MultipartEntityBuilder.create().addBinaryBody("img", img.getInputStream(),
-                ContentType.MULTIPART_FORM_DATA, img.getOriginalFilename()).build();
+                ContentType.parse(Objects.requireNonNull(img.getContentType())), img.getOriginalFilename()).build();
         return restClient.post()
                 .uri("https://api.weixin.qq.com/cv/ocr/idcard?access_token={access_token}", map)
-                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .contentType(MediaType.parseMediaType(builder.getContentType().getValue()))
                 .body(builder::writeTo)
                 .retrieve()
                 .toEntity(OcrVO.class)
