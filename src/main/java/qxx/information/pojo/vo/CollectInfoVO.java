@@ -47,6 +47,9 @@ public class CollectInfoVO {
     @ExcelProperty(value = "检查套餐")
     private String packageName;
 
+    @ExcelIgnore
+    private Long packageId;
+
     @ExcelProperty(value = "试管条码号")
     private String tubeCard;
 
