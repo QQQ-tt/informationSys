@@ -20,6 +20,9 @@ import java.time.LocalDateTime;
 @Data
 public class CollectInfoVO {
 
+    @ExcelIgnore
+    private Long id;
+
     @ExcelProperty(value = "地区")
     private String district;
 
