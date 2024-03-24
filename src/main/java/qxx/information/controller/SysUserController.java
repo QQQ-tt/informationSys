@@ -4,18 +4,23 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import qxx.information.config.Result;
 import qxx.information.entity.SysUser;
 import qxx.information.pojo.dto.LoginDTO;
 import qxx.information.pojo.dto.SysUserDTO;
 import qxx.information.pojo.dto.SysUserPasswordDTO;
 import qxx.information.pojo.vo.LoginVO;
+import qxx.information.pojo.vo.OcrVO;
 import qxx.information.pojo.vo.SysUserVO;
 import qxx.information.service.SysUserService;
+
+import java.io.IOException;
 
 /**
  * <p>
@@ -79,5 +84,10 @@ public class SysUserController {
     @PostMapping("/createSysUser")
     public Result<Boolean> createSysUser(@RequestBody SysUser dto) {
         return Result.success(sysUserService.createSysUser(dto));
+    }
+
+    @PostMapping("/ocr")
+    public Result<OcrVO> ocr(MultipartFile file, @RequestParam String accessToken) throws IOException {
+        return Result.success(sysUserService.ocr(file, accessToken));
     }
 }
