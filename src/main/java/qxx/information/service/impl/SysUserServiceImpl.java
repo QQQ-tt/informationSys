@@ -8,9 +8,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.val;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.multipart.MultipartFile;
 import qxx.information.config.BaseEntity;
 import qxx.information.config.CommonMethod;
 import qxx.information.config.enums.DataEnums;
@@ -23,12 +28,14 @@ import qxx.information.pojo.dto.LoginDTO;
 import qxx.information.pojo.dto.SysUserDTO;
 import qxx.information.pojo.dto.SysUserPasswordDTO;
 import qxx.information.pojo.vo.LoginVO;
+import qxx.information.pojo.vo.OcrVO;
 import qxx.information.pojo.vo.SysUserVO;
 import qxx.information.service.SysMenuService;
 import qxx.information.service.SysRoleService;
 import qxx.information.service.SysUserService;
 import qxx.information.utils.JwtUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +67,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     private final SysMenuService sysMenuService;
 
-    public SysUserServiceImpl(SysUserRoleServiceImpl sysUserRoleService, SysUserHospitalServiceImpl sysUserHospitalService, PasswordEncoder passwordEncoder, CommonMethod commonMethod, SysRoleService sysRoleService, HospitalInfoServiceImpl hospitalInfoService, SysMenuService sysMenuService) {
+    private final RestClient restClient;
+
+    public SysUserServiceImpl(SysUserRoleServiceImpl sysUserRoleService, SysUserHospitalServiceImpl sysUserHospitalService, PasswordEncoder passwordEncoder, CommonMethod commonMethod, SysRoleService sysRoleService, HospitalInfoServiceImpl hospitalInfoService, SysMenuService sysMenuService, RestClient restClient) {
         this.sysUserRoleService = sysUserRoleService;
         this.sysUserHospitalService = sysUserHospitalService;
         this.passwordEncoder = passwordEncoder;
@@ -68,6 +77,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         this.sysRoleService = sysRoleService;
         this.hospitalInfoService = hospitalInfoService;
         this.sysMenuService = sysMenuService;
+        this.restClient = restClient;
     }
 
     @Override
@@ -238,5 +248,20 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public boolean createSysUser(SysUser dto) {
         dto.setId(null);
         return saveOrUpdateSysUser(dto);
+    }
+
+    @Override
+    public OcrVO ocr(MultipartFile img, String accessToken) throws IOException {
+        val map = new HashMap<String, String>();
+        map.put("access_token", accessToken);
+        val builder = MultipartEntityBuilder.create().addBinaryBody("img", img.getInputStream(),
+                ContentType.MULTIPART_FORM_DATA, img.getOriginalFilename()).build();
+        return restClient.post()
+                .uri("https://api.weixin.qq.com/cv/ocr/idcard?access_token={access_token}", map)
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(builder::writeTo)
+                .retrieve()
+                .toEntity(OcrVO.class)
+                .getBody();
     }
 }

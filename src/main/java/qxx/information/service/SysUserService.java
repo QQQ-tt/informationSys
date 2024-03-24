@@ -1,13 +1,17 @@
 package qxx.information.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.springframework.web.multipart.MultipartFile;
 import qxx.information.entity.SysUser;
 import com.baomidou.mybatisplus.extension.service.IService;
 import qxx.information.pojo.dto.LoginDTO;
 import qxx.information.pojo.dto.SysUserDTO;
 import qxx.information.pojo.dto.SysUserPasswordDTO;
 import qxx.information.pojo.vo.LoginVO;
+import qxx.information.pojo.vo.OcrVO;
 import qxx.information.pojo.vo.SysUserVO;
+
+import java.io.IOException;
 
 /**
  * <p>
@@ -81,4 +85,12 @@ public interface SysUserService extends IService<SysUser> {
      * @return 是否保存成功
      */
     boolean createSysUser(SysUser dto);
+
+    /**
+     * 身份证识别
+     * @param file 文件
+     * @param accessToken 密钥
+     * @return 识别结果
+     */
+    OcrVO ocr(MultipartFile file, String accessToken) throws IOException;
 }

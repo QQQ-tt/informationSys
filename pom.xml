@@ -83,6 +83,11 @@
             <artifactId>jjwt</artifactId>
             <version>0.12.5</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>4.5.14</version>
+        </dependency>
     </dependencies>
 
     <build>
