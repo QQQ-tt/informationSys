@@ -101,7 +101,7 @@
         c.create_on
         FROM collect_info c
         LEFT JOIN package_info p ON c.package_id=p.id AND p.delete_flag = 0
-        LEFT JOIN sys_user u ON c.create_by=u.id AND u.delete_flag = 0
+        LEFT JOIN sys_user u ON c.create_by=u.user_id AND u.delete_flag = 0
         LEFT JOIN hospital_info h ON h.id=c.hospital_id and h.delete_flag=0
         WHERE c.delete_flag = 0
         <if test="dto.district != null and dto.district != ''">

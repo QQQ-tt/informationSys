@@ -95,40 +95,40 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
 
         //查询本次原来的医院套餐信息
         List<HospitalPackageInfoVO> longs = hospitalPackageInfoMapper.listByHospitalInfoId(dto.getId());
-
         List<HospitalPackageInfoVO> hospitalPackageInfoVOS = filtrationDelete(longs, dto.getPackageIdList());
-        //减少原来的菜单引用次数
-        hospitalPackageInfoVOS.forEach(item->{
-            packageInfoService.updateStatusById(item.getHospitalInfoId(), false);
-        });
+        if (CollectionUtils.isNotEmpty(hospitalPackageInfoVOS)) {
+            //减少原来的菜单引用次数
+            hospitalPackageInfoVOS.forEach(item -> {
+                packageInfoService.updateStatusById(item.getHospitalInfoId(), false);
+            });
+            List<HospitalPackageInsertDTO> hospitalPackageInsertDTOS = filtrationInsert(dto.getPackageIdList(), longs);
+            hospitalPackageInsertDTOS.forEach(item2 -> {
+                packageInfoService.updateStatusById(item2.getId(), true);
+            });
+            //删除原来的套餐关联表，根据医院信息id删除
+            LambdaUpdateWrapper<HospitalPackageInfo> hospitalPackageInfoUpdateWrapper = new LambdaUpdateWrapper<>();
+            hospitalPackageInfoUpdateWrapper.eq(HospitalPackageInfo::getHospitalInfoId, dto.getId()).set(HospitalPackageInfo::getDeleteFlag, 1);
+            int delete = hospitalPackageInfoMapper.update(hospitalPackageInfoUpdateWrapper);
 
-        List<HospitalPackageInsertDTO> hospitalPackageInsertDTOS = filtrationInsert(dto.getPackageIdList(), longs);
-        hospitalPackageInsertDTOS.forEach(item2->{
-            packageInfoService.updateStatusById(item2.getId(), true);
-        });
-
-
+            //添加套餐中间表
+            ArrayList<HospitalPackageInfo> hospitalPackageInfos = new ArrayList<>();
+            dto.getPackageIdList().forEach(item -> {
+                HospitalPackageInfo hospitalPackageInfo = new HospitalPackageInfo();
+                hospitalPackageInfo.setHospitalInfoId(dto.getId());
+                hospitalPackageInfo.setInfoPackageId(item.getId());
+                hospitalPackageInfo.setOrderNum(item.getOrderNum());
+                hospitalPackageInfos.add(hospitalPackageInfo);
+            });
+            hospitalPackageInfoService.saveBatch(hospitalPackageInfos);
+        }
         HospitalInfo hospitalInfo = new HospitalInfo();
         hospitalInfo.setHospitalName(dto.getHospitalName());
         hospitalInfo.setDistrictName(dto.getDistrictName());
         hospitalInfo.setRegionId(dto.getRegionId());
+        hospitalInfo.setId(dto.getId());
         int update = hospitalInfoMapper.updateById(hospitalInfo);
-        //删除原来的套餐关联表，根据医院信息id删除
-        LambdaUpdateWrapper<HospitalPackageInfo> hospitalPackageInfoUpdateWrapper = new LambdaUpdateWrapper<>();
-        hospitalPackageInfoUpdateWrapper.eq(HospitalPackageInfo::getHospitalInfoId,dto.getId()).set(HospitalPackageInfo::getDeleteFlag,1);
-        int delete = hospitalPackageInfoMapper.update(hospitalPackageInfoUpdateWrapper);
 
-        //添加套餐中间表
-        ArrayList<HospitalPackageInfo> hospitalPackageInfos = new ArrayList<>();
-        dto.getPackageIdList().forEach(item->{
-            HospitalPackageInfo hospitalPackageInfo = new HospitalPackageInfo();
-            hospitalPackageInfo.setHospitalInfoId(dto.getId());
-            hospitalPackageInfo.setInfoPackageId(item.getId());
-            hospitalPackageInfo.setOrderNum(item.getOrderNum());
-            hospitalPackageInfos.add(hospitalPackageInfo);
-        });
-        hospitalPackageInfoService.saveBatch(hospitalPackageInfos);
-        return delete;
+        return update;
     }
 
     @Override

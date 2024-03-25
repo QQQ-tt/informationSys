@@ -7,7 +7,7 @@
             h.id,
             h.district_name,
             h.hospital_name,
-            GROUP_CONCAT(p.package_name) AS packageName,
+            GROUP_CONCAT(p.package_name ORDER BY hp.order_num ) AS packageName,
             h.region_id,
             h.create_on,
             h.create_by

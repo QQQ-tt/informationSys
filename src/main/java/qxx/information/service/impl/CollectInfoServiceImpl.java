@@ -65,7 +65,7 @@ public class CollectInfoServiceImpl extends ServiceImpl<CollectInfoMapper, Colle
     @Override
     public void exportCollectInfo(HttpServletResponse response,CollectInfoQueryDTO dto) throws ClassNotFoundException {
         List<CollectInfoVO> collectInfoVOS = collectInfoMapper.exportCollectInfo(dto);
-        excelTransferByClass.exportExcel(response,collectInfoVOS,"医院信息管理","sheet",CollectInfoVO.class);
+        excelTransferByClass.exportExcel(response,collectInfoVOS,"采集信息管理","sheet",CollectInfoVO.class);
     }
 
 }
