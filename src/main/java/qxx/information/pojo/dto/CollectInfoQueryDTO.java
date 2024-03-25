@@ -27,7 +27,7 @@ public class CollectInfoQueryDTO extends PageDTO<CollectInfoVO> {
     private Integer status;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    private LocalDate BeginCreateON;
+    private LocalDate beginCreateON;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private LocalDate endCreateON;

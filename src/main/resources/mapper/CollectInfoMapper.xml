@@ -79,8 +79,8 @@
         <if test="dto.status != null">
             and c.`status` = #{dto.status}
         </if>
-        <if test="dto.BeginCreateON != null and dto.endCreateON != null">
-            and c.create_on BETWEEN #{dto.BeginCreateON} and #{dto.endCreateON}
+        <if test="dto.beginCreateON != null and dto.endCreateON != null">
+            and c.create_on BETWEEN #{dto.beginCreateON} and #{dto.endCreateON}
         </if>
     </select>
 
@@ -119,8 +119,8 @@
         <if test="dto.status != null">
             and c.`status` = #{dto.status}
         </if>
-        <if test="dto.BeginCreateON != null and dto.endCreateON != null">
-            and c.create_on BETWEEN #{dto.BeginCreateON} and #{dto.endCreateON}
+        <if test="dto.beginCreateON != null and dto.endCreateON != null">
+            and c.create_on BETWEEN #{dto.beginCreateON} and #{dto.endCreateON}
         </if>
     </select>
 
