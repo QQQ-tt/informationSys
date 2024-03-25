@@ -33,7 +33,8 @@
             p.id AS packageId,
             c.sampling_point,
             c.status,
-            c.tube_card
+            c.tube_card,
+            c.collect_nation
             from collect_info c
             left join package_info p on c.package_id=p.id and p.delete_flag=0
             left join hospital_info h on h.id=c.hospital_id and h.delete_flag=0
