@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import qxx.information.config.enums.DataEnums;
+import qxx.information.config.exception.DataException;
 import qxx.information.entity.PackageInfo;
 import qxx.information.entity.SysRole;
 import qxx.information.entity.SysRoleMenu;
@@ -43,6 +45,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Override
     public Boolean insertOrUpdateRole(SysRole entity) {
+        //角色名字校验
+        int i = sysRoleMapper.queryRoleNameRepetition(entity.getRoleName(), entity.getId());
+        if (i > 0){
+            throw new DataException(DataEnums.ROLE_DATA_REPEAT);
+        }
         entity.setStatus(0);
         return saveOrUpdate(entity);
     }

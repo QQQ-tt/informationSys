@@ -22,4 +22,6 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
 
     IPage<SysRoleVO> listByRolePage(@Param("page") Page<SysRoleVO> page, @Param("dto") SysRoleQueryDTO roleName);
 
+    int queryRoleNameRepetition(String roleName,Long id);
+
 }
