@@ -95,8 +95,9 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
 
         //查询本次原来的医院套餐信息
         List<HospitalPackageInfoVO> longs = hospitalPackageInfoMapper.listByHospitalInfoId(dto.getId());
-        List<HospitalPackageInfoVO> hospitalPackageInfoVOS = filtrationDelete(longs, dto.getPackageIdList());
-        if (CollectionUtils.isNotEmpty(hospitalPackageInfoVOS)) {
+
+        if (CollectionUtils.isNotEmpty(dto.getPackageIdList())) {
+            List<HospitalPackageInfoVO> hospitalPackageInfoVOS = filtrationDelete(longs, dto.getPackageIdList());
             //减少原来的菜单引用次数
             hospitalPackageInfoVOS.forEach(item -> {
                 packageInfoService.updateStatusById(item.getHospitalInfoId(), false);
