@@ -1,6 +1,7 @@
 package qxx.information.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -86,16 +87,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         voPage.getRecords()
                 .forEach(e -> {
                     val s = e.getRegion();
-                    val objectMapper = new ObjectMapper();
-                    List<List<Integer>> stringListList;
-                    try {
-                        stringListList = objectMapper.readValue(s,
-                                new TypeReference<>() {
-                                });
-                    } catch (JsonProcessingException ex) {
-                        throw new RuntimeException(ex);
+                    if (StringUtils.isNotBlank(s)) {
+                        val objectMapper = new ObjectMapper();
+                        List<List<Integer>> stringListList;
+                        try {
+                            stringListList = objectMapper.readValue(s,
+                                    new TypeReference<>() {
+                                    });
+                        } catch (JsonProcessingException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        e.setRegions(stringListList);
                     }
-                    e.setRegions(stringListList);
                 });
         return voPage;
     }
