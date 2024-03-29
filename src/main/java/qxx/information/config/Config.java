@@ -23,7 +23,7 @@ public class Config {
     @Bean
     public CorsFilter corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:9527","http://120.55.165.76:9527"));
+        configuration.setAllowedOrigins(List.of("http://localhost:9527","http://120.55.165.76:9527","https://www.sz-labhh.com/"));
         configuration.addAllowedOriginPattern("*");
         configuration.setAllowedMethods(Arrays.asList("POST", "GET", "OPTIONS", "DELETE", "HEAD"));
         configuration.setAllowCredentials(true);
