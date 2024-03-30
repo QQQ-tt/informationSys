@@ -61,7 +61,7 @@ public class SysUserController {
     }
 
 
-    @DeleteMapping("/deleteSysUserById")
+    @GetMapping("/deleteSysUserById")
     public Result<Boolean> deleteSysUserById(@RequestParam Long id) {
         return Result.success(sysUserService.deleteSysUserById(id));
     }

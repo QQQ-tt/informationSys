@@ -146,15 +146,19 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             ArrayList<SysUserRole> sysUserRoles = new ArrayList<>();
             id = dto.getId() == null ? id : dto.getId();
             Long finalId = id;
-            roles.forEach(role -> {
-                SysUserRole sysUserRole = new SysUserRole();
-                sysUserRole.setUserId(finalId);
-                sysUserRole.setRoleId(Long.parseLong(role));
-                sysUserRoles.add(sysUserRole);
-                sysRoleService.updateStatusById(Long.parseLong(role), true);
+            roles.stream()
+                    .filter(StringUtils::isNotBlank)
+                    .forEach(role -> {
+                        SysUserRole sysUserRole = new SysUserRole();
+                        sysUserRole.setUserId(finalId);
+                        sysUserRole.setRoleId(Long.parseLong(role));
+                        sysUserRoles.add(sysUserRole);
+                        sysRoleService.updateStatusById(Long.parseLong(role), true);
             });
             Long finalId1 = id;
-            hospital.forEach(hospitalId -> {
+            hospital.stream()
+                    .filter(StringUtils::isNotBlank)
+                    .forEach(hospitalId -> {
                 SysUserHospital userHospital = new SysUserHospital();
                 userHospital.setUserId(finalId1);
                 userHospital.setHospitalId(Long.parseLong(hospitalId));
@@ -239,7 +243,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 String password = dto.getPassword();
                 String encode = passwordEncoder.encode(password);
                 return update(Wrappers.lambdaUpdate(SysUser.class)
-                        .eq(BaseEntity::getId, dto.getUserId())
+                        .eq(SysUser::getUserId, dto.getUserId())
                         .set(SysUser::getPassword, encode));
             }
             throw new DataException(DataEnums.WRONG_PASSWORD);
