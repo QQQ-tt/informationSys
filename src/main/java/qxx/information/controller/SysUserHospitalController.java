@@ -1,7 +1,14 @@
 package qxx.information.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import qxx.information.config.Result;
+import qxx.information.entity.SysUserHospital;
+import qxx.information.service.SysUserHospitalService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,5 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/information/sysUserHospital")
 public class SysUserHospitalController {
+
+    @Autowired
+    private SysUserHospitalService sysUserHospitalService;
+
+    @GetMapping("/listSysUserHospital")
+    public Result<List<SysUserHospital>> listSysUserHospital(Long userId){
+        return Result.success(sysUserHospitalService.listSysUserHospital(userId));
+    }
 
 }
