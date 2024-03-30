@@ -8,4 +8,12 @@
                  left join hospital_info h on s.hospital_id = h.id
         where s.delete_flag = '0' and user_id = #{sysUserId}
     </select>
+
+    <select id="listByUserIdHospital" resultType="java.lang.Long">
+        select
+            id
+        from sys_user
+        where user_id = #{userId}
+    </select>
+
 </mapper>

@@ -26,8 +26,8 @@ public class SysUserHospitalController {
     private SysUserHospitalService sysUserHospitalService;
 
     @GetMapping("/listSysUserHospital")
-    public Result<List<SysUserHospital>> listSysUserHospital(Long userId){
-        return Result.success(sysUserHospitalService.listSysUserHospital(userId));
+    public Result<List<SysUserHospital>> listSysUserHospital(String userId){
+        return Result.success(sysUserHospitalService.listByUserIdHospital(userId));
     }
 
 }

@@ -18,4 +18,6 @@ import java.util.List;
 public interface SysUserHospitalMapper extends BaseMapper<SysUserHospital> {
 
     List<SysUserHospital> selectListNew(Long userId);
+
+    Long listByUserIdHospital(String userId);
 }

@@ -24,4 +24,11 @@ public class SysUserHospitalServiceImpl extends ServiceImpl<SysUserHospitalMappe
     public List<SysUserHospital> listSysUserHospital(Long userId) {
         return baseMapper.selectListNew(userId);
     }
+
+    @Override
+    public List<SysUserHospital> listByUserIdHospital(String userId) {
+        Long id = baseMapper.listByUserIdHospital(userId);
+        return baseMapper.selectListNew(id);
+    }
+
 }
