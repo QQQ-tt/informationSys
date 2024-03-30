@@ -19,7 +19,7 @@ public class CollectInfoQueryDTO extends PageDTO<CollectInfoVO> {
 
     private String district;
 
-    private String hospitalName;
+    private Long hospitalId;
 
     private String collectName;
 

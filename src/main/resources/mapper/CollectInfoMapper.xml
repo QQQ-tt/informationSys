@@ -68,8 +68,8 @@
         <if test="dto.district != null and dto.district != ''">
             and h.district_name = #{dto.district}
         </if>
-        <if test="dto.hospitalName != null and dto.hospitalName != ''">
-            and h.hospital_name = #{dto.hospitalName}
+        <if test="dto.hospitalId != null and dto.hospitalId != ''">
+            and c.hospital_id = #{dto.hospitalId}
         </if>
         <if test="dto.collectName != null and dto.collectName != ''">
             and c.collect_name like '%${dto.collectName}%'
@@ -108,8 +108,8 @@
         <if test="dto.district != null and dto.district != ''">
             and h.district_name = #{dto.district}
         </if>
-        <if test="dto.hospitalName != null and dto.hospitalName != ''">
-            and h.hospital_name = #{dto.hospitalName}
+        <if test="dto.hospitalId != null and dto.hospitalId != ''">
+            and c.hospital_id = #{dto.hospitalId}
         </if>
         <if test="dto.collectName != null and dto.collectName != ''">
             and c.collect_name like '${dto.collectName}'
