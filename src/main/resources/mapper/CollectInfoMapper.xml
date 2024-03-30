@@ -75,7 +75,7 @@
             and c.collect_name like '%${dto.collectName}%'
         </if>
         <if test="dto.collectCard != null and dto.collectCard != ''">
-            and c.collect_card = #{dto.collectCard}
+            and c.collect_card like '%${dto.collectCard}%'
         </if>
         <if test="dto.status != null">
             and c.`status` = #{dto.status}
