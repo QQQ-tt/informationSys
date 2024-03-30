@@ -113,14 +113,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 .ne(flag, BaseEntity::getId, id));
         if (Objects.isNull(user)) {
             if (!flag) {
-                String password = dto.getPassword();
-                String encode = passwordEncoder.encode(password);
-                dto.setPassword(encode);
+                dto.setPassword(passwordEncoder.encode(dto.getPassword()));
             }
             if (dto.getRegions() != null && !dto.getRegions()
                     .isEmpty()) {
                 val jsonString = JSONObject.toJSONString(dto.getRegions());
-//                val collect = String.join(",", dto.getRegions());
                 dto.setRegion(jsonString);
             }
             boolean savedOrUpdate = saveOrUpdate(dto);
@@ -252,6 +249,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean createSysUser(SysUser dto) {
         dto.setId(null);
         return saveOrUpdateSysUser(dto);
