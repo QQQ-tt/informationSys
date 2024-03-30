@@ -68,7 +68,7 @@
         <if test="dto.district != null and dto.district != ''">
             and h.district_name = #{dto.district}
         </if>
-        <if test="dto.hospitalId != null and dto.hospitalId != ''">
+        <if test="dto.hospitalId != null ">
             and c.hospital_id = #{dto.hospitalId}
         </if>
         <if test="dto.collectName != null and dto.collectName != ''">
@@ -108,7 +108,7 @@
         <if test="dto.district != null and dto.district != ''">
             and h.district_name = #{dto.district}
         </if>
-        <if test="dto.hospitalId != null and dto.hospitalId != ''">
+        <if test="dto.hospitalId != null ">
             and c.hospital_id = #{dto.hospitalId}
         </if>
         <if test="dto.collectName != null and dto.collectName != ''">
