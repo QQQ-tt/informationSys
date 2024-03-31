@@ -83,6 +83,7 @@
         <if test="dto.beginCreateON != null and dto.endCreateON != null">
             and c.create_on BETWEEN #{dto.beginCreateON} and #{dto.endCreateON}
         </if>
+        ORDER BY c.create_on desc
     </select>
 
     <select id="exportCollectInfo" resultType="qxx.information.pojo.vo.CollectInfoVO">

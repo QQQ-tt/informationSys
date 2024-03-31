@@ -22,6 +22,7 @@
                  LEFT JOIN package_info pi ON pi.id = hpi.info_package_id
         WHERE hpi.delete_flag = 0
           AND hpi.hospital_info_id = #{id}
+        ORDER BY hpi.order_num
     </select>
 
 

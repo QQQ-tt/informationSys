@@ -2,9 +2,12 @@ package qxx.information.service.impl;
 
 import qxx.information.entity.HospitalPackageInfo;
 import qxx.information.mapper.HospitalPackageInfoMapper;
+import qxx.information.pojo.vo.HospitalInfoPackageVO;
 import qxx.information.service.HospitalPackageInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -16,5 +19,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class HospitalPackageInfoServiceImpl extends ServiceImpl<HospitalPackageInfoMapper, HospitalPackageInfo> implements HospitalPackageInfoService {
+
+    @Override
+    public List<HospitalInfoPackageVO> queryByHospitalIdPackageInfo(Long hospitalId) {
+        return baseMapper.queryByIdPackage(hospitalId);
+    }
 
 }
