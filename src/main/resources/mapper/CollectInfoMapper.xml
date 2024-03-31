@@ -83,6 +83,12 @@
         <if test="dto.beginCreateON != null and dto.endCreateON != null">
             and c.create_on BETWEEN #{dto.beginCreateON} and #{dto.endCreateON}
         </if>
+        <if test="dto.userHospitalIdList != null and dto.userHospitalIdList.size > 0">
+            and c.hospital_id in
+            <foreach collection="dto.userHospitalIdList" item="hospitalId" index="index" open="(" close=")" separator=",">
+                #{hospitalId}
+            </foreach>
+        </if>
         ORDER BY c.create_on desc
     </select>
 

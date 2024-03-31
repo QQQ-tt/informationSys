@@ -1,6 +1,7 @@
 package qxx.information.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -50,8 +51,8 @@ public class CollectInfoController {
 
 
     @PostMapping("/listByCollectInfoPage")
-    public Result listByCollectInfoPage(@RequestBody CollectInfoQueryDTO dto){
-        IPage<CollectInfoVO> collectInfoVOIPage = collectInfoService.listByCollectInfoPage(dto);
+    public Result listByCollectInfoPage(@RequestBody CollectInfoQueryDTO dto, HttpServletRequest request){
+        IPage<CollectInfoVO> collectInfoVOIPage = collectInfoService.listByCollectInfoPage(dto,request);
         return Result.success(collectInfoVOIPage);
     }
 
