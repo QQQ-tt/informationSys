@@ -139,7 +139,7 @@
         SELECT
         sum(CASE WHEN `status` = 1 THEN 1 ELSE 0 END) AS cancellation,
         sum(CASE WHEN `status` = 0 THEN 1 ELSE 0 END) AS noCancellation,
-        sum(*) allUser
+        COUNT(*) allUser
         FROM collect_info
         WHERE delete_flag = 0
         <if test="dto.createON != null">
