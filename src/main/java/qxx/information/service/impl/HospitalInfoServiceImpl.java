@@ -7,13 +7,17 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import qxx.information.config.CommonMethod;
 import qxx.information.entity.HospitalInfo;
 import qxx.information.entity.HospitalPackageInfo;
 import qxx.information.mapper.CollectInfoMapper;
 import qxx.information.mapper.HospitalInfoMapper;
 import qxx.information.mapper.HospitalPackageInfoMapper;
+import qxx.information.mapper.SysUserHospitalMapper;
 import qxx.information.pojo.dto.HospitalInfoInsertDTO;
 import qxx.information.pojo.dto.HospitalInfoQueryDTO;
 import qxx.information.pojo.dto.HospitalPackageInsertDTO;
@@ -52,6 +56,11 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
     @Autowired
     private PackageInfoService packageInfoService;
 
+    @Autowired
+    private SysUserHospitalMapper sysUserHospitalMapper;
+
+    @Resource
+    private CommonMethod commonMethod;
 
     @Override
     public int insertHospitalInfo(HospitalInfoInsertDTO dto) {
@@ -135,6 +144,9 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
     @Override
     public IPage<HospitalInfoVO> listByPage(HospitalInfoQueryDTO dto) {
         Page<HospitalInfoVO> page = new Page<>(dto.getPageNum(), dto.getPageSize());
+        String useId = commonMethod.getSysUserId();
+        List<Long> longs = sysUserHospitalMapper.listByUserHospitalId(useId);
+        dto.setUserHospitalIdList(longs);
         return hospitalInfoMapper.listByPage(page,dto);
     }
 

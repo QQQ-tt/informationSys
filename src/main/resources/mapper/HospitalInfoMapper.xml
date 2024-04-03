@@ -21,6 +21,12 @@
         <if test="dto.hospitalName != null and dto.hospitalName != ''">
             and h.hospital_name like '%${dto.hospitalName}%'
         </if>
+        <if test="dto.userHospitalIdList != null and dto.userHospitalIdList.size > 0">
+            and h.id in
+            <foreach collection="dto.userHospitalIdList" item="hospitalId" index="index" open="(" close=")" separator=",">
+                #{hospitalId}
+            </foreach>
+        </if>
         GROUP BY h.id
     </select>
 

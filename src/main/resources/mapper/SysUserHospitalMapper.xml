@@ -19,7 +19,7 @@
     </select>
     <select id="listByUserHospitalId" resultType="java.lang.Long">
         select
-            hospital_id
+            suf.hospital_id
             from sys_user_hospital suf
             left join sys_user u on suf.user_id = u.id
             where suf.delete_flag = 0

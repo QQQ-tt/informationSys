@@ -1,6 +1,7 @@
 package qxx.information.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import jakarta.servlet.http.HttpServletRequest;
 import qxx.information.entity.HospitalInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import qxx.information.pojo.dto.HospitalInfoInsertDTO;

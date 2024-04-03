@@ -23,4 +23,6 @@ public class HospitalInfoQueryDTO extends PageDTO<HospitalInfo> {
 
     private List<String> districtNames;
 
+    private List<Long> userHospitalIdList;
+
 }
