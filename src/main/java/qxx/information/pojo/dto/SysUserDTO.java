@@ -1,6 +1,7 @@
 package qxx.information.pojo.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import qxx.information.config.PageDTO;
 import qxx.information.entity.SysUser;
 
@@ -9,6 +10,7 @@ import qxx.information.entity.SysUser;
  * @since 2024/3/13
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class SysUserDTO extends PageDTO<SysUser> {
 
     /**
