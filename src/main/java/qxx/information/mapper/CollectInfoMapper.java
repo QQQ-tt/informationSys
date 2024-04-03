@@ -10,6 +10,7 @@ import qxx.information.pojo.dto.CollectInfoQueryDTO;
 import qxx.information.pojo.dto.CollectInfoRecordQueryDTO;
 import qxx.information.pojo.vo.CollectInfoRecordVO;
 import qxx.information.pojo.vo.CollectInfoVO;
+import qxx.information.pojo.vo.CollectStatusInfoVO;
 
 import java.util.List;
 
@@ -31,5 +32,7 @@ public interface CollectInfoMapper extends BaseMapper<CollectInfo> {
     IPage<CollectInfoVO> listByCollectInfoPage(@Param("page") Page<CollectInfoVO> page, @Param("dto") CollectInfoQueryDTO dto);
 
     List<CollectInfoVO> exportCollectInfo(@Param("dto") CollectInfoQueryDTO dto);
+
+    CollectStatusInfoVO queryCollectStatus(@Param("dto")CollectInfoRecordQueryDTO dto);
 
 }

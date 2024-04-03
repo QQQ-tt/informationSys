@@ -17,6 +17,7 @@ import qxx.information.pojo.dto.CollectInfoQueryDTO;
 import qxx.information.pojo.dto.CollectInfoRecordQueryDTO;
 import qxx.information.pojo.vo.CollectInfoRecordVO;
 import qxx.information.pojo.vo.CollectInfoVO;
+import qxx.information.pojo.vo.CollectStatusInfoVO;
 import qxx.information.service.CollectInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -75,6 +76,11 @@ public class CollectInfoServiceImpl extends ServiceImpl<CollectInfoMapper, Colle
     public void exportCollectInfo(HttpServletResponse response,CollectInfoQueryDTO dto) throws ClassNotFoundException {
         List<CollectInfoVO> collectInfoVOS = collectInfoMapper.exportCollectInfo(dto);
         excelTransferByClass.exportExcel(response,collectInfoVOS,"采集信息管理","sheet",CollectInfoVO.class);
+    }
+
+    @Override
+    public CollectStatusInfoVO queryCollectStatus(CollectInfoRecordQueryDTO dto) {
+        return collectInfoMapper.queryCollectStatus(dto);
     }
 
 }

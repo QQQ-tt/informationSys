@@ -7,7 +7,10 @@
             id,
             collect_name,
             create_on,
-            `status`
+            `status`,
+            sum(CASE WHEN `status` = 1 THEN 1 ELSE 0 END) AS cancellation,
+            sum(CASE WHEN `status` = 0 THEN 1 ELSE 0 END) AS noCancellation,
+            sum(*) all
         FROM collect_info
         WHERE delete_flag = 0
         <if test="dto.createON != null">
@@ -129,6 +132,18 @@
         </if>
         <if test="dto.beginCreateON != null and dto.endCreateON != null">
             and c.create_on BETWEEN #{dto.beginCreateON} and #{dto.endCreateON}
+        </if>
+    </select>
+
+    <select id="queryCollectStatus" resultType="qxx.information.pojo.vo.CollectStatusInfoVO">
+        SELECT
+        sum(CASE WHEN `status` = 1 THEN 1 ELSE 0 END) AS cancellation,
+        sum(CASE WHEN `status` = 0 THEN 1 ELSE 0 END) AS noCancellation,
+        sum(*) allUser
+        FROM collect_info
+        WHERE delete_flag = 0
+        <if test="dto.createON != null">
+            AND create_on = #{dto.createON}
         </if>
     </select>
 

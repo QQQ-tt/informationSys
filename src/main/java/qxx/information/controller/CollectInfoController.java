@@ -12,6 +12,7 @@ import qxx.information.pojo.dto.CollectInfoQueryDTO;
 import qxx.information.pojo.dto.CollectInfoRecordQueryDTO;
 import qxx.information.pojo.vo.CollectInfoRecordVO;
 import qxx.information.pojo.vo.CollectInfoVO;
+import qxx.information.pojo.vo.CollectStatusInfoVO;
 import qxx.information.service.CollectInfoService;
 
 import java.util.List;
@@ -59,6 +60,11 @@ public class CollectInfoController {
     @PostMapping("/exportCollectInfo")
     public void exportCollectInfo(HttpServletResponse response,@RequestBody CollectInfoQueryDTO dto) throws ClassNotFoundException {
         collectInfoService.exportCollectInfo(response,dto);
+    }
+
+    @PostMapping("/queryCollectStatus")
+    public Result<CollectStatusInfoVO> queryCollectStatus(CollectInfoRecordQueryDTO dto){
+        return Result.success(collectInfoService.queryCollectStatus(dto));
     }
 
 }
