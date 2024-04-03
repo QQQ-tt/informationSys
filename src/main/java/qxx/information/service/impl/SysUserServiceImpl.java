@@ -21,6 +21,7 @@ import qxx.information.config.BaseEntity;
 import qxx.information.config.CommonMethod;
 import qxx.information.config.enums.DataEnums;
 import qxx.information.config.exception.DataException;
+import qxx.information.entity.HospitalInfo;
 import qxx.information.entity.SysUser;
 import qxx.information.entity.SysUserHospital;
 import qxx.information.entity.SysUserRole;
@@ -115,10 +116,41 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             if (!flag) {
                 dto.setPassword(passwordEncoder.encode(dto.getPassword()));
             }
+            List<String> roles = Optional.ofNullable(dto.getRoles())
+                    .orElse(new ArrayList<>())
+                    .stream()
+                    .filter(StringUtils::isNotBlank)
+                    .toList();
+            List<String> hospital = new ArrayList<>(Optional.ofNullable(dto.getHospital())
+                    .orElse(new ArrayList<>())
+                    .stream()
+                    .filter(StringUtils::isNotBlank)
+                    .toList());
             if (dto.getRegions() != null && !dto.getRegions()
                     .isEmpty()) {
                 val jsonString = JSONObject.toJSONString(dto.getRegions());
                 dto.setRegion(jsonString);
+                if (hospital.isEmpty()) {
+                    val strings = new ArrayList<String>();
+                    dto.getRegions()
+                            .forEach(k -> {
+                                val builder = new StringBuilder();
+                                k.forEach(j -> builder.append(j)
+                                        .append("-"));
+                                strings.add(builder.deleteCharAt(builder.length() - 1)
+                                        .toString());
+                            });
+                    List<String> list = Optional.ofNullable(
+                                    hospitalInfoService.list(Wrappers.lambdaQuery(HospitalInfo.class)
+                                            .in(HospitalInfo::getRegionId,
+                                                    strings)))
+                            .orElse(new ArrayList<>())
+                            .stream()
+                            .map(BaseEntity::getId)
+                            .map(String::valueOf)
+                            .toList();
+                    hospital.addAll(list);
+                }
             }
             boolean savedOrUpdate = saveOrUpdate(dto);
             if (flag) {
@@ -131,33 +163,25 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 val hospitalList = sysUserHospitalService.list(Wrappers.lambdaQuery(SysUserHospital.class)
                         .eq(SysUserHospital::getUserId
                                 , dto.getId()));
-                hospitalList.forEach(hospital -> hospitalInfoService.updateStatusById(hospital.getHospitalId(), false));
+                hospitalList.forEach(h -> hospitalInfoService.updateStatusById(h.getHospitalId(), false));
                 sysUserHospitalService.remove(Wrappers.lambdaQuery(SysUserHospital.class)
                         .eq(SysUserHospital::getUserId, dto.getId()));
             }
-            List<String> roles = Optional.ofNullable(dto.getRoles())
-                    .orElse(new ArrayList<>());
-            List<String> hospital = Optional.ofNullable(dto.getHospital())
-                    .orElse(new ArrayList<>());
+
             ArrayList<SysUserHospital> sysUserHospitals = new ArrayList<>();
             ArrayList<SysUserRole> sysUserRoles = new ArrayList<>();
             id = dto.getId() == null ? id : dto.getId();
             Long finalId = id;
-            roles.stream()
-                    .filter(StringUtils::isNotBlank)
-                    .forEach(role -> {
-                        SysUserRole sysUserRole = new SysUserRole();
-                        sysUserRole.setUserId(finalId);
-                        sysUserRole.setRoleId(Long.parseLong(role));
-                        sysUserRoles.add(sysUserRole);
-                        sysRoleService.updateStatusById(Long.parseLong(role), true);
+            roles.forEach(role -> {
+                SysUserRole sysUserRole = new SysUserRole();
+                sysUserRole.setUserId(finalId);
+                sysUserRole.setRoleId(Long.parseLong(role));
+                sysUserRoles.add(sysUserRole);
+                sysRoleService.updateStatusById(Long.parseLong(role), true);
             });
-            Long finalId1 = id;
-            hospital.stream()
-                    .filter(StringUtils::isNotBlank)
-                    .forEach(hospitalId -> {
+            hospital.forEach(hospitalId -> {
                 SysUserHospital userHospital = new SysUserHospital();
-                userHospital.setUserId(finalId1);
+                userHospital.setUserId(finalId);
                 userHospital.setHospitalId(Long.parseLong(hospitalId));
                 sysUserHospitals.add(userHospital);
                 hospitalInfoService.updateStatusById(Long.parseLong(hospitalId), true);
@@ -259,11 +283,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public OcrVO ocr(MultipartFile img, String accessToken) throws IOException {
         val map = new HashMap<String, String>();
         map.put("access_token", accessToken);
-        val builder = MultipartEntityBuilder.create().addBinaryBody("img", img.getInputStream(),
-                ContentType.parse(Objects.requireNonNull(img.getContentType())), img.getOriginalFilename()).build();
+        val builder = MultipartEntityBuilder.create()
+                .addBinaryBody("img", img.getInputStream(),
+                        ContentType.parse(Objects.requireNonNull(img.getContentType())), img.getOriginalFilename())
+                .build();
         return restClient.post()
                 .uri("https://api.weixin.qq.com/cv/ocr/idcard?access_token={access_token}", map)
-                .contentType(MediaType.parseMediaType(builder.getContentType().getValue()))
+                .contentType(MediaType.parseMediaType(builder.getContentType()
+                        .getValue()))
                 .body(builder::writeTo)
                 .retrieve()
                 .toEntity(OcrVO.class)
