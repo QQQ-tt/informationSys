@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.OncePerRequestFilter;
 import qxx.information.config.CommonMethod;
 import qxx.information.config.enums.AuthEnums;
@@ -44,19 +43,16 @@ public class AuthFilter extends OncePerRequestFilter {
         }
         if (userId == null || token == null) {
             commonMethod.failed(request, response, DataEnums.USER_NOT_LOGIN);
-            filterChain.doFilter(request, response);
             return;
         }
         boolean equals = Objects.equals(JwtUtils.getBodyFromToken(token), userId);
         if (!equals) {
             commonMethod.failed(request, response, DataEnums.USER_NOT_LOGIN);
-            filterChain.doFilter(request, response);
             return;
         }
         boolean tokenExpired = JwtUtils.isTokenExpired(token);
         if (tokenExpired) {
             commonMethod.failed(request, response, DataEnums.TOKEN_LOGIN_EXPIRED);
-            filterChain.doFilter(request, response);
             return;
         }
         commonMethod.setSysUserId(userId);
