@@ -1,9 +1,7 @@
 package qxx.information.pojo.dto;
 
-import com.alibaba.excel.annotation.ExcelProperty;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-
 import java.time.LocalDate;
 
 /**

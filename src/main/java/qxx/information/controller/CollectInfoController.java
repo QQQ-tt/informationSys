@@ -63,7 +63,7 @@ public class CollectInfoController {
     }
 
     @PostMapping("/queryCollectStatus")
-    public Result<CollectStatusInfoVO> queryCollectStatus(CollectInfoRecordQueryDTO dto){
+    public Result<CollectStatusInfoVO> queryCollectStatus(@RequestBody CollectInfoRecordQueryDTO dto){
         return Result.success(collectInfoService.queryCollectStatus(dto));
     }
 
