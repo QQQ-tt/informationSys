@@ -40,7 +40,7 @@ public class CollectInfoController {
 
     @PostMapping("/queryCollectInfoRecordList")
     public Result queryCollectInfoRecordList(@RequestBody CollectInfoRecordQueryDTO dto){
-        List<CollectInfoRecordVO> collectInfoRecordVOS = collectInfoService.queryCollectInfoRecordList(dto);
+        IPage<CollectInfoRecordVO> collectInfoRecordVOS = collectInfoService.queryCollectInfoRecordList(dto);
         return Result.success(collectInfoRecordVOS);
     }
 

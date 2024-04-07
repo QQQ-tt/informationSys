@@ -25,7 +25,7 @@ import java.util.List;
 @Mapper
 public interface CollectInfoMapper extends BaseMapper<CollectInfo> {
 
-    List<CollectInfoRecordVO> queryCollectInfoRecordList(@Param("dto")CollectInfoRecordQueryDTO dto);
+    IPage<CollectInfoRecordVO> queryCollectInfoRecordList(@Param("page") Page<CollectInfoRecordVO> page,@Param("dto")CollectInfoRecordQueryDTO dto);
 
     CollectInfoVO getByIdQueryCollectInfo(Long id);
 
