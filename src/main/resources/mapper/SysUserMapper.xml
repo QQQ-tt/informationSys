@@ -45,6 +45,7 @@
     
     <select id="selectHospital" resultType="qxx.information.entity.SysUserHospital">
         select h.user_id,
+               i.id as hospitalId,
                i.hospital_name,
                i.district_name
         from sys_user_hospital h
@@ -56,6 +57,7 @@
 
     <select id="selectRole" resultType="qxx.information.entity.SysUserRole">
         select r.user_id,
+               m.id as roleId,
                m.role_name
         from sys_user_role r
                  left join sys_role m on
