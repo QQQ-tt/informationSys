@@ -11,6 +11,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import qxx.information.config.BaseEntity;
 import qxx.information.config.CommonMethod;
 import qxx.information.entity.HospitalInfo;
 import qxx.information.entity.HospitalPackageInfo;
@@ -71,29 +72,36 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
         hospitalInfo.setRegionId(dto.getRegionId());
         hospitalInfo.setStatus(0);
         int insert = hospitalInfoMapper.insert(hospitalInfo);
-        if(CollectionUtils.isNotEmpty(dto.getPackageIdList())) {
+        if (CollectionUtils.isNotEmpty(dto.getPackageIdList())) {
             ArrayList<HospitalPackageInfo> hospitalPackageInfos = new ArrayList<>();
             //添加套餐中间表
-            dto.getPackageIdList().forEach(item -> {
-                HospitalPackageInfo hospitalPackageInfo = new HospitalPackageInfo();
-                hospitalPackageInfo.setHospitalInfoId(hospitalInfo.getId());
-                hospitalPackageInfo.setInfoPackageId(item.getId());
-                hospitalPackageInfo.setOrderNum(item.getOrderNum());
-                hospitalPackageInfos.add(hospitalPackageInfo);
-            });
+            dto.getPackageIdList()
+                    .forEach(item -> {
+                        HospitalPackageInfo hospitalPackageInfo = new HospitalPackageInfo();
+                        hospitalPackageInfo.setHospitalInfoId(hospitalInfo.getId());
+                        hospitalPackageInfo.setInfoPackageId(item.getId());
+                        hospitalPackageInfo.setOrderNum(item.getOrderNum());
+                        hospitalPackageInfos.add(hospitalPackageInfo);
+                    });
             hospitalPackageInfoService.saveBatch(hospitalPackageInfos);
         }
         return insert;
     }
 
-    public List<HospitalPackageInfoVO> filtrationDelete(List<HospitalPackageInfoVO> all,List<HospitalPackageInsertDTO> updatePackageIdList){
-        List<HospitalPackageInfoVO> collect = all.stream().filter(item -> updatePackageIdList.stream().noneMatch(item2 -> item2.getId() .equals(item.getInfoPackageId()) ))
+    public List<HospitalPackageInfoVO> filtrationDelete(List<HospitalPackageInfoVO> all, List<HospitalPackageInsertDTO> updatePackageIdList) {
+        List<HospitalPackageInfoVO> collect = all.stream()
+                .filter(item -> updatePackageIdList.stream()
+                        .noneMatch(item2 -> item2.getId()
+                                .equals(item.getInfoPackageId())))
                 .collect(Collectors.toList());
         return collect;
     }
 
-    public List<HospitalPackageInsertDTO> filtrationInsert(List<HospitalPackageInsertDTO> updatePackageIdList,List<HospitalPackageInfoVO> all){
-        List<HospitalPackageInsertDTO> collect = updatePackageIdList.stream().filter(h1 -> all.stream().noneMatch(h2 -> h2.getInfoPackageId().equals(h1.getId())))
+    public List<HospitalPackageInsertDTO> filtrationInsert(List<HospitalPackageInsertDTO> updatePackageIdList, List<HospitalPackageInfoVO> all) {
+        List<HospitalPackageInsertDTO> collect = updatePackageIdList.stream()
+                .filter(h1 -> all.stream()
+                        .noneMatch(h2 -> h2.getInfoPackageId()
+                                .equals(h1.getId())))
                 .collect(Collectors.toList());
         return collect;
     }
@@ -117,18 +125,20 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
             });
             //删除原来的套餐关联表，根据医院信息id删除
             LambdaUpdateWrapper<HospitalPackageInfo> hospitalPackageInfoUpdateWrapper = new LambdaUpdateWrapper<>();
-            hospitalPackageInfoUpdateWrapper.eq(HospitalPackageInfo::getHospitalInfoId, dto.getId()).set(HospitalPackageInfo::getDeleteFlag, 1);
+            hospitalPackageInfoUpdateWrapper.eq(HospitalPackageInfo::getHospitalInfoId, dto.getId())
+                    .set(HospitalPackageInfo::getDeleteFlag, 1);
             int delete = hospitalPackageInfoMapper.update(hospitalPackageInfoUpdateWrapper);
 
             //添加套餐中间表
             ArrayList<HospitalPackageInfo> hospitalPackageInfos = new ArrayList<>();
-            dto.getPackageIdList().forEach(item -> {
-                HospitalPackageInfo hospitalPackageInfo = new HospitalPackageInfo();
-                hospitalPackageInfo.setHospitalInfoId(dto.getId());
-                hospitalPackageInfo.setInfoPackageId(item.getId());
-                hospitalPackageInfo.setOrderNum(item.getOrderNum());
-                hospitalPackageInfos.add(hospitalPackageInfo);
-            });
+            dto.getPackageIdList()
+                    .forEach(item -> {
+                        HospitalPackageInfo hospitalPackageInfo = new HospitalPackageInfo();
+                        hospitalPackageInfo.setHospitalInfoId(dto.getId());
+                        hospitalPackageInfo.setInfoPackageId(item.getId());
+                        hospitalPackageInfo.setOrderNum(item.getOrderNum());
+                        hospitalPackageInfos.add(hospitalPackageInfo);
+                    });
             hospitalPackageInfoService.saveBatch(hospitalPackageInfos);
         }
         HospitalInfo hospitalInfo = new HospitalInfo();
@@ -147,22 +157,25 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
         String useId = commonMethod.getSysUserId();
         List<Long> longs = sysUserHospitalMapper.listByUserHospitalId(useId);
         dto.setUserHospitalIdList(longs);
-        return hospitalInfoMapper.listByPage(page,dto);
+        return hospitalInfoMapper.listByPage(page, dto);
     }
 
     @Override
     public int deleteHospitalInfo(Long id) {
         LambdaQueryWrapper<HospitalInfo> hospitalInfoLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        hospitalInfoLambdaQueryWrapper.eq(HospitalInfo::getId,id).gt(HospitalInfo::getStatus,0);
+        hospitalInfoLambdaQueryWrapper.eq(HospitalInfo::getId, id)
+                .gt(HospitalInfo::getStatus, 0);
         Long aLong = hospitalInfoMapper.selectCount(hospitalInfoLambdaQueryWrapper);
-        if (aLong > 0){
+        if (aLong > 0) {
             return 0;
-        }else {
+        } else {
             LambdaUpdateWrapper<HospitalInfo> hospitalInfoLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
-            hospitalInfoLambdaUpdateWrapper.eq(HospitalInfo::getId, id).set(HospitalInfo::getDeleteFlag, 1);
+            hospitalInfoLambdaUpdateWrapper.eq(HospitalInfo::getId, id)
+                    .set(HospitalInfo::getDeleteFlag, 1);
             int update = hospitalInfoMapper.update(hospitalInfoLambdaUpdateWrapper);
             LambdaUpdateWrapper<HospitalPackageInfo> hospitalPackageInfoUpdateWrapper = new LambdaUpdateWrapper<>();
-            hospitalPackageInfoUpdateWrapper.eq(HospitalPackageInfo::getHospitalInfoId,id).set(HospitalPackageInfo::getDeleteFlag,1);
+            hospitalPackageInfoUpdateWrapper.eq(HospitalPackageInfo::getHospitalInfoId, id)
+                    .set(HospitalPackageInfo::getDeleteFlag, 1);
             hospitalPackageInfoMapper.update(hospitalPackageInfoUpdateWrapper);
             return update;
         }
@@ -179,12 +192,12 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
     @Override
     public List<HospitalInfo> queryDistrictGetHospitalInfo(HospitalInfoQueryDTO districtName) {
         LambdaQueryWrapper<HospitalInfo> hospitalInfoLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        hospitalInfoLambdaQueryWrapper.in(districtName.getDistrictNames() != null && !districtName.getDistrictNames()
+        hospitalInfoLambdaQueryWrapper.eq(BaseEntity::getDeleteFlag, Boolean.FALSE)
+                .in(districtName.getDistrictNames() != null && !districtName.getDistrictNames()
                                 .isEmpty(), HospitalInfo::getDistrictName,
                         districtName.getDistrictNames())
                 .eq(HospitalInfo::getDeleteFlag, 0);
-        List<HospitalInfo> hospitalInfos = hospitalInfoMapper.selectList(hospitalInfoLambdaQueryWrapper);
-        return hospitalInfos;
+        return hospitalInfoMapper.selectList(hospitalInfoLambdaQueryWrapper);
     }
 
     @Override
