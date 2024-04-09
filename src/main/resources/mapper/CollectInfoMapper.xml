@@ -10,8 +10,8 @@
             `status`
         FROM collect_info
         WHERE delete_flag = 0
-        <if test="dto.createON != null">
-            AND DATE(create_on) = #{dto.createON}
+        <if test="dto.beginCreateON != null and dto.endCreateON != null">
+            AND create_on BETWEEN #{dto.beginCreateON} and #{dto.endCreateON}
         </if>
         <if test="dto.status != null">
             AND status = #{dto.status}

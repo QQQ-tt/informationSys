@@ -41,7 +41,7 @@ public interface CollectInfoService extends IService<CollectInfo> {
      * @date 2024/3/13 14:20
      * @version 1.0
      */
-    List<CollectInfoRecordVO> queryCollectInfoRecordList(CollectInfoRecordQueryDTO dto);
+    IPage<CollectInfoRecordVO> queryCollectInfoRecordList(CollectInfoRecordQueryDTO dto);
 
     /**
      * 根据主键id查询详情

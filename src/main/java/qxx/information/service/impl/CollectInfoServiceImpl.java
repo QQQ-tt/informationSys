@@ -53,8 +53,9 @@ public class CollectInfoServiceImpl extends ServiceImpl<CollectInfoMapper, Colle
 
 
     @Override
-    public List<CollectInfoRecordVO> queryCollectInfoRecordList(CollectInfoRecordQueryDTO dto) {
-        return collectInfoMapper.queryCollectInfoRecordList(dto);
+    public IPage<CollectInfoRecordVO> queryCollectInfoRecordList(CollectInfoRecordQueryDTO dto) {
+        Page<CollectInfoRecordVO> page = new Page<>(dto.getPageNum(), dto.getPageSize());
+        return collectInfoMapper.queryCollectInfoRecordList(page,dto);
     }
 
     @Override
@@ -65,7 +66,6 @@ public class CollectInfoServiceImpl extends ServiceImpl<CollectInfoMapper, Colle
     @Override
     public IPage<CollectInfoVO> listByCollectInfoPage(CollectInfoQueryDTO dto, HttpServletRequest request) {
         Page<CollectInfoVO> page = new Page<>(dto.getPageNum(), dto.getPageSize());
-
         String useId = request.getHeader("user");
         List<Long> longs = sysUserHospitalMapper.listByUserHospitalId(useId);
         dto.setUserHospitalIdList(longs);
