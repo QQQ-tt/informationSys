@@ -130,7 +130,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                     .isEmpty()) {
                 val jsonString = JSONObject.toJSONString(dto.getRegions());
                 dto.setRegion(jsonString);
-                if (hospital.isEmpty()) {
+                if (hospital.isEmpty() && dto.getId() == null) {
                     val strings = new ArrayList<String>();
                     dto.getRegions()
                             .forEach(k -> {
