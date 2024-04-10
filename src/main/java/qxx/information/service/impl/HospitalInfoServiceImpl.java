@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -46,6 +47,7 @@ import java.util.stream.Collectors;
  * @author qtx
  * @since 2024-03-12
  */
+@Slf4j
 @Service
 public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, HospitalInfo> implements HospitalInfoService {
 
@@ -111,7 +113,7 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
         });
         sysUserHospitalService.saveBatch(sysUserHospitals);
         update(Wrappers.lambdaUpdate(HospitalInfo.class)
-                .eq(BaseEntity::getId, dto.getId())
+                .eq(BaseEntity::getId, hospitalInfo.getId())
                 .set(HospitalInfo::getStatus, list.size()));
         return insert;
     }
@@ -186,12 +188,15 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
         val collect = list.stream()
                 .map(SysUser::getId)
                 .collect(Collectors.toList());
-        val count = sysUserHospitalService.count(Wrappers.lambdaQuery(SysUserHospital.class)
-                .in(SysUserHospital::getUserId,
-                        collect));
-        sysUserHospitalService.remove(Wrappers.lambdaUpdate(SysUserHospital.class)
-                .in(SysUserHospital::getUserId,
-                        collect));
+        long count = 0L;
+        if (!collect.isEmpty()) {
+            count = sysUserHospitalService.count(Wrappers.lambdaQuery(SysUserHospital.class)
+                    .in(SysUserHospital::getUserId,
+                            collect));
+            sysUserHospitalService.remove(Wrappers.lambdaUpdate(SysUserHospital.class)
+                    .in(SysUserHospital::getUserId,
+                            collect));
+        }
         val sysUserHospitals = new ArrayList<SysUserHospital>();
         val splitDTO = dto.getRegionId()
                 .replace("-", ",");
@@ -210,8 +215,9 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
         if (l > 0) {
             sql = "+ " + l;
         } else {
-            sql = "- " + l;
+            sql = l + "";
         }
+        log.info("sql:{}", sql);
         update(Wrappers.lambdaUpdate(HospitalInfo.class)
                 .eq(BaseEntity::getId, dto.getId())
                 .setSql("status = status " + sql));
