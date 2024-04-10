@@ -57,6 +57,12 @@ public class SysUser extends BaseEntity {
     @TableField("region")
     private String region;
 
+    /**
+     * 医院自动添加状态
+     */
+    @TableField("hospital_status")
+    private Boolean hospitalStatus;
+
     @TableField(exist = false)
     private List<String> roles;
 

@@ -8,14 +8,16 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import qxx.information.config.BaseEntity;
 import qxx.information.config.CommonMethod;
 import qxx.information.entity.HospitalInfo;
 import qxx.information.entity.HospitalPackageInfo;
-import qxx.information.mapper.CollectInfoMapper;
+import qxx.information.entity.SysUser;
+import qxx.information.entity.SysUserHospital;
 import qxx.information.mapper.HospitalInfoMapper;
 import qxx.information.mapper.HospitalPackageInfoMapper;
 import qxx.information.mapper.SysUserHospitalMapper;
@@ -28,6 +30,8 @@ import qxx.information.pojo.vo.HospitalPackageInfoVO;
 import qxx.information.service.HospitalInfoService;
 import qxx.information.service.HospitalPackageInfoService;
 import qxx.information.service.PackageInfoService;
+import qxx.information.service.SysUserHospitalService;
+import qxx.information.service.SysUserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +48,12 @@ import java.util.stream.Collectors;
 @Service
 public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, HospitalInfo> implements HospitalInfoService {
 
+    @Lazy
+    @Autowired
+    private SysUserService sysUserService;
+
+    @Autowired
+    private SysUserHospitalService sysUserHospitalService;
 
     @Autowired
     private HospitalInfoMapper hospitalInfoMapper;
@@ -85,6 +95,22 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
                     });
             hospitalPackageInfoService.saveBatch(hospitalPackageInfos);
         }
+        val sysUserHospitals = new ArrayList<SysUserHospital>();
+        val split = dto.getRegionId()
+                .replace("-", ",");
+        val list = sysUserService.list(Wrappers.lambdaQuery(SysUser.class)
+                .like(SysUser::getRegions, split)
+                .eq(SysUser::getHospitalStatus, Boolean.TRUE));
+        list.forEach(item -> {
+            SysUserHospital sysUserHospital = new SysUserHospital();
+            sysUserHospital.setUserId(item.getId());
+            sysUserHospital.setHospitalId(hospitalInfo.getId());
+            sysUserHospitals.add(sysUserHospital);
+        });
+        sysUserHospitalService.saveBatch(sysUserHospitals);
+        update(Wrappers.lambdaUpdate(HospitalInfo.class)
+                .eq(BaseEntity::getId, dto.getId())
+                .set(HospitalInfo::getStatus, list.size()));
         return insert;
     }
 
@@ -109,6 +135,8 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
 
     @Override
     public int updateHospitalInfo(HospitalInfoInsertDTO dto) {
+
+        val byId = getById(dto.getId());
 
         //查询本次原来的医院套餐信息
         List<HospitalPackageInfoVO> longs = hospitalPackageInfoMapper.listByHospitalInfoId(dto.getId());
@@ -147,7 +175,43 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
         hospitalInfo.setRegionId(dto.getRegionId());
         hospitalInfo.setId(dto.getId());
         int update = hospitalInfoMapper.updateById(hospitalInfo);
-
+        val split = byId.getRegionId()
+                .replace("-", ",");
+        val list = sysUserService.list(Wrappers.lambdaQuery(SysUser.class)
+                .like(SysUser::getRegions, split)
+                .eq(SysUser::getHospitalStatus, Boolean.TRUE));
+        val collect = list.stream()
+                .map(SysUser::getId)
+                .collect(Collectors.toList());
+        val count = sysUserHospitalService.count(Wrappers.lambdaQuery(SysUserHospital.class)
+                .in(SysUserHospital::getUserId,
+                        collect));
+        sysUserHospitalService.remove(Wrappers.lambdaUpdate(SysUserHospital.class)
+                .in(SysUserHospital::getUserId,
+                        collect));
+        val sysUserHospitals = new ArrayList<SysUserHospital>();
+        val splitDTO = dto.getRegionId()
+                .replace("-", ",");
+        val listDTO = sysUserService.list(Wrappers.lambdaQuery(SysUser.class)
+                .like(SysUser::getRegions, splitDTO)
+                .eq(SysUser::getHospitalStatus, Boolean.TRUE));
+        listDTO.forEach(item -> {
+            SysUserHospital sysUserHospital = new SysUserHospital();
+            sysUserHospital.setUserId(item.getId());
+            sysUserHospital.setHospitalId(hospitalInfo.getId());
+            sysUserHospitals.add(sysUserHospital);
+        });
+        sysUserHospitalService.saveBatch(sysUserHospitals);
+        val l = Long.parseLong(String.valueOf(sysUserHospitals.size())) - count;
+        String sql;
+        if (l > 0) {
+            sql = "+ " + l;
+        } else {
+            sql = "- " + l;
+        }
+        update(Wrappers.lambdaUpdate(HospitalInfo.class)
+                .eq(BaseEntity::getId, dto.getId())
+                .setSql("status = status " + sql));
         return update;
     }
 
