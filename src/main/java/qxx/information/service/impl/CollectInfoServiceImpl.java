@@ -4,9 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import qxx.information.config.CommonMethod;
 import qxx.information.config.excel.ExcelTransfer;
 import qxx.information.entity.CollectInfo;
 import qxx.information.entity.HospitalInfo;
@@ -46,6 +49,9 @@ public class CollectInfoServiceImpl extends ServiceImpl<CollectInfoMapper, Colle
     @Autowired
     private SysUserHospitalMapper sysUserHospitalMapper;
 
+    @Resource
+    private CommonMethod commonMethod;
+
     @Override
     public Boolean insertCollectInfo(CollectInfo collectInfo) {
         return saveOrUpdate(collectInfo);
@@ -55,6 +61,7 @@ public class CollectInfoServiceImpl extends ServiceImpl<CollectInfoMapper, Colle
     @Override
     public IPage<CollectInfoRecordVO> queryCollectInfoRecordList(CollectInfoRecordQueryDTO dto) {
         Page<CollectInfoRecordVO> page = new Page<>(dto.getPageNum(), dto.getPageSize());
+        dto.setUserId(commonMethod.getSysUserId());
         return collectInfoMapper.queryCollectInfoRecordList(page,dto);
     }
 
@@ -68,8 +75,12 @@ public class CollectInfoServiceImpl extends ServiceImpl<CollectInfoMapper, Colle
         Page<CollectInfoVO> page = new Page<>(dto.getPageNum(), dto.getPageSize());
         String useId = request.getHeader("user");
         List<Long> longs = sysUserHospitalMapper.listByUserHospitalId(useId);
-        dto.setUserHospitalIdList(longs);
-        return collectInfoMapper.listByCollectInfoPage(page,dto);
+        IPage<CollectInfoVO> page1 = null;
+        if (CollectionUtils.isNotEmpty(longs) ) {
+            dto.setUserHospitalIdList(longs);
+            return collectInfoMapper.listByCollectInfoPage(page, dto);
+        }
+        return page1;
     }
 
     @Override

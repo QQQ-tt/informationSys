@@ -32,4 +32,6 @@ public class CollectInfoRecordQueryDTO extends PageDTO<CollectInfoRecordVO> {
 
     private Integer status;
 
+    private String userId;
+
 }

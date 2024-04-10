@@ -10,6 +10,7 @@
             `status`
         FROM collect_info
         WHERE delete_flag = 0
+        AND create_by = #{dto.userId}
         <if test="dto.beginCreateON != null and dto.endCreateON != null">
             AND create_on BETWEEN #{dto.beginCreateON} and #{dto.endCreateON}
         </if>
