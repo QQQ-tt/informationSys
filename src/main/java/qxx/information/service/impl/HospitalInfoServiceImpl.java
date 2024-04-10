@@ -12,6 +12,7 @@ import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import qxx.information.config.BaseEntity;
 import qxx.information.config.CommonMethod;
 import qxx.information.entity.HospitalInfo;
@@ -74,6 +75,7 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
     private CommonMethod commonMethod;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int insertHospitalInfo(HospitalInfoInsertDTO dto) {
 
         HospitalInfo hospitalInfo = new HospitalInfo();
@@ -99,7 +101,7 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
         val split = dto.getRegionId()
                 .replace("-", ",");
         val list = sysUserService.list(Wrappers.lambdaQuery(SysUser.class)
-                .like(SysUser::getRegions, split)
+                .like(SysUser::getRegion, split)
                 .eq(SysUser::getHospitalStatus, Boolean.TRUE));
         list.forEach(item -> {
             SysUserHospital sysUserHospital = new SysUserHospital();
@@ -134,6 +136,7 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int updateHospitalInfo(HospitalInfoInsertDTO dto) {
 
         val byId = getById(dto.getId());
@@ -178,7 +181,7 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
         val split = byId.getRegionId()
                 .replace("-", ",");
         val list = sysUserService.list(Wrappers.lambdaQuery(SysUser.class)
-                .like(SysUser::getRegions, split)
+                .like(SysUser::getRegion, split)
                 .eq(SysUser::getHospitalStatus, Boolean.TRUE));
         val collect = list.stream()
                 .map(SysUser::getId)
@@ -193,7 +196,7 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
         val splitDTO = dto.getRegionId()
                 .replace("-", ",");
         val listDTO = sysUserService.list(Wrappers.lambdaQuery(SysUser.class)
-                .like(SysUser::getRegions, splitDTO)
+                .like(SysUser::getRegion, splitDTO)
                 .eq(SysUser::getHospitalStatus, Boolean.TRUE));
         listDTO.forEach(item -> {
             SysUserHospital sysUserHospital = new SysUserHospital();

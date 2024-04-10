@@ -2,6 +2,7 @@ package qxx.information.pojo.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import qxx.information.config.PageDTO;
 import qxx.information.pojo.vo.CollectInfoRecordVO;
 
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
  * @Date: 2024/3/13 10:17
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class CollectInfoRecordQueryDTO extends PageDTO<CollectInfoRecordVO> {
 
 
