@@ -230,7 +230,11 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
         String useId = commonMethod.getSysUserId();
         List<Long> longs = sysUserHospitalMapper.listByUserHospitalId(useId);
         dto.setUserHospitalIdList(longs);
-        return hospitalInfoMapper.listByPage(page, dto);
+        if (CollectionUtils.isNotEmpty(longs)) {
+            return hospitalInfoMapper.listByPage(page, dto);
+        }
+        IPage<HospitalInfoVO> iPage = null;
+        return iPage;
     }
 
     @Override
