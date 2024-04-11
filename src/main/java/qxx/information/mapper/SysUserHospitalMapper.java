@@ -23,4 +23,5 @@ public interface SysUserHospitalMapper extends BaseMapper<SysUserHospital> {
 
     List<Long> listByUserHospitalId(String userId);
 
+    List<SysUserHospital> selectHospitalByRegionId(String regionId,List<Long> userId);
 }

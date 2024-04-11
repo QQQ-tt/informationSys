@@ -42,4 +42,7 @@ public class SysUserHospital extends BaseEntity {
      */
     @TableField(exist = false)
     private String districtName;
+
+    @TableField(exist = false)
+    private Integer status;
 }

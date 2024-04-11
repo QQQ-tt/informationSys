@@ -19,7 +19,6 @@ import java.util.List;
 @Service
 public class SysUserHospitalServiceImpl extends ServiceImpl<SysUserHospitalMapper, SysUserHospital> implements SysUserHospitalService {
 
-
     @Override
     public List<SysUserHospital> listSysUserHospital(Long userId) {
         return baseMapper.selectListNew(userId);
@@ -29,6 +28,11 @@ public class SysUserHospitalServiceImpl extends ServiceImpl<SysUserHospitalMappe
     public List<SysUserHospital> listByUserIdHospital(String userId) {
         Long id = baseMapper.listByUserIdHospital(userId);
         return baseMapper.selectListNew(id);
+    }
+
+    @Override
+    public List<SysUserHospital> listHospitalByRegionId(String regionId, List<Long> userId) {
+        return baseMapper.selectHospitalByRegionId(regionId, userId);
     }
 
 }

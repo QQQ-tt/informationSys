@@ -19,4 +19,6 @@ public interface SysUserHospitalService extends IService<SysUserHospital> {
 
     List<SysUserHospital> listByUserIdHospital(String userId);
 
+    List<SysUserHospital> listHospitalByRegionId(String regionId,List<Long> userId);
+
 }

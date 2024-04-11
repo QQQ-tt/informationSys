@@ -105,16 +105,29 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
         val list = sysUserService.list(Wrappers.lambdaQuery(SysUser.class)
                 .like(SysUser::getRegion, split)
                 .eq(SysUser::getHospitalStatus, Boolean.TRUE));
-        list.forEach(item -> {
+        val hospitalInfoList = list(Wrappers.lambdaQuery(HospitalInfo.class)
+                .eq(HospitalInfo::getRegionId, dto.getRegionId()));
+        list.forEach(item -> hospitalInfoList.forEach(h -> {
             SysUserHospital sysUserHospital = new SysUserHospital();
             sysUserHospital.setUserId(item.getId());
-            sysUserHospital.setHospitalId(hospitalInfo.getId());
+            sysUserHospital.setHospitalId(h.getId());
             sysUserHospitals.add(sysUserHospital);
-        });
+        }));
+        val sysUserHospitals1 = sysUserHospitalService.listHospitalByRegionId(dto.getRegionId(),
+                list.stream()
+                        .map(BaseEntity::getId)
+                        .toList());
+        for (SysUserHospital hospital : sysUserHospitals1) {
+            update(Wrappers.lambdaUpdate(HospitalInfo.class)
+                    .setSql("status = status -" + hospital.getStatus())
+                    .eq(BaseEntity::getId, hospital.getHospitalId()));
+        }
         sysUserHospitalService.saveBatch(sysUserHospitals);
-        update(Wrappers.lambdaUpdate(HospitalInfo.class)
-                .eq(BaseEntity::getId, hospitalInfo.getId())
-                .set(HospitalInfo::getStatus, list.size()));
+        val collect = sysUserHospitals.stream()
+                .collect(Collectors.groupingBy(SysUserHospital::getHospitalId));
+        collect.forEach((k, v) -> update(Wrappers.lambdaUpdate(HospitalInfo.class)
+                .eq(BaseEntity::getId, k)
+                .setSql("status = status +" + v.size())));
         return insert;
     }
 
@@ -191,9 +204,11 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
         long count = 0L;
         if (!collect.isEmpty()) {
             count = sysUserHospitalService.count(Wrappers.lambdaQuery(SysUserHospital.class)
+                    .eq(SysUserHospital::getHospitalId, dto.getId())
                     .in(SysUserHospital::getUserId,
                             collect));
             sysUserHospitalService.remove(Wrappers.lambdaUpdate(SysUserHospital.class)
+                    .eq(SysUserHospital::getHospitalId, dto.getId())
                     .in(SysUserHospital::getUserId,
                             collect));
         }
@@ -218,9 +233,11 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
             sql = l + "";
         }
         log.info("sql:{}", sql);
-        update(Wrappers.lambdaUpdate(HospitalInfo.class)
-                .eq(BaseEntity::getId, dto.getId())
-                .setSql("status = status " + sql));
+        if (l != 0) {
+            update(Wrappers.lambdaUpdate(HospitalInfo.class)
+                    .eq(BaseEntity::getId, dto.getId())
+                    .setSql("status = status " + sql));
+        }
         return update;
     }
 

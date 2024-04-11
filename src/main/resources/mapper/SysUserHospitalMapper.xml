@@ -6,24 +6,34 @@
         select s.id, user_id, hospital_id, h.hospital_name
         from sys_user_hospital s
                  left join hospital_info h on s.hospital_id = h.id
-        where s.delete_flag = '0' and user_id = #{sysUserId}
+        where s.delete_flag = '0'
+          and user_id = #{sysUserId}
     </select>
 
     <select id="listByUserIdHospital" resultType="java.lang.Long">
-        select
-            id
+        select id
         from sys_user
-        where
-            delete_flag = 0
-            and user_id = #{userId}
+        where delete_flag = 0
+          and user_id = #{userId}
     </select>
     <select id="listByUserHospitalId" resultType="java.lang.Long">
-        select
-            suf.hospital_id
-            from sys_user_hospital suf
-            left join sys_user u on suf.user_id = u.id
-            where suf.delete_flag = 0
-            and u.user_id = #{userId}
+        select suf.hospital_id
+        from sys_user_hospital suf
+                 left join sys_user u on suf.user_id = u.id
+        where suf.delete_flag = 0
+          and u.user_id = #{userId}
+    </select>
+    <select id="selectHospitalByRegionId" resultType="qxx.information.entity.SysUserHospital">
+        select hospital_id, count(hospital_id) as status
+        from sys_user_hospital
+        left join hospital_info on sys_user_hospital.hospital_id = hospital_info.id
+        where sys_user_hospital.delete_flag = 0
+        and hospital_info.region_id = #{regionId}
+        and sys_user_hospital.user_id in
+        <foreach collection="userId" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        group by hospital_id
     </select>
 
 </mapper>
