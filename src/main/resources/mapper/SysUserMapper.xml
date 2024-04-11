@@ -18,6 +18,7 @@
         s.user_id,
         s.password,
         s.status,
+        s.hospital_status,
         s.region,
         s.delete_flag,
         s.create_by,

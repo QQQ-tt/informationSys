@@ -24,6 +24,8 @@ public class SysUserVO {
 
     private Boolean status;
 
+    private Boolean hospitalStatus;
+
     @JsonIgnore
     private String region;
 
