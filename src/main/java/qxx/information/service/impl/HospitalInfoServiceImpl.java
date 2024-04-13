@@ -255,14 +255,8 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
     }
 
     @Override
-    public int deleteHospitalInfo(Long id) {
-        LambdaQueryWrapper<HospitalInfo> hospitalInfoLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        hospitalInfoLambdaQueryWrapper.eq(HospitalInfo::getId, id)
-                .gt(HospitalInfo::getStatus, 0);
-        Long aLong = hospitalInfoMapper.selectCount(hospitalInfoLambdaQueryWrapper);
-        if (aLong > 0) {
-            return 0;
-        } else {
+    public int  deleteHospitalInfo(Long id) {
+
             LambdaUpdateWrapper<HospitalInfo> hospitalInfoLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
             hospitalInfoLambdaUpdateWrapper.eq(HospitalInfo::getId, id)
                     .set(HospitalInfo::getDeleteFlag, 1);
@@ -271,8 +265,13 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
             hospitalPackageInfoUpdateWrapper.eq(HospitalPackageInfo::getHospitalInfoId, id)
                     .set(HospitalPackageInfo::getDeleteFlag, 1);
             hospitalPackageInfoMapper.update(hospitalPackageInfoUpdateWrapper);
-            return update;
-        }
+        //删除医院，同时删除用户的医院信息    
+        LambdaUpdateWrapper<SysUserHospital> sysUserHospitalLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+        sysUserHospitalLambdaUpdateWrapper.eq(SysUserHospital::getHospitalId,id)
+                                            .set(SysUserHospital::getDeleteFlag,1);
+        sysUserHospitalService.update(sysUserHospitalLambdaUpdateWrapper);
+        return update;
+
     }
 
     @Override
