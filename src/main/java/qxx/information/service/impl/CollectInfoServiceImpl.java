@@ -91,6 +91,7 @@ public class CollectInfoServiceImpl extends ServiceImpl<CollectInfoMapper, Colle
 
     @Override
     public CollectStatusInfoVO queryCollectStatus(CollectInfoRecordQueryDTO dto) {
+        dto.setUserId(commonMethod.getSysUserId());
         return collectInfoMapper.queryCollectStatus(dto);
     }
 

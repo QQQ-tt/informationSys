@@ -140,6 +140,7 @@
         COUNT(*) allUser
         FROM collect_info
         WHERE delete_flag = 0
+        AND create_by = #{dto.userId}
         <if test="dto.createON != null">
             AND DATE(create_on) = #{dto.createON}
         </if>
