@@ -79,7 +79,6 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int insertHospitalInfo(HospitalInfoInsertDTO dto) {
-
         HospitalInfo hospitalInfo = new HospitalInfo();
         hospitalInfo.setHospitalName(dto.getHospitalName());
         hospitalInfo.setDistrictName(dto.getDistrictName());

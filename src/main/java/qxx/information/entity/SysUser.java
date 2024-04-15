@@ -71,4 +71,7 @@ public class SysUser extends BaseEntity {
 
     @TableField(exist = false)
     private List<List<Integer>> regions;
+
+    @TableField(exist = false)
+    private Boolean admin = false;
 }

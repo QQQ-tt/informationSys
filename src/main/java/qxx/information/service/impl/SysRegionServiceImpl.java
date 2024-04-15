@@ -1,20 +1,16 @@
 package qxx.information.service.impl;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import qxx.information.entity.SysMenu;
 import qxx.information.entity.SysRegion;
 import qxx.information.mapper.SysRegionMapper;
 import qxx.information.service.SysRegionService;
-import qxx.information.service.SysRoleService;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -32,8 +28,23 @@ public class SysRegionServiceImpl extends ServiceImpl<SysRegionMapper, SysRegion
 
     @Override
     public List<SysRegion> queryByIdRegion(Long id) {
-        return buildTree(sysRegionMapper.queryByIdRegion());
+        List<SysRegion> sysRegions = buildTree(sysRegionMapper.queryByIdRegion());
+        /*ArrayList<List<Long>> list = new ArrayList<>();
+        sysRegions.forEach(e -> {
+            e.getChildren().forEach(e1 -> {
+                e1.getChildren().forEach(e2 -> {
+                    ArrayList<Long> arrayList = new ArrayList<>();
+                    arrayList.add(e.getId());
+                    arrayList.add(e1.getId());
+                    arrayList.add(e2.getId());
+                    list.add(arrayList);
+                });
+            });
+        });
+        System.out.println(JSONObject.toJSONString(list));*/
+        return sysRegions;
     }
+
 
 
     public static List<SysRegion> buildTree(List<SysRegion> menus) {
