@@ -234,11 +234,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 val sysUserHospitals = sysUserHospitalService.listSysUserHospital(user.getId());
                 val menus = sysMenuService.listByUserId(user.getId());
                 HashMap<String, Object> map = new HashMap<>();
-                map.put("id", user.getId());
+                /*map.put("id", user.getId());
                 map.put("userId", user.getUserId());
                 map.put("name", user.getName());
                 map.put("hospital", sysUserHospitals);
-                map.put("phone", user.getPhone());
+                map.put("phone", user.getPhone());*/
                 return LoginVO.builder()
                         .userId(user.getUserId())
                         .name(user.getName())
