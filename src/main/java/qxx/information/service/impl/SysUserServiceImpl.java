@@ -87,18 +87,22 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         val voPage = baseMapper.selectPageNew(dto.getPage(), dto);
         voPage.getRecords()
                 .forEach(e -> {
-                    val s = e.getRegion();
-                    if (StringUtils.isNotBlank(s)) {
-                        val objectMapper = new ObjectMapper();
-                        List<List<Integer>> stringListList;
-                        try {
-                            stringListList = objectMapper.readValue(s,
-                                    new TypeReference<>() {
-                                    });
-                        } catch (JsonProcessingException ex) {
-                            throw new RuntimeException(ex);
+                    if (!Objects.equals(e.getUserId(), "admin")) {
+                        val s = e.getRegion();
+                        if (StringUtils.isNotBlank(s)) {
+                            val objectMapper = new ObjectMapper();
+                            List<List<Integer>> stringListList;
+                            try {
+                                stringListList = objectMapper.readValue(s,
+                                        new TypeReference<>() {
+                                        });
+                            } catch (JsonProcessingException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                            e.setRegions(stringListList);
                         }
-                        e.setRegions(stringListList);
+                    } else {
+                        e.setListHospital(null);
                     }
                 });
         return voPage;
@@ -115,6 +119,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (Objects.isNull(user)) {
             if (!flag) {
                 dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+            } else {
+                dto.setPassword(null);
             }
             List<String> roles = Optional.ofNullable(dto.getRoles())
                     .orElse(new ArrayList<>())
@@ -128,8 +134,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                     .toList());
             if (dto.getRegions() != null && !dto.getRegions()
                     .isEmpty()) {
-                val jsonString = JSONObject.toJSONString(dto.getRegions());
-                dto.setRegion(jsonString);
+                if (!Objects.equals(dto.getUserId(), "admin") || dto.getAdmin()) {
+                    val jsonString = JSONObject.toJSONString(dto.getRegions());
+                    dto.setRegion(jsonString);
+                } else {
+                    dto.setRegion(null);
+                    dto.setHospitalStatus(Boolean.TRUE);
+                }
                 if (hospital.isEmpty() && dto.getId() == null) {
                     val strings = new ArrayList<String>();
                     dto.getRegions()
@@ -223,11 +234,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 val sysUserHospitals = sysUserHospitalService.listSysUserHospital(user.getId());
                 val menus = sysMenuService.listByUserId(user.getId());
                 HashMap<String, Object> map = new HashMap<>();
-                map.put("id", user.getId());
+                /*map.put("id", user.getId());
                 map.put("userId", user.getUserId());
                 map.put("name", user.getName());
                 map.put("hospital", sysUserHospitals);
-                map.put("phone", user.getPhone());
+                map.put("phone", user.getPhone());*/
                 return LoginVO.builder()
                         .userId(user.getUserId())
                         .name(user.getName())
