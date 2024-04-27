@@ -265,7 +265,7 @@ public class HospitalInfoServiceImpl extends ServiceImpl<HospitalInfoMapper, Hos
             hospitalPackageInfoUpdateWrapper.eq(HospitalPackageInfo::getHospitalInfoId, id)
                     .set(HospitalPackageInfo::getDeleteFlag, 1);
             hospitalPackageInfoMapper.update(hospitalPackageInfoUpdateWrapper);
-        //删除医院，同时删除用户的医院信息    
+        //删除医院，同时删除用户的医院信息
         LambdaUpdateWrapper<SysUserHospital> sysUserHospitalLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
         sysUserHospitalLambdaUpdateWrapper.eq(SysUserHospital::getHospitalId,id)
                                             .set(SysUserHospital::getDeleteFlag,1);

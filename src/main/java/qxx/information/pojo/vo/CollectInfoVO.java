@@ -41,6 +41,9 @@ public class CollectInfoVO {
     @ExcelProperty(value = "出生日期")
     private LocalDate collectBirthData;
 
+    @ExcelProperty(value = "年龄")
+    private Integer age;
+
     @ExcelProperty(value = "身份证号码")
     private String collectCard;
 
