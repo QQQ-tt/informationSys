@@ -159,7 +159,7 @@ public class JwtUtils {
             return !claims.getExpiration()
                     .after(new Date());
         } catch (Exception e) {
-            return false;
+            return true;
         }
     }
 }

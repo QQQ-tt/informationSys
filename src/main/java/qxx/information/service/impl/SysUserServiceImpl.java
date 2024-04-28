@@ -233,18 +233,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             if (passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
                 val sysUserHospitals = sysUserHospitalService.listSysUserHospital(user.getId());
                 val menus = sysMenuService.listByUserId(user.getId());
-                HashMap<String, Object> map = new HashMap<>();
-                /*map.put("id", user.getId());
-                map.put("userId", user.getUserId());
-                map.put("name", user.getName());
-                map.put("hospital", sysUserHospitals);
-                map.put("phone", user.getPhone());*/
                 return LoginVO.builder()
                         .userId(user.getUserId())
                         .name(user.getName())
                         .hospital(sysUserHospitals)
                         .menus(menus)
-                        .token(JwtUtils.generateToken(user.getUserId(), map))
+                        .token(JwtUtils.generateToken(user.getUserId(), new HashMap<>()))
                         .build();
             }
         }

@@ -45,14 +45,14 @@ public class AuthFilter extends OncePerRequestFilter {
             commonMethod.failed(request, response, DataEnums.USER_NOT_LOGIN);
             return;
         }
-        boolean equals = Objects.equals(JwtUtils.getBodyFromToken(token), userId);
-        if (!equals) {
-            commonMethod.failed(request, response, DataEnums.USER_NOT_LOGIN);
-            return;
-        }
         boolean tokenExpired = JwtUtils.isTokenExpired(token);
         if (tokenExpired) {
             commonMethod.failed(request, response, DataEnums.TOKEN_LOGIN_EXPIRED);
+            return;
+        }
+        boolean equals = Objects.equals(JwtUtils.getBodyFromToken(token), userId);
+        if (!equals) {
+            commonMethod.failed(request, response, DataEnums.USER_NOT_LOGIN);
             return;
         }
         commonMethod.setSysUserId(userId);
