@@ -23,7 +23,8 @@ public class Config {
     @Bean
     public CorsFilter corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:9527","http://8.136.115.191:9527","https://www.sz-labhh.com/"));
+        configuration.setAllowedOrigins(List.of("http://localhost:9527","http://8.136.115.191:9527","https://www" +
+                ".sz-labhh.com/","http://localhost:5173"));
         configuration.addAllowedOriginPattern("*");
         configuration.setAllowedMethods(Arrays.asList("POST", "GET", "OPTIONS", "DELETE", "HEAD"));
         configuration.setAllowCredentials(true);
@@ -38,7 +39,7 @@ public class Config {
     /**
      * 密码解密方式
      *
-     * @return
+     * @return 加密对象
      */
     @Bean
     public PasswordEncoder passwordEncoder() {

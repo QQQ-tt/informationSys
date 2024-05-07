@@ -13,7 +13,7 @@ public enum AuthEnums {
     /**
      * 网关限制，放行地址:注册
      */
-//    REGISTER("/information/sysUser/createSysUser"),
+    REGISTER("/information/sysUser/createSysUser"),
     /**
      * 网关限制，放行地址:登录
      */
