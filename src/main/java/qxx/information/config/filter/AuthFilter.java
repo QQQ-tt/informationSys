@@ -40,7 +40,7 @@ public class AuthFilter extends OncePerRequestFilter {
         String token = request.getHeader("Authorization");
         log.info("userId:{}",userId);
         if (StringUtils.isNotBlank(token)){
-            token = token.split(" ")[0];
+            token = token.split(" ")[1];
         }
         log.info("token:{}",token);
         if (AuthEnums.authPath(uri)) {
