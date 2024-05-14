@@ -1,5 +1,6 @@
 package qxx.information.config.filter;
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -39,6 +40,9 @@ public class AuthFilter extends OncePerRequestFilter {
         String token = request.getHeader("Authorization");
         log.info("userId:{}",userId);
         log.info("token:{}",token);
+        if (StringUtils.isNotBlank(token)){
+            token = token.split(" ")[0];
+        }
         if (AuthEnums.authPath(uri)) {
             filterChain.doFilter(request, response);
             return;
