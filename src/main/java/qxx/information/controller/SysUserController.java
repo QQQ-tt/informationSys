@@ -45,6 +45,11 @@ public class SysUserController {
         return Result.success(sysUserService.listSysUserPage(dto));
     }
 
+    @GetMapping("/getUserByUserId")
+    public Result<SysUser> getUserByUserId(String userId) {
+        return Result.success(sysUserService.getSysUserId(userId));
+    }
+
     @PostMapping("/saveOrUpdateSysUser")
     public Result<Boolean> saveOrUpdateSysUser(@RequestBody SysUser dto) {
         return Result.success(sysUserService.saveOrUpdateSysUser(dto));

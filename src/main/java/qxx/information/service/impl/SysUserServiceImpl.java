@@ -109,6 +109,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
+    public SysUser getSysUserId(String userId) {
+        return getOne(Wrappers.lambdaQuery(SysUser.class)
+                .eq(SysUser::getUserId, userId));
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean saveOrUpdateSysUser(SysUser dto) {
         Long id = dto.getId();

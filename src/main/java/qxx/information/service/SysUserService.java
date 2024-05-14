@@ -31,6 +31,14 @@ public interface SysUserService extends IService<SysUser> {
     Page<SysUserVO> listSysUserPage(SysUserDTO dto);
 
     /**
+     * 通过id查询用户信息
+     *
+     * @param userId 用户id
+     * @return 用户信息
+     */
+    SysUser getSysUserId(String userId);
+
+    /**
      * 保存或更新用户信息
      * @param dto 用户信息
      * @return 是否保存成功
