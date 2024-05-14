@@ -36,7 +36,7 @@ public class AuthFilter extends OncePerRequestFilter {
         log.info("请求ip:{}", request.getRemoteAddr());
         String uri = request.getRequestURI();
         String userId = request.getHeader("user");
-        String token = request.getHeader("token");
+        String token = request.getHeader("Authorization");
 
         if (AuthEnums.authPath(uri)) {
             filterChain.doFilter(request, response);

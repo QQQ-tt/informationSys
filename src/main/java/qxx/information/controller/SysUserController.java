@@ -46,7 +46,7 @@ public class SysUserController {
     }
 
     @GetMapping("/getUserByUserId")
-    public Result<SysUser> getUserByUserId(String userId) {
+    public Result<SysUser> getUserByUserId(@RequestParam String userId) {
         return Result.success(sysUserService.getSysUserId(userId));
     }
 
