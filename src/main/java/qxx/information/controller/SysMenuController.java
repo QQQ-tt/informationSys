@@ -26,13 +26,13 @@ public class SysMenuController {
     private SysMenuService sysMenuService;
 
     @GetMapping("/queryMenuInfo")
-    public Result queryMenuInfo(){
+    public Result<List<SysMenuVO>> queryMenuInfo(){
         List<SysMenuVO> sysMenuVOS = sysMenuService.queryMenuInfo();
         return Result.success(sysMenuVOS);
     }
 
     @GetMapping("/getByRoleIdMenuInfo")
-    public Result getByRoleIdMenuInfo(Long roleId){
+    public Result<List<SysMenuVO>> getByRoleIdMenuInfo(Long roleId){
         List<SysMenuVO> byRoleIdMenuInfo = sysMenuService.getByRoleIdMenuInfo(roleId);
         return Result.success(byRoleIdMenuInfo);
     }

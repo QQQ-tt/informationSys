@@ -34,25 +34,25 @@ public class SysRoleController {
     private SysRoleService sysRoleService;
 
     @PostMapping("/insertOrUpdateRole")
-    public Result insertOrUpdateRole(@RequestBody SysRole entity){
+    public Result<Object> insertOrUpdateRole(@RequestBody SysRole entity){
         Boolean aBoolean = sysRoleService.insertOrUpdateRole(entity);
         return aBoolean ? Result.success() : Result.failed(DataEnums.FAILED);
     }
 
     @PostMapping("/listByRolePage")
-    public Result listByRolePage(@RequestBody SysRoleQueryDTO dto){
+    public Result<IPage<SysRoleVO>> listByRolePage(@RequestBody SysRoleQueryDTO dto){
         IPage<SysRoleVO> sysRoleVOIPage = sysRoleService.listByRolePage(dto);
         return Result.success(sysRoleVOIPage);
     }
 
     @GetMapping("/deleteRole")
-    public Result deleteRole(Long id){
+    public Result<Object> deleteRole(Long id){
         int deleteRole = sysRoleService.deleteRole(id);
         return deleteRole >0 ? Result.success() : Result.failed("数据被引用无法删除",316);
     }
 
     @PostMapping("/updateRoleMenu")
-    public Result updateRoleMenu(@RequestBody RoleMenuDTO roleMenuDTO){
+    public Result<Object> updateRoleMenu(@RequestBody RoleMenuDTO roleMenuDTO){
         Boolean aBoolean = sysRoleService.updateRoleMenu(roleMenuDTO);
         return aBoolean ? Result.success() : Result.failed(DataEnums.FAILED);
     }

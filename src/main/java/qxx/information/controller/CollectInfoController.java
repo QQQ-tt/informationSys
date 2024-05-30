@@ -33,26 +33,26 @@ public class CollectInfoController {
     private CollectInfoService collectInfoService;
 
     @PostMapping("/insertCollectInfo")
-    public Result insertCollectInfo(@RequestBody CollectInfo entity){
+    public Result<Object> insertCollectInfo(@RequestBody CollectInfo entity){
         Boolean insert = collectInfoService.insertCollectInfo(entity);
         return insert ? Result.success() : Result.failed(DataEnums.FAILED);
     }
 
     @PostMapping("/queryCollectInfoRecordList")
-    public Result queryCollectInfoRecordList(@RequestBody CollectInfoRecordQueryDTO dto){
+    public Result<IPage<CollectInfoRecordVO>> queryCollectInfoRecordList(@RequestBody CollectInfoRecordQueryDTO dto){
         IPage<CollectInfoRecordVO> collectInfoRecordVOS = collectInfoService.queryCollectInfoRecordList(dto);
         return Result.success(collectInfoRecordVOS);
     }
 
     @GetMapping("/getByIdQueryCollectInfo")
-    public Result getByIdQueryCollectInfo(Long id){
+    public Result<CollectInfoVO> getByIdQueryCollectInfo(Long id){
         CollectInfoVO byIdQueryCollectInfo = collectInfoService.getByIdQueryCollectInfo(id);
         return Result.success(byIdQueryCollectInfo);
     }
 
 
     @PostMapping("/listByCollectInfoPage")
-    public Result listByCollectInfoPage(@RequestBody CollectInfoQueryDTO dto, HttpServletRequest request){
+    public Result<IPage<CollectInfoVO>> listByCollectInfoPage(@RequestBody CollectInfoQueryDTO dto, HttpServletRequest request){
         IPage<CollectInfoVO> collectInfoVOIPage = collectInfoService.listByCollectInfoPage(dto,request);
         return Result.success(collectInfoVOIPage);
     }

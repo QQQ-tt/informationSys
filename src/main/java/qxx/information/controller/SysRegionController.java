@@ -32,7 +32,7 @@ public class SysRegionController {
     private SysRegionService sysRegionService;
 
     @GetMapping("/queryByIdRegion")
-    public Result queryByIdRegion(Long id){
+    public Result<List<SysRegion>> queryByIdRegion(Long id){
         List<SysRegion> sysRegions = sysRegionService.queryByIdRegion(id);
         return Result.success(sysRegions);
     }
