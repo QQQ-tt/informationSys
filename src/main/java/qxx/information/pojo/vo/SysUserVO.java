@@ -1,10 +1,12 @@
 package qxx.information.pojo.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import qxx.information.entity.SysUserHospital;
 import qxx.information.entity.SysUserRole;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -25,6 +27,9 @@ public class SysUserVO {
     private Boolean status;
 
     private Boolean hospitalStatus;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm",timezone = "GMT+8")
+    private LocalDateTime createOn;
 
     @JsonIgnore
     private String region;

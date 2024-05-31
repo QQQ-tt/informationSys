@@ -23,6 +23,9 @@ public class SysRoleVO {
     @ExcelProperty(value = "角色编码")
     private String roleCode;
 
+    @ExcelProperty(value = "使用状态")
+    private String status;
+
     @ExcelProperty(value = "备注")
     private String remark;
 

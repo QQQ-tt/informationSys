@@ -15,6 +15,7 @@
             role_name,
             role_code,
             remark,
+            status,
             create_on
         from sys_role
         where delete_flag = 0
