@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 import qxx.information.config.CommonMethod;
 import qxx.information.config.enums.AuthEnums;
@@ -33,16 +34,28 @@ public class AuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
+        String uri = request.getRequestURI();
+        AntPathMatcher matcher = new AntPathMatcher();
+        if (request.getMethod()
+                .equals("OPTIONS") || matcher.match("/websocket/*/*", uri)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         log.info("请求路径：{}", request.getRequestURI());
         log.info("请求ip:{}", request.getRemoteAddr());
-        String uri = request.getRequestURI();
         String userId = request.getHeader("user");
         String token = request.getHeader("Authorization");
-        log.info("userId:{}",userId);
-        if (StringUtils.isNotBlank(token)){
+        String header = request.getHeader("Sec-Websocket-Protocol");
+        log.info("userId:{}", userId);
+        if (StringUtils.isNotBlank(token)) {
             token = token.split(" ")[1];
         }
-        log.info("token:{}",token);
+        if (StringUtils.isNotBlank(header)) {
+            log.info("websocket-header:{}", header);
+            token = header.split(", ")[1];
+            userId = header.split(", ")[0];
+        }
+        log.info("token:{}", token);
         if (AuthEnums.authPath(uri)) {
             filterChain.doFilter(request, response);
             return;
