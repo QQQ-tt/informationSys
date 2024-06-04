@@ -1,5 +1,7 @@
 package qxx.information.websocket.chat;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnError;
 import jakarta.websocket.OnMessage;
@@ -7,6 +9,7 @@ import jakarta.websocket.OnOpen;
 import jakarta.websocket.Session;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import qxx.information.websocket.WebSocketConfig;
@@ -68,8 +71,16 @@ public class WebChatWSServer {
     /**
      * 服务器接收到客户端消息时调用的方法
      */
+    @SneakyThrows
     @OnMessage
     public void onMessage(@PathParam("username") String username, String message) {
         log.info("收到消息:{},来自:{}", message, username);
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> hashMap = mapper.readValue(message, new TypeReference<>() {
+        });
+        Object toUser = hashMap.get("toUser");
+        if (toUser != null) {
+            WebSocketConfig.sendOneMassage(sessionMap, toUser.toString(), message);
+        }
     }
 }
