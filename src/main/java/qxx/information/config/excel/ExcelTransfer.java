@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.service.IService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.web.multipart.MultipartFile;
 import qxx.information.config.enums.DataEnums;
 import qxx.information.config.exception.DataException;
@@ -23,11 +23,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @since 2022/5/17
  */
 @Slf4j
-@Component
-public class ExcelTransfer<T> {
-    private final String packageName = "com.project.echo.entity.admin.";
+public class ExcelTransfer {
 
-    private final int size = 36;
+    private final static String packageName = "com.project.echo.entity.admin.";
+
+    private final static int size = 36;
 
     /**
      * 上传excel 对用实体类不允许使用链式调用注解
@@ -39,7 +39,7 @@ public class ExcelTransfer<T> {
      * @return 成功与否
      * @throws ClassNotFoundException
      */
-    public boolean importExcel(MultipartFile file, IService<T> service) throws ClassNotFoundException {
+    public static <T> boolean importExcel(MultipartFile file, IService<T> service) throws ClassNotFoundException {
         isEmpty(file);
         String name = service.getClass()
                 .getName();
@@ -100,7 +100,7 @@ public class ExcelTransfer<T> {
      * @param name     文件名称
      * @param sheet    表名
      */
-    public void exportExcel(HttpServletResponse response, List<T> list, String name, String sheet,
+    public static <T> void exportExcel(HttpServletResponse response, List<T> list, String name, String sheet,
                             IService<T> service) throws ClassNotFoundException {
         String className = service.getClass()
                 .getName();
@@ -118,11 +118,12 @@ public class ExcelTransfer<T> {
      * @param sheet    表名
      * @param aClass   实体类
      */
-    public void exportExcel(HttpServletResponse response, List<T> list, String name, String sheet, Class<?> aClass) throws ClassNotFoundException {
+    public static <T> void exportExcel(HttpServletResponse response, List<T> list, String name, String sheet,
+                               Class<?> aClass) {
         export(response, list, name, sheet, aClass);
     }
 
-    private void export(HttpServletResponse response, List<T> list, String name, String sheet, Class<?> aClass) {
+    private static <T> void export(HttpServletResponse response, List<T> list, String name, String sheet, Class<?> aClass) {
         try {
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             response.setCharacterEncoding("utf-8");
@@ -139,7 +140,7 @@ public class ExcelTransfer<T> {
         }
     }
 
-    private void isEmpty(MultipartFile file) {
+    private static void isEmpty(MultipartFile file) {
         if (file == null || file.isEmpty()) {
             throw new DataException(DataEnums.FAILED);
         }
@@ -152,7 +153,7 @@ public class ExcelTransfer<T> {
      * @param name     文件名称
      * @param list     实体:数据
      */
-    public void exportExcel(HttpServletResponse response, String name, List<ExcelVO> list) throws IOException {
+    public static void exportExcel(HttpServletResponse response, String name, List<ExcelVO> list) throws IOException {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setCharacterEncoding("utf-8");
         // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系

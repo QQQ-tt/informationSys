@@ -24,7 +24,7 @@ public class Config {
     public CorsFilter corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:9527","http://8.136.115.191:9527","https://www" +
-                ".sz-labhh.com/","http://localhost:5173"));
+                ".sz-labhh.com/","http://localhost:10000","http://192.168.20.21:10000/"));
         configuration.addAllowedOriginPattern("*");
         configuration.setAllowedMethods(Arrays.asList("POST", "GET", "OPTIONS", "DELETE", "HEAD"));
         configuration.setAllowCredentials(true);

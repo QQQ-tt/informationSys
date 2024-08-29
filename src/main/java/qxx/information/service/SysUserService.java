@@ -1,6 +1,7 @@
 package qxx.information.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;
 import qxx.information.entity.SysUser;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -25,6 +26,7 @@ public interface SysUserService extends IService<SysUser> {
 
     /**
      * 分页查询用户信息
+     *
      * @param dto 查询条件
      * @return 分页结果
      */
@@ -40,6 +42,7 @@ public interface SysUserService extends IService<SysUser> {
 
     /**
      * 保存或更新用户信息
+     *
      * @param dto 用户信息
      * @return 是否保存成功
      */
@@ -47,6 +50,7 @@ public interface SysUserService extends IService<SysUser> {
 
     /**
      * 通过id修改密码
+     *
      * @param dto 用户参数
      * @return 是否修改成功
      */
@@ -54,7 +58,8 @@ public interface SysUserService extends IService<SysUser> {
 
     /**
      * 通过id修改状态
-     * @param id 用户id
+     *
+     * @param id   用户id
      * @param flag 状态
      * @return 是否修改成功
      */
@@ -62,6 +67,7 @@ public interface SysUserService extends IService<SysUser> {
 
     /**
      * 通过id删除用户信息
+     *
      * @param id 用户id
      * @return 是否删除成功
      */
@@ -69,6 +75,7 @@ public interface SysUserService extends IService<SysUser> {
 
     /**
      * 用户登录
+     *
      * @param dto 登录信息
      * @return 登录结果
      */
@@ -76,12 +83,14 @@ public interface SysUserService extends IService<SysUser> {
 
     /**
      * 刷新token
+     *
      * @return 新密钥
      */
     String flushedToken();
 
     /**
      * 修改用户密码
+     *
      * @param dto 用户信息
      * @return 是否修改成功
      */
@@ -89,6 +98,7 @@ public interface SysUserService extends IService<SysUser> {
 
     /**
      * 创建用户
+     *
      * @param dto 用户信息
      * @return 是否保存成功
      */
@@ -96,9 +106,12 @@ public interface SysUserService extends IService<SysUser> {
 
     /**
      * 身份证识别
-     * @param file 文件
+     *
+     * @param file        文件
      * @param accessToken 密钥
      * @return 识别结果
      */
     OcrVO ocr(MultipartFile file, String accessToken) throws IOException;
+
+    void exportExcel(HttpServletResponse response);
 }

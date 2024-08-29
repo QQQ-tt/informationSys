@@ -15,8 +15,6 @@ import qxx.information.pojo.vo.CollectInfoVO;
 import qxx.information.pojo.vo.CollectStatusInfoVO;
 import qxx.information.service.CollectInfoService;
 
-import java.util.List;
-
 /**
  * <p>
  * 采集信息管理表 前端控制器

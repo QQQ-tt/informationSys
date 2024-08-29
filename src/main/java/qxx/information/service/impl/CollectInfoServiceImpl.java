@@ -1,8 +1,6 @@
 package qxx.information.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import qxx.information.config.CommonMethod;
 import qxx.information.config.excel.ExcelTransfer;
 import qxx.information.entity.CollectInfo;
-import qxx.information.entity.HospitalInfo;
-import qxx.information.entity.PackageInfo;
 import qxx.information.mapper.CollectInfoMapper;
 import qxx.information.mapper.SysUserHospitalMapper;
 import qxx.information.pojo.dto.CollectInfoQueryDTO;
@@ -24,7 +20,6 @@ import qxx.information.pojo.vo.CollectStatusInfoVO;
 import qxx.information.service.CollectInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-import qxx.information.service.HospitalInfoService;
 
 import java.util.List;
 
@@ -42,9 +37,6 @@ public class CollectInfoServiceImpl extends ServiceImpl<CollectInfoMapper, Colle
 
     @Autowired
     private CollectInfoMapper collectInfoMapper;
-
-    @Autowired
-    private ExcelTransfer<CollectInfoVO> excelTransferByClass;
 
     @Autowired
     private SysUserHospitalMapper sysUserHospitalMapper;
@@ -84,9 +76,9 @@ public class CollectInfoServiceImpl extends ServiceImpl<CollectInfoMapper, Colle
     }
 
     @Override
-    public void exportCollectInfo(HttpServletResponse response,CollectInfoQueryDTO dto) throws ClassNotFoundException {
+    public void exportCollectInfo(HttpServletResponse response,CollectInfoQueryDTO dto) {
         List<CollectInfoVO> collectInfoVOS = collectInfoMapper.exportCollectInfo(dto);
-        excelTransferByClass.exportExcel(response,collectInfoVOS,"采集信息管理","sheet",CollectInfoVO.class);
+        ExcelTransfer.exportExcel(response,collectInfoVOS,"采集信息管理","sheet",CollectInfoVO.class);
     }
 
     @Override

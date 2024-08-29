@@ -3,7 +3,6 @@ package qxx.information.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.ibatis.annotations.Param;
 import qxx.information.entity.CollectInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import qxx.information.pojo.dto.CollectInfoQueryDTO;
@@ -11,8 +10,6 @@ import qxx.information.pojo.dto.CollectInfoRecordQueryDTO;
 import qxx.information.pojo.vo.CollectInfoRecordVO;
 import qxx.information.pojo.vo.CollectInfoVO;
 import qxx.information.pojo.vo.CollectStatusInfoVO;
-
-import java.util.List;
 
 /**
  * <p>
@@ -61,7 +58,7 @@ public interface CollectInfoService extends IService<CollectInfo> {
      */
     IPage<CollectInfoVO> listByCollectInfoPage(CollectInfoQueryDTO dto, HttpServletRequest request);
 
-    void exportCollectInfo(HttpServletResponse response,CollectInfoQueryDTO dto) throws ClassNotFoundException;
+    void exportCollectInfo(HttpServletResponse response,CollectInfoQueryDTO dto);
 
     /**
      * 查询采集信息作废状态

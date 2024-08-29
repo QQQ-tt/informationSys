@@ -1,6 +1,7 @@
 package qxx.information.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -94,5 +95,10 @@ public class SysUserController {
     @PostMapping("/ocr")
     public Result<OcrVO> ocr(MultipartFile file, @RequestParam String accessToken) throws IOException {
         return Result.success(sysUserService.ocr(file, accessToken));
+    }
+
+    @GetMapping("/exportExcel")
+    public void exportExcel(HttpServletResponse response) {
+        sysUserService.exportExcel(response);
     }
 }

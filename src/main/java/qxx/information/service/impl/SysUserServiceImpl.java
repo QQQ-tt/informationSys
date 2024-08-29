@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.val;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import qxx.information.config.BaseEntity;
 import qxx.information.config.CommonMethod;
 import qxx.information.config.enums.DataEnums;
+import qxx.information.config.excel.ExcelTransfer;
 import qxx.information.config.exception.DataException;
 import qxx.information.entity.HospitalInfo;
 import qxx.information.entity.SysUser;
@@ -306,5 +308,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 .retrieve()
                 .toEntity(OcrVO.class)
                 .getBody();
+    }
+
+    @Override
+    public void exportExcel(HttpServletResponse response) {
+        ExcelTransfer.exportExcel(response, list(), "用户管理", "sheet", SysUser.class);
     }
 }
